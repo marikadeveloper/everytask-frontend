@@ -59,12 +59,8 @@ function ForgotPasswordScreen() {
 							</Button>
 						</div>
 						{isError ? <ErrorMessage error={error}/> : null}
-						{isSuccess ? (
-							<div>Password reset instructions sent to your email</div>
-						) : null}
 					</form>
 			}
-
 		</div>
 	);
 }

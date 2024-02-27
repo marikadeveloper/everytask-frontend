@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {Button, ErrorMessage, FormGroup} from '../components/lib';
 import { useAuth } from '../context/auth-context';
 import { useAsync } from '../utils/hooks';
-import {useEffect} from "react";
 
 function LoginScreen() {
   const { login } = useAuth();

@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import * as React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './auth-context';
 import PropTypes from "prop-types";
+import {NextUIProvider} from "@nextui-org/react";
 
 const queryConfig = {
   queries: {
@@ -32,9 +32,11 @@ function AppProviders({ children }) {
       client={queryClient}
       config={queryConfig}>
       <AuthProvider>
-        <Router>
-          {children}
-        </Router>
+        <NextUIProvider>
+          <Router>
+            {children}
+          </Router>
+        </NextUIProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
