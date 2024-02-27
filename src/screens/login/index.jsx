@@ -7,8 +7,8 @@ import './styles.scss';
 
 function LoginScreen() {
 	const {login} = useAuth();
-	const {register, handleSubmit, formState} = useForm();
-	const {errors} = formState;
+	const {register, handleSubmit} = useForm();
+	// const {errors} = formState;
 
 	const {error, isLoading, isError, run} = useAsync();
 
