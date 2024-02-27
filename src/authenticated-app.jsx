@@ -1,7 +1,6 @@
 import {ErrorBoundary} from 'react-error-boundary';
-import {Route, Link as RouterLink, Routes, useMatch} from 'react-router-dom';
-import {Button, ErrorMessage, FullPageErrorFallback} from './components/lib';
-import {useAuth} from './context/auth-context';
+import {Route, Routes} from 'react-router-dom';
+import {ErrorMessage, FullPageErrorFallback} from './components/lib';
 import {DashboardScreen} from './screens/dashboard';
 import {NotFoundScreen} from './screens/not-found';
 import PropTypes from 'prop-types';
@@ -15,21 +14,9 @@ ErrorFallback.propTypes = {
 }
 
 function AuthenticatedApp() {
-	const {user, logout} = useAuth();
 	return (
 		<ErrorBoundary FallbackComponent={FullPageErrorFallback}>
 			<div>
-				{user.email}
-				<Button
-					variant='secondary'
-					onClick={logout}>
-					Logout
-				</Button>
-			</div>
-			<div>
-				<div>
-					<Nav/>
-				</div>
 				<main>
 					<ErrorBoundary FallbackComponent={ErrorFallback}>
 						<AppRoutes/>
@@ -37,34 +24,6 @@ function AuthenticatedApp() {
 				</main>
 			</div>
 		</ErrorBoundary>
-	);
-}
-
-function NavLink(props) {
-	const match = useMatch(props.to);
-	const activeClass = match ? 'active' : '';
-	return <RouterLink className={activeClass} {...props} />;
-}
-
-NavLink.propTypes = {
-	to: PropTypes.string.isRequired,
-}
-
-function Nav() {
-	return (
-		<nav>
-			<ul>
-				<li>
-					<NavLink to='/dashboard'>Dashboard</NavLink>
-				</li>
-				<li>
-					<NavLink to='/tasks'>Tasks</NavLink>
-				</li>
-				<li>
-					<NavLink to='/my-journey'>My Journey</NavLink>
-				</li>
-			</ul>
-		</nav>
 	);
 }
 

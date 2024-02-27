@@ -1,5 +1,5 @@
 import {useForm} from 'react-hook-form';
-import {Button, ErrorMessage, FormGroup} from '../components/lib';
+import {Button, ErrorMessage, Input} from '../components/lib';
 import {useAuth} from '../context/auth-context';
 import {useAsync} from '../utils/hooks';
 import {useEffect} from "react";
@@ -41,16 +41,14 @@ function ForgotPasswordScreen() {
 				isSuccess ?
 					<div>Password reset instructions sent to your email</div> :
 					<form onSubmit={handleSubmit(onSubmit)}>
-						<FormGroup>
-							<label htmlFor='email'>Email</label>
-							<input
-								id='email'
-								type='email'
-								{...register('email', {
-									required: 'Required',
-								})}
-							/>
-						</FormGroup>
+						<Input
+							label="Email"
+							id='email'
+							type='email'
+							{...register('email', {
+								required: 'Required',
+							})}
+						/>
 						<div>
 							<Button
 								type='submit'

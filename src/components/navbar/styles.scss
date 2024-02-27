@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+
+  &__links {
+    border: 2px solid var(--everytask-primary);
+    border-radius: 25px;
+    padding: 8px 30px;
+
+    ul {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    &__link {
+      text-decoration: none;
+      color: #6A6A6A;
+
+      &--active {
+        font-weight: 500;
+        color: var(--everytask-primary);
+        &::before {
+          content: '• '
+        }
+      }
+    }
+  }
+}

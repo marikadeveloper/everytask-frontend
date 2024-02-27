@@ -1,15 +1,17 @@
-// TODO: create styles for those components
 import {Link as RouterLink} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {
+	Input as NuiInput,
+	Button as NuiButton,
+	Avatar as NuiAvatar,
+	Dropdown,
+	DropdownTrigger, DropdownMenu, DropdownItem
+} from "@nextui-org/react";
+import React from "react";
+import {useAuth} from "../context/auth-context.jsx";
 
-function Button({isLoading, variant, children, onClick}) {
-	return <button onClick={onClick}>{children}</button>;
-}
-Button.propTypes = {
-	isLoading: PropTypes.bool,
-  variant: PropTypes.string,
-  children: PropTypes.node.isRequired,
-	onClick: PropTypes.func,
+function Button(props) {
+	return <NuiButton color="primary" {...props} />;
 }
 
 function ErrorMessage({error}) {
@@ -49,29 +51,25 @@ function FullPageErrorFallback({error}) {
 		</div>
 	);
 }
+
 FullPageErrorFallback.propTypes = {
-  error: PropTypes.object.isRequired,
+	error: PropTypes.object.isRequired,
 }
 
 function Link(props) {
 	return <RouterLink {...props} />;
 }
 
-function FormGroup(props) {
+const Input = React.forwardRef((props, ref) => {
 	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'column',
-			}}
+		<NuiInput
+			variant='bordered'
+			size="md"
+			ref={ref}
 			{...props}
 		/>
 	);
-}
-
-function Input(props) {
-	return <input {...props} />;
-}
+})
 
 function Spinner() {
 	return <div>loading...</div>;
@@ -91,10 +89,30 @@ function FullPageSpinner() {
 	);
 }
 
+function Avatar() {
+	const {user, logout} = useAuth();
+
+	return <Dropdown placement="bottom-end">
+		<DropdownTrigger>
+			<NuiAvatar showFallback src='https://images.unsplash.com/broken' as="button" className="transition-transform"/>
+		</DropdownTrigger>
+		<DropdownMenu aria-label="Profile Actions" variant="flat">
+			<DropdownItem key="profile" className="h-14 gap-2" textValue={"Signed in as " + user.email}>
+				<p className="font-medium">Signed in as</p>
+				<p className="font-medium">{user.email}</p>
+			</DropdownItem>
+			<DropdownItem key="logout" onClick={logout}>
+				Log Out
+			</DropdownItem>
+		</DropdownMenu>
+	</Dropdown>
+
+}
+
 export {
+	Avatar,
 	Button,
 	ErrorMessage,
-	FormGroup,
 	FullPageErrorFallback,
 	FullPageSpinner,
 	Input,

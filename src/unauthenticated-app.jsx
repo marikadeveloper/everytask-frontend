@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Routes } from 'react-router-dom';
 import { ErrorMessage, FullPageErrorFallback } from './components/lib';
 import { ForgotPasswordScreen } from './screens/forgot-password';
-import { LoginScreen } from './screens/login';
+import { LoginScreen } from './screens/login/index.jsx';
 import { NotFoundScreen } from './screens/not-found.jsx';
 import { RegisterScreen } from './screens/register';
 import PropTypes from 'prop-types';
@@ -19,13 +19,11 @@ ErrorFallback.propTypes = {
 function UnauthenticatedApp() {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <div>
-        <main>
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <UnauthenticatedRoutes />
-          </ErrorBoundary>
-        </main>
-      </div>
+      <main>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <UnauthenticatedRoutes />
+        </ErrorBoundary>
+      </main>
     </ErrorBoundary>
   );
 }
