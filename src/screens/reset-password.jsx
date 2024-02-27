@@ -8,10 +8,8 @@ import {toast} from "react-toastify";
 
 function ResetPasswordScreen() {
 	const {resetPassword} = useAuth();
-	const {register, handleSubmit, formState} = useForm();
-	// TODO: do something with those errors?
-	const {errors} = formState;
-	const {data, setData, error, isLoading, isError, run} = useAsync();
+	const {register, handleSubmit} = useForm();
+	const {data, error, isLoading, isError, run} = useAsync();
 	const [token, setToken] = useState(null);
 	const [params] = useSearchParams();
 	const navigate = useNavigate();

@@ -8,8 +8,7 @@ import {toast} from "react-toastify";
 
 function RegisterScreen() {
 	const {register: registerUser} = useAuth();
-	const {register, handleSubmit, formState} = useForm();
-	const {errors} = formState;
+	const {register, handleSubmit} = useForm();
 	const {error, isLoading, isError, run, isSuccess} = useAsync();
 	const navigate = useNavigate();
 
