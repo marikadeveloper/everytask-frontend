@@ -2,17 +2,22 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
   font-family: "Inter", sans-serif;
+  margin: 0;
   &:focus {
     outline-color: var(--everytask-primary);
   }
 }
 
+html {
+  height: 100%;
+}
+
 body {
-  --everytask-primary: black;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
   -moz-osx-font-smoothing: grayscale;
+  --everytask-primary: black;
 }
 
 /**
@@ -21,41 +26,41 @@ body {
 
 h1 {
   font-size: 60px;
-  line-height: 1.2;
   font-weight: 400;
+  line-height: 1.2;
 }
 
 h2 {
   font-size: 40px;
-  line-height: 1.2;
   font-weight: 400;
+  line-height: 1.2;
 }
 
 h3 {
   font-size: 30px;
-  line-height: 1.2;
   font-weight: 400;
+  line-height: 1.2;
 }
 
 h4 {
   font-size: 24px;
-  line-height: 1.2;
   font-weight: 400;
+  line-height: 1.2;
 }
 
 h5 {
   font-size: 20px;
-  line-height: 1.2;
   font-weight: 400;
+  line-height: 1.2;
 }
 
 p {
   font-size: 16px;
-  line-height: 20px;
   font-weight: 400;
+  line-height: 20px;
 }
 
 a {
-  text-decoration: underline;
   font-weight: 500;
+  text-decoration: underline;
 }

@@ -1,0 +1,36 @@
+.bottom-bar {
+  align-items: center;
+  border-top: 1px solid var(--everytask-primary);
+  bottom: -60px;
+  contain: paint;
+  display: grid;
+  height: 125px;
+  left: 0px;
+  padding-bottom: 60px;
+  position: fixed;
+  right: 0px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+
+  &__links {
+    ul {
+      align-items: center;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    &__link {
+      color: #6A6A6A;
+      text-decoration: none;
+
+      &--active {
+        color: var(--everytask-primary);
+        font-weight: 500;
+
+       /* &::before {
+          content: '• '
+        }*/
+      }
+    }
+  }
+}

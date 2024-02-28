@@ -37,7 +37,7 @@ function LoginScreen() {
 				<Link to='/forgot-password' className="login__form__forgot-password">Forgot password</Link>
 				{isError ? <ErrorMessage error={error}/> : null}
 				<div>
-					<Button isLoading={isLoading} type='submit' className="login__form__submit">Login</Button>
+					<Button isLoading={isLoading} type='submit' size="lg" className="login__form__submit">Login</Button>
 				</div>
 			</form>
 			<p className="login__sign-up">

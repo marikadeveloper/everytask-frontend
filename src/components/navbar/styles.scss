@@ -1,8 +1,11 @@
 .navbar {
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  left: 0;
   padding: 10px 20px;
+  position: sticky;
+  top: 0;
 
   &__links {
     border: 2px solid var(--everytask-primary);
@@ -10,17 +13,19 @@
     padding: 8px 30px;
 
     ul {
-      display: flex;
       align-items: center;
+      display: flex;
       gap: 18px;
     }
+
     &__link {
-      text-decoration: none;
       color: #6A6A6A;
+      text-decoration: none;
 
       &--active {
-        font-weight: 500;
         color: var(--everytask-primary);
+        font-weight: 500;
+
         &::before {
           content: '• '
         }

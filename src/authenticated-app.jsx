@@ -4,6 +4,7 @@ import {ErrorMessage, FullPageErrorFallback} from './components/lib';
 import {DashboardScreen} from './screens/dashboard';
 import {NotFoundScreen} from './screens/not-found';
 import PropTypes from 'prop-types';
+import {BottomBar} from "./components/bottom-bar/index.jsx";
 
 function ErrorFallback({error}) {
 	return <ErrorMessage error={error}/>;

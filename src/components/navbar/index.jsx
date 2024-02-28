@@ -7,33 +7,45 @@ import './styles.scss';
 function Navbar() {
 	const {user} = useAuth();
 	return (
-		<nav className="navbar">
-			<img src={logo} alt="logo"/>
-			{user && (
-				<>
-					<div className="navbar__links">
-						<ul>
-							<li>
-								<NavLink
-									className={({isActive}) => isActive ? 'navbar__links__link navbar__links__link--active' : 'navbar__links__link'}
-									to="/">Dashboard</NavLink>
-							</li>
-							<li>
-								<NavLink
-									className={({isActive}) => isActive ? 'navbar__links__link navbar__links__link--active' : 'navbar__links__link'}
-									to="/tasks">Tasks</NavLink>
-							</li>
-							<li>
-								<NavLink
-									className={({isActive}) => isActive ? 'navbar__links__link navbar__links__link--active' : 'navbar__links__link'}
-									to="/my-journey">My Journey</NavLink>
-							</li>
-						</ul>
-					</div>
-					<Avatar/>
-				</>
-			)}
-		</nav>
+		<>
+			{/** Desktop Navbar **/}
+			<nav className="hidden sm:flex navbar">
+				<img src={logo} alt="logo"/>
+				{user && (
+					<>
+						<div className="navbar__links">
+							<ul>
+								<li>
+									<NavLink
+										className={({isActive}) => isActive ? 'navbar__links__link navbar__links__link--active' : 'navbar__links__link'}
+										to="/">Dashboard</NavLink>
+								</li>
+								<li>
+									<NavLink
+										className={({isActive}) => isActive ? 'navbar__links__link navbar__links__link--active' : 'navbar__links__link'}
+										to="/tasks">Tasks</NavLink>
+								</li>
+								<li>
+									<NavLink
+										className={({isActive}) => isActive ? 'navbar__links__link navbar__links__link--active' : 'navbar__links__link'}
+										to="/my-journey">My Journey</NavLink>
+								</li>
+							</ul>
+						</div>
+						<Avatar/>
+					</>
+				)}
+			</nav>
+			{/** Mobile Navbar **/}
+			<nav className="sm:hidden navbar">
+				<img src={logo} alt="logo"/>
+				{user && (
+					<>
+						<Avatar/>
+					</>
+				)}
+			</nav>
+		</>
 	);
 }
 
