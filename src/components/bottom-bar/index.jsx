@@ -2,7 +2,7 @@ import {NavLink} from "react-router-dom";
 import './styles.scss';
 
 function BottomBar() {
-	return <nav className="bottom-bar">
+	return <nav className="sm:hidden bottom-bar">
 		<div className="bottom-bar__links">
 			<ul>
 				<li>
