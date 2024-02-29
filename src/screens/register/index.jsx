@@ -25,9 +25,12 @@ function RegisterScreen() {
   };
 
   return (
-    <div>
+    <div className='register'>
       <h1>Register</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='register__form'
+      >
         <Input
           label='Email'
           id='email'
@@ -57,12 +60,13 @@ function RegisterScreen() {
             isLoading={isLoading}
             type='submit'
             size='lg'
+            className='register__form__submit'
           >
             Register
           </Button>
         </div>
       </form>
-      <p>
+      <p className='register__sign-in'>
         Already registered? <Link to='/'>Sign in</Link>
       </p>
     </div>
