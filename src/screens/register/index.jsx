@@ -35,6 +35,7 @@ function RegisterScreen() {
           label='Email'
           id='email'
           type='email'
+          placeholder='Email'
           {...register('email', { required: true })}
         />
 
@@ -42,6 +43,7 @@ function RegisterScreen() {
           label='Password'
           id='password'
           type='password'
+          placeholder='Password'
           {...register('password', { required: true })}
         />
 
@@ -49,6 +51,7 @@ function RegisterScreen() {
           id='passwordConfirmation'
           type='password'
           label='Password Confirmation'
+          placeholder='Password Confirmation'
           {...register('passwordConfirmation', {
             required: true,
           })}
