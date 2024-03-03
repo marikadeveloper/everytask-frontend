@@ -41,6 +41,7 @@ function ResetPasswordScreen() {
           label='Password'
           id='password'
           type='password'
+          placeholder='Password'
           {...register('password', { required: true })}
         />
 
@@ -48,6 +49,7 @@ function ResetPasswordScreen() {
           label='Password Confirmation'
           id='passwordConfirmation'
           type='password'
+          placeholder='Password Confirmation'
           {...register('passwordConfirmation', { required: true })}
         />
         {isError ? <ErrorMessage error={error} /> : null}

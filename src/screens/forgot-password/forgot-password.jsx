@@ -44,6 +44,7 @@ function ForgotPasswordScreen() {
             label='Email'
             id='email'
             type='email'
+            placeholder='Email'
             {...register('email', {
               required: 'Required',
             })}
