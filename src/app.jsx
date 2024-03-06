@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FullPageSpinner } from './components/lib';
-import { useAuth } from './context/auth-context';
+import { useAuth } from './context/auth-context.jsx';
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/navbar";
