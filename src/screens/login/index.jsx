@@ -2,7 +2,7 @@ import {useForm} from 'react-hook-form';
 import {Link} from 'react-router-dom';
 import {Button, ErrorMessage, Input} from '../../components/lib.jsx';
 import {useAuth} from '../../context/auth-context.jsx';
-import {useAsync} from '../../utils/hooks.jsx';
+import {useAsync} from '../../utils/hooks.js';
 import './styles.scss';
 
 function LoginScreen() {

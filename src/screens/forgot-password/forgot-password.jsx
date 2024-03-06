@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, ErrorMessage, Input } from '../../components/lib';
-import { useAuth } from '../../context/auth-context';
-import { useAsync } from '../../utils/hooks';
+import { useAuth } from '../../context/auth-context.jsx';
+import { useAsync } from '../../utils/hooks.js';
 import './styles.scss';
 
 function ForgotPasswordScreen() {

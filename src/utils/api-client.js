@@ -1,5 +1,5 @@
 import { QueryCache } from '@tanstack/react-query';
-import * as auth from '../auth-provider';
+import * as auth from '../auth-provider.js';
 
 const queryCache = new QueryCache();
 

@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, ErrorMessage, Input } from '../../components/lib.jsx';
 import { useAuth } from '../../context/auth-context.jsx';
-import { useAsync } from '../../utils/hooks.jsx';
+import { useAsync } from '../../utils/hooks.js';
 import './styles.scss';
 
 function ResetPasswordScreen() {
