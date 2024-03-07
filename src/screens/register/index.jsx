@@ -76,4 +76,4 @@ function RegisterScreen() {
   );
 }
 
-export { RegisterScreen };
+export default RegisterScreen;

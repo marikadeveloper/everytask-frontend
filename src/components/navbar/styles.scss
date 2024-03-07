@@ -1,7 +1,7 @@
 .navbar {
   align-items: center;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: var(--logo-width) 1fr var(--logo-width);
   left: 0;
   padding: 10px 20px;
   position: sticky;
@@ -11,15 +11,14 @@
     border: 2px solid var(--everytask-primary);
     border-radius: 25px;
     padding: 8px 30px;
-
-    ul {
-      align-items: center;
-      display: flex;
-      gap: 18px;
-    }
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    width: fit-content;
+    margin: 0 auto;
 
     &__link {
-      color: #6A6A6A;
+      color: #6a6a6a;
       text-decoration: none;
 
       &--active {
@@ -27,9 +26,13 @@
         font-weight: 500;
 
         &::before {
-          content: '• '
+          content: '• ';
         }
       }
     }
+  }
+
+  &__user {
+    justify-self: flex-end;
   }
 }

@@ -65,4 +65,4 @@ function ForgotPasswordScreen() {
   );
 }
 
-export { ForgotPasswordScreen };
+export default ForgotPasswordScreen;
