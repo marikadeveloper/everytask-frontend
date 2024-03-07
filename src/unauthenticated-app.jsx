@@ -3,11 +3,11 @@ import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Routes } from 'react-router-dom';
 import { ErrorMessage, FullPageErrorFallback } from './components/lib';
-import { ForgotPasswordScreen } from './screens/forgot-password/forgot-password.jsx';
-import { LoginScreen } from './screens/login/index.jsx';
+import ForgotPasswordScreen from './screens/forgot-password';
+import LoginScreen from './screens/login';
 import { NotFoundScreen } from './screens/not-found.jsx';
-import { RegisterScreen } from './screens/register/index.jsx';
-import { ResetPasswordScreen } from './screens/reset-password/reset-password.jsx';
+import RegisterScreen from './screens/register';
+import ResetPasswordScreen from './screens/reset-password';
 
 function ErrorFallback({ error }) {
   return <ErrorMessage error={error} />;
