@@ -47,4 +47,4 @@ function LoginScreen() {
 	);
 }
 
-export {LoginScreen};
+export default LoginScreen;
