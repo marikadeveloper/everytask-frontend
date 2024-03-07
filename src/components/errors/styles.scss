@@ -1,0 +1,16 @@
+.error-message {
+  color: red;
+
+  pre {
+    white-space: pre-wrap;
+    color: red;
+  }
+}
+
+.full-page-error-fallback {
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}

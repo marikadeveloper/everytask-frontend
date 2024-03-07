@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as auth from '../auth-provider.js';
-import {FullPageErrorFallback, FullPageSpinner} from '../components/lib';
 import {client, queryCache} from '../utils/api-client.js';
 import {useAsync} from '../utils/hooks.js';
+import {FullPageSpinner} from "../components/spinner/index.jsx";
+import {FullPageErrorFallback} from "../components/errors/index.jsx";
 
 async function bootstrapAppData() {
 	let user = null;
