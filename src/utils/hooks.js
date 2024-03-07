@@ -1,12 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 
 function useSafeDispatch(dispatch) {
   const mounted = React.useRef(false);
   React.useLayoutEffect(() => {
     mounted.current = true;
+    // eslint-disable-next-line no-return-assign
     return () => (mounted.current = false);
   }, []);
   return React.useCallback(
+    // eslint-disable-next-line no-void
     (...args) => (mounted.current ? dispatch(...args) : void 0),
     [dispatch],
   );
@@ -17,7 +19,8 @@ function useSafeDispatch(dispatch) {
 // React.useEffect(() => {
 //   run(fetchPokemon(pokemonName))
 // }, [pokemonName, run])
-const defaultInitialState = { status: 'idle', data: null, error: null };
+const defaultInitialState = { status: "idle", data: null, error: null };
+
 function useAsync(initialState) {
   const initialStateRef = React.useRef({
     ...defaultInitialState,
@@ -31,11 +34,11 @@ function useAsync(initialState) {
   const safeSetState = useSafeDispatch(setState);
 
   const setData = React.useCallback(
-    (data) => safeSetState({ data, status: 'resolved' }),
+    (newData) => safeSetState({ data: newData, status: "resolved" }),
     [safeSetState],
   );
   const setError = React.useCallback(
-    (error) => safeSetState({ error, status: 'rejected' }),
+    (newError) => safeSetState({ error: newError, status: "rejected" }),
     [safeSetState],
   );
   const reset = React.useCallback(
@@ -47,18 +50,18 @@ function useAsync(initialState) {
     (promise) => {
       if (!promise || !promise.then) {
         throw new Error(
-          `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`,
+          "The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?",
         );
       }
-      safeSetState({ status: 'pending' });
+      safeSetState({ status: "pending" });
       return promise.then(
-        (data) => {
-          setData(data);
-          return data;
+        (newData) => {
+          setData(newData);
+          return newData;
         },
-        (error) => {
-          setError(error);
-          return Promise.reject(error);
+        (newError) => {
+          setError(newError);
+          return Promise.reject(newError);
         },
       );
     },
@@ -67,10 +70,10 @@ function useAsync(initialState) {
 
   return {
     // using the same names that react-query uses for convenience
-    isIdle: status === 'idle',
-    isLoading: status === 'pending',
-    isError: status === 'rejected',
-    isSuccess: status === 'resolved',
+    isIdle: status === "idle",
+    isLoading: status === "pending",
+    isError: status === "rejected",
+    isSuccess: status === "resolved",
 
     setData,
     setError,
@@ -82,4 +85,5 @@ function useAsync(initialState) {
   };
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export { useAsync };

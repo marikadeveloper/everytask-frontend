@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useAuth } from '../../context/auth-context.jsx';
-import { useAsync } from '../../utils/hooks.js';
-import './styles.scss';
-import {Input} from "../../components/input.jsx";
-import {ErrorMessage} from "../../components/errors/index.jsx";
-import {Button} from "../../components/button/index.jsx";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth } from "../../context/auth-context";
+import { useAsync } from "../../utils/hooks";
+import "./styles.scss";
+import { Input } from "../../components/input";
+import { ErrorMessage } from "../../components/errors/index";
+import { Button } from "../../components/button/index";
 
 function ResetPasswordScreen() {
   const { resetPassword } = useAuth();
@@ -18,47 +18,46 @@ function ResetPasswordScreen() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setToken(params.get('token'));
+    setToken(params.get("token"));
   }, [params]);
 
   useEffect(() => {
     if (data && data.ok) {
-      toast('Password reset successfully');
-      navigate('/');
+      toast("Password reset successfully");
+      navigate("/");
     }
   }, [data, navigate]);
 
-  const onSubmit = (data) => {
-    run(resetPassword({ ...data, token }));
+  const onSubmit = (formData) => {
+    run(resetPassword({ ...formData, token }));
   };
 
   return (
-    <div className='reset-password'>
+    <div className="reset-password">
       <h1>Reset Password</h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className='reset-password__form'>
+      <form onSubmit={handleSubmit(onSubmit)} className="reset-password__form">
         <Input
-          label='Password'
-          id='password'
-          type='password'
-          placeholder='Password'
-          {...register('password', { required: true })}
+          label="Password"
+          id="password"
+          type="password"
+          placeholder="Password"
+          {...register("password", { required: true })}
         />
 
         <Input
-          label='Password Confirmation'
-          id='passwordConfirmation'
-          type='password'
-          placeholder='Password Confirmation'
-          {...register('passwordConfirmation', { required: true })}
+          label="Password Confirmation"
+          id="passwordConfirmation"
+          type="password"
+          placeholder="Password Confirmation"
+          {...register("passwordConfirmation", { required: true })}
         />
         {isError ? <ErrorMessage error={error} /> : null}
         <div>
           <Button
-            type='submit'
+            type="submit"
             isLoading={isLoading}
-            className='reset-password__form__submit'>
+            className="reset-password__form__submit"
+          >
             Reset Password
           </Button>
         </div>

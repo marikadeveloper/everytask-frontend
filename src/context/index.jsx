@@ -1,8 +1,8 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider } from './auth-context.jsx';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router } from "react-router-dom";
 import PropTypes from "prop-types";
-import {NextUIProvider} from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react";
+import { AuthProvider } from "./auth-context";
 
 const queryConfig = {
   queries: {
@@ -10,8 +10,7 @@ const queryConfig = {
     refetchOnWindowFocus: false,
     retry(failureCount, error) {
       if (error.status === 404) return false;
-      else if (failureCount < 2) return true;
-      else return false;
+      return failureCount < 2;
     },
   },
 };
@@ -28,21 +27,19 @@ const queryClient = new QueryClient({
 
 function AppProviders({ children }) {
   return (
-    <QueryClientProvider
-      client={queryClient}
-      config={queryConfig}>
+    <QueryClientProvider client={queryClient} config={queryConfig}>
       <AuthProvider>
         <NextUIProvider>
-          <Router>
-            {children}
-          </Router>
+          <Router>{children}</Router>
         </NextUIProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
 }
+
 AppProviders.propTypes = {
   children: PropTypes.object.isRequired,
-}
+};
 
+// eslint-disable-next-line import/prefer-default-export
 export { AppProviders };

@@ -1,0 +1,51 @@
+.task-impact-chip {
+  display: flex;
+  border-radius: 14px;
+  width: fit-content;
+  padding: 2px 8px 2px 4px;
+  gap: 6px;
+
+  &--icon-only {
+    padding: 2px;
+  }
+
+  &.HIGH_IMPACT_LOW_EFFORT {
+    background-color: #dfff00;
+    p,
+    svg {
+      color: #495208;
+    }
+  }
+  &.HIGH_IMPACT_HIGH_EFFORT {
+    background-color: #ffdcc8;
+    p,
+    svg {
+      color: #a83d00;
+    }
+  }
+  &.LOW_IMPACT_LOW_EFFORT {
+    background-color: #d0e3ff;
+    p,
+    svg {
+      color: #00409f;
+    }
+  }
+  &.LOW_IMPACT_HIGH_EFFORT {
+    background-color: #eeeeee;
+    p,
+    svg {
+      color: #504d4d;
+    }
+  }
+
+  &__icon {
+    svg {
+      height: 20px;
+    }
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: 500;
+  }
+}

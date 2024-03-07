@@ -1,0 +1,21 @@
+.task-status-dot {
+  --dot-size: 8px;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background-color: fuchsia; // fallback color
+  transition: all 0.2s ease;
+  &.DONE {
+    background-color: var(--everytask-success-500);
+    // subtle glow
+    box-shadow: 0 0 10px var(--everytask-success-500);
+  }
+  &.IN_PROGRESS {
+    background-color: var(--everytask-info-500);
+    box-shadow: 0 0 10px var(--everytask-info-500);
+  }
+  &.TODO {
+    background-color: black;
+    box-shadow: 0 0 10px rgb(149, 149, 149);
+  }
+}

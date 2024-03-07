@@ -1,0 +1,33 @@
+.task-deadline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  p {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  &__icon {
+    svg {
+      height: 20px;
+    }
+  }
+
+  &--overdue {
+    svg,
+    p {
+      color: #6a6a6a;
+    }
+  }
+  &--red {
+    svg {
+      color: var(--everytask-danger-500);
+    }
+  }
+  &--orange {
+    svg {
+      color: var(--everytask-warning-500);
+    }
+  }
+}

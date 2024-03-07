@@ -1,15 +1,16 @@
-import { Avatar as NuiAvatar } from '@nextui-org/react';
-import React from 'react';
+import { Avatar as NuiAvatar } from "@nextui-org/react";
+import React from "react";
 
-const Avatar = React.forwardRef((props, ref) => (
+// eslint-disable-next-line react/prop-types
+const Avatar = React.forwardRef(({ originalProps, ...props }, ref) => (
   <NuiAvatar
     ref={ref}
     showFallback
-    src='https://images.unsplash.com/broken'
-    as='button'
-    className='transition-transform'
+    src="https://images.unsplash.com/broken"
+    as="button"
+    className="transition-transform"
     {...props}
   />
 ));
 
-export { Avatar };
+export default Avatar;

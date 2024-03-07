@@ -1,5 +1,5 @@
-import { QueryCache } from '@tanstack/react-query';
-import * as auth from '../auth-provider.js';
+import { QueryCache } from "@tanstack/react-query";
+import * as auth from "../auth-provider";
 
 const queryCache = new QueryCache();
 
@@ -7,14 +7,14 @@ const apiURL = import.meta.env.VITE_APP_API_URL;
 
 async function client(
   endpoint,
-  { data, token, headers: customHeaders, ...customConfig } = {},
+  { data, token, headers: customHeaders, method, ...customConfig } = {},
 ) {
   const config = {
-    method: data ? 'POST' : 'GET',
+    method: method || (data ? "POST" : "GET"),
     body: data ? JSON.stringify(data) : undefined,
     headers: {
       Authorization: token ? `Bearer ${token}` : undefined,
-      'Content-Type': data ? 'application/json' : undefined,
+      "Content-Type": data ? "application/json" : undefined,
       ...customHeaders,
     },
     ...customConfig,
@@ -28,14 +28,14 @@ async function client(
         auth.logout();
         // refresh the page for them
         window.location.assign(window.location);
-        return Promise.reject({ message: 'Please re-authenticate.' });
+        // eslint-disable-next-line prefer-promise-reject-errors
+        return Promise.reject({ message: "Please re-authenticate." });
       }
-      const data = await response.json();
+      const res = await response.json();
       if (response.ok) {
-        return data;
-      } else {
-        return Promise.reject(data);
+        return res;
       }
+      return Promise.reject(res);
     });
 }
 
