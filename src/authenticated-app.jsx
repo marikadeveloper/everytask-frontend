@@ -1,59 +1,44 @@
-import {ErrorBoundary} from 'react-error-boundary';
-import {Route, Routes} from 'react-router-dom';
-import {ErrorMessage, FullPageErrorFallback} from './components/lib';
-import {DashboardScreen} from './screens/dashboard';
-import {NotFoundScreen} from './screens/not-found';
-import PropTypes from 'prop-types';
-
-function ErrorFallback({error}) {
-	return <ErrorMessage error={error}/>;
-}
-
-ErrorFallback.propTypes = {
-	error: PropTypes.object.isRequired,
-}
+import { ErrorBoundary } from 'react-error-boundary';
+import { Route, Routes } from 'react-router-dom';
+import {
+  ErrorMessage,
+  FullPageErrorFallback,
+} from './components/errors/index.jsx';
+import { DashboardScreen } from './screens/dashboard';
+import { NotFoundScreen } from './screens/not-found';
 
 function AuthenticatedApp() {
-	return (
-		<ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-			<div>
-				<main>
-					<ErrorBoundary FallbackComponent={ErrorFallback}>
-						<AppRoutes/>
-					</ErrorBoundary>
-				</main>
-			</div>
-		</ErrorBoundary>
-	);
+  return (
+    <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
+      <div>
+        <main>
+          <ErrorBoundary FallbackComponent={ErrorMessage}>
+            <AppRoutes />
+          </ErrorBoundary>
+        </main>
+      </div>
+    </ErrorBoundary>
+  );
 }
 
 function AppRoutes() {
-	return (
-		<Routes>
-			<Route
-				path='/dashboard'
-				element={<DashboardScreen/>}
-			/>
-			{/* <Route
-        path='/tasks'
-        element={<TasksScreen />}
+  return (
+    <Routes>
       <Route
-        path='/tasks/:taskId'
-        element={<TaskScreen />}
-        />
+        path='/dashboard'
+        element={<DashboardScreen />}
+      />
+
       <Route
-        path='/my-journey'
-        element={<MyJourneyScreen />} */}
-			<Route
-				path='/'
-				element={<DashboardScreen/>}
-			/>
-			<Route
-				path='*'
-				element={<NotFoundScreen/>}
-			/>
-		</Routes>
-	);
+        path='/'
+        element={<DashboardScreen />}
+      />
+      <Route
+        path='*'
+        element={<NotFoundScreen />}
+      />
+    </Routes>
+  );
 }
 
 export default AuthenticatedApp;

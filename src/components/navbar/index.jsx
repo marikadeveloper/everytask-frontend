@@ -1,8 +1,16 @@
-import { NavLink } from 'react-router-dom';
-import logo from '../../assets/everytask-logo.svg';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/auth-context.jsx';
-import { Avatar } from '../lib.jsx';
+import { Logo } from '../logo.jsx';
+import { UserDropdownMenu } from '../user-dropdown-menu/index.jsx';
 import './styles.scss';
+
+function LogoWithLink() {
+  return (
+    <Link to='/'>
+      <Logo />
+    </Link>
+  );
+}
 
 function Navbar() {
   const { user } = useAuth();
@@ -10,10 +18,7 @@ function Navbar() {
     <>
       {/** Desktop Navbar **/}
       <nav className='hidden sm:grid navbar'>
-        <img
-          src={logo}
-          alt='the word everytask written'
-        />
+        <LogoWithLink />
         {user && (
           <>
             <div>
@@ -54,20 +59,17 @@ function Navbar() {
               </ul>
             </div>
             <div className='navbar__user'>
-              <Avatar />
+              <UserDropdownMenu />
             </div>
           </>
         )}
       </nav>
       {/** Mobile Navbar **/}
       <nav className='sm:hidden navbar'>
-        <img
-          src={logo}
-          alt='logo'
-        />
+        <LogoWithLink />
         {user && (
           <>
-            <Avatar />
+            <UserDropdownMenu />
           </>
         )}
       </nav>

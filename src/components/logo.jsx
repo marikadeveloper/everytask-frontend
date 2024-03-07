@@ -1,5 +1,12 @@
+import logo from '../assets/everytask-logo.svg';
+
 function Logo() {
-  return <p>everytask</p>;
+  return (
+    <img
+      src={logo}
+      alt='the word everytask written'
+    />
+  );
 }
 
 export { Logo };

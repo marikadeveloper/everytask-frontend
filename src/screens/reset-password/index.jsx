@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Button, ErrorMessage, Input } from '../../components/lib.jsx';
 import { useAuth } from '../../context/auth-context.jsx';
 import { useAsync } from '../../utils/hooks.js';
 import './styles.scss';
+import {Input} from "../../components/input.jsx";
+import {ErrorMessage} from "../../components/errors/index.jsx";
+import {Button} from "../../components/button/index.jsx";
 
 function ResetPasswordScreen() {
   const { resetPassword } = useAuth();
@@ -35,8 +37,7 @@ function ResetPasswordScreen() {
       <h1>Reset Password</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='reset-password__form'
-      >
+        className='reset-password__form'>
         <Input
           label='Password'
           id='password'
@@ -57,8 +58,7 @@ function ResetPasswordScreen() {
           <Button
             type='submit'
             isLoading={isLoading}
-            className='reset-password__form__submit'
-          >
+            className='reset-password__form__submit'>
             Reset Password
           </Button>
         </div>
