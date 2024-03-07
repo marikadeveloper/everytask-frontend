@@ -1,4 +1,4 @@
-import { Link } from '../components/lib';
+import { Link } from '../components/link.jsx';
 
 function NotFoundScreen() {
   return (
@@ -10,7 +10,7 @@ function NotFoundScreen() {
         height: '100vh',
       }}>
       <div>
-        Sorry... nothing here. <Link to='/list'>Go home</Link>
+        Sorry... nothing here. <Link to='/'>Go home</Link>
       </div>
     </div>
   );

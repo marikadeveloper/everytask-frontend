@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Button, ErrorMessage, Input } from '../../components/lib';
 import { useAuth } from '../../context/auth-context.jsx';
 import { useAsync } from '../../utils/hooks.js';
 import './styles.scss';
+import {Input} from "../../components/input.jsx";
+import {ErrorMessage} from "../../components/errors/index.jsx";
+import {Button} from "../../components/button/index.jsx";
 
 function RegisterScreen() {
   const { register: registerUser } = useAuth();
@@ -29,8 +31,7 @@ function RegisterScreen() {
       <h1>Register</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='register__form'
-      >
+        className='register__form'>
         <Input
           label='Email'
           id='email'
@@ -63,8 +64,7 @@ function RegisterScreen() {
             isLoading={isLoading}
             type='submit'
             size='lg'
-            className='register__form__submit'
-          >
+            className='register__form__submit'>
             Register
           </Button>
         </div>

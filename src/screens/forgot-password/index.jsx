@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, ErrorMessage, Input } from '../../components/lib';
+import { Button, LinkButton } from '../../components/button/index.jsx';
+import { ErrorMessage } from '../../components/errors/index.jsx';
+import { Input } from '../../components/input.jsx';
 import { useAuth } from '../../context/auth-context.jsx';
 import { useAsync } from '../../utils/hooks.js';
 import './styles.scss';
@@ -12,24 +13,15 @@ function ForgotPasswordScreen() {
 
   const { data, error, isLoading, isError, isSuccess, run } = useAsync();
 
-  useEffect(() => {
-    console.log(data); // {ok: true}
-  }, [data]);
-
-  useEffect(() => {
-    console.log(error); // {message: 'Unauthorized'}
-  }, [error]);
-
-  useEffect(() => {
-    console.log('form errors', errors);
-  }, [errors]);
-
   function onSubmit(data) {
     run(resetPasswordRequest(data));
   }
 
   return (
     <div className='forgot-password'>
+      <div className='forgot-password__back'>
+        <LinkButton to='/'>Back to login</LinkButton>
+      </div>
       <h1>Forgot Password</h1>
       {isSuccess ? (
         <div className='forgot-password__success-message'>
@@ -38,8 +30,7 @@ function ForgotPasswordScreen() {
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className='forgot-password__form'
-        >
+          className='forgot-password__form'>
           <Input
             label='Email'
             id='email'
@@ -53,8 +44,7 @@ function ForgotPasswordScreen() {
             <Button
               type='submit'
               isLoading={isLoading}
-              className='forgot-password__form__submit'
-            >
+              className='forgot-password__form__submit'>
               Submit
             </Button>
           </div>
