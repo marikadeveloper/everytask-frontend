@@ -1,18 +1,21 @@
 .profile-layout {
-  margin-left: 5%;
+  // $pippo: 10px;
+  // utilizzo: margin-left: $pippo;
+  // $pluto: #000000;
+  // utilizzo: color: $pluto;
   max-width: 400px;
 
   &__form {
     padding: 2rem;
     display: grid;
-    gap: 14px;
+    gap: 14px; // vedo che questo gap è ripetuto, se vuoi puoi creare una variabile come vedi a riga 2 (decommentala)
     &__header {
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-start; // non serve, è il default
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 10px; // non è un po' superfluo questo? si potrebbe usare il gap della griglia (attualmente a 14px)
       h1 {
-        text-align: left;
+        text-align: left; // non serve, è il default
       }
       &__submit {
         margin-left: 30px;
@@ -20,13 +23,14 @@
     }
 
     h2 {
-      font-size: 2rem;
+      font-size: 2rem; // non cambiare i font size qua, se devi cambiare la dimensione di un h2 devi farlo dentro src/styles/base.scss ma ti sconsiglio di farlo. piuttosto usa un altro tag più piccolo tipo h4
     }
     &__account-info {
       display: grid;
       gap: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 10px; // non è un po' superfluo questo? si potrebbe usare il gap della griglia (attualmente a 14px)
       &__submit-change {
+        // vedi l'index.jsx per il colore del bordo
         background-color: white;
         color: black;
         border: 2px solid black;
@@ -36,13 +40,14 @@
     &__customization {
       display: grid;
       gap: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 10px; // non è un po' superfluo questo? si potrebbe usare il gap della griglia (attualmente a 14px)
     }
     &__danger-zone {
       display: grid;
       gap: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 10px; // non è un po' superfluo questo? si potrebbe usare il gap della griglia (attualmente a 14px)
       &__submit-delete {
+        // vedi l'index.jsx per il colore ed il bordo
         background-color: white;
         color: red;
         border: 2px solid red;

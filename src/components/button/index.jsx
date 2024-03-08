@@ -5,14 +5,15 @@ import { Link } from 'react-router-dom';
 import { ArrowBack } from '../../assets/icons/index.jsx';
 import './styles.scss';
 
-function Button({ isLoading, type, size, className, children }) {
+function Button({ isLoading, type, size, className, children, variant, color = 'primary' }) {
   return (
     <NuiButton
-      color='primary'
+      color={color}
       isLoading={isLoading}
       type={type}
       size={size}
-      className={className}>
+      className={className}
+      variant={variant}>
       {children}
     </NuiButton>
   );
@@ -23,6 +24,8 @@ Button.propTypes = {
   size: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.node,
+  variant: PropTypes.string,
+  color: PropTypes.string,
 };
 
 function LinkButton({ size = 'sm', to, className, children }) {
