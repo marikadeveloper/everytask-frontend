@@ -1,0 +1,10 @@
+.emoji-picker {
+  &__preview {
+    display: flex;
+    gap: 4px;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+}

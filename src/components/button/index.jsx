@@ -79,4 +79,17 @@ LinkButton.propTypes = {
   children: PropTypes.node,
 };
 
-export { Button, LinkButton };
+function IconButton({ icon, ...props }) {
+  return (
+    <NuiButton
+      className="icon-button"
+      color="danger"
+      variant="light"
+      isIconOnly
+      startContent={icon}
+      {...props}
+    />
+  );
+}
+
+export { Button, IconButton, LinkButton };

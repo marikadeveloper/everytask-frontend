@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import ArrowBackIcon from "./arrow-back-outline.svg?react";
+import CloseIcon from "./close-outline.svg?react";
 import CogIcon from "./cog-outline.svg?react";
 import FlashIcon from "./flash-outline.svg?react";
 import LeafIcon from "./leaf-outline.svg?react";
@@ -13,6 +14,10 @@ function ArrowBack() {
 
 function Cog() {
   return <CogIcon />;
+}
+
+function Close() {
+  return <CloseIcon />;
 }
 
 function Flash() {
@@ -35,4 +40,4 @@ function Stopwatch() {
   return <StopwatchIcon />;
 }
 
-export { ArrowBack, Cog, Flash, Leaf, ListCircle, Rocket, Stopwatch };
+export { ArrowBack, Close, Cog, Flash, Leaf, ListCircle, Rocket, Stopwatch };
