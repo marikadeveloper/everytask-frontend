@@ -6,6 +6,7 @@ import {
 } from './components/errors/index.jsx';
 import { DashboardScreen } from './screens/dashboard';
 import { NotFoundScreen } from './screens/not-found';
+import ProfileScreen from './screens/profile'; // Import ProfileScreen
 
 function AuthenticatedApp() {
   return (
@@ -27,6 +28,11 @@ function AppRoutes() {
       <Route
         path='/dashboard'
         element={<DashboardScreen />}
+      />
+
+      <Route
+        path='/profile'
+        element={<ProfileScreen />} // Add the ProfileScreen route
       />
 
       {/* 
