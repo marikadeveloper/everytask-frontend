@@ -23,6 +23,7 @@ function TasksScreen() {
     mutate({
       id: task.id,
       status: task.status,
+      relativeOrder: task.relativeOrder,
     });
 
     // optimistic update

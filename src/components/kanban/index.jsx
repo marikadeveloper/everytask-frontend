@@ -79,6 +79,7 @@ function Kanban({ tasks, onTaskUpdate }) {
   }, [tasks]);
 
   const onDragEnd = (result) => {
+    console.log({ dragResult: result });
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
@@ -90,15 +91,16 @@ function Kanban({ tasks, onTaskUpdate }) {
       return;
     }
     const task = tasks.find((task) => task.id === draggableId);
-    const newTask = { ...task, status: destination.droppableId };
+    const newTask = {
+      ...task,
+      status: destination.droppableId,
+      relativeOrder: destination.index,
+    };
     onTaskUpdate(newTask);
-    // const newTasks = tasks.map((task) =>
-    //   task.id === draggableId ? newTask : task,
-    // );
-    // console.log("newTasks", newTasks);
   };
 
   return (
+    // TODO: empty state
     <div className="tasks-kanban">
       <DragDropContext onDragEnd={onDragEnd}>
         {boards.map((el, ind) => (
