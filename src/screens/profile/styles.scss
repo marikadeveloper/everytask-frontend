@@ -1,0 +1,53 @@
+.profile-layout {
+  margin-left: 5%;
+  max-width: 400px;
+
+  &__form {
+    padding: 2rem;
+    display: grid;
+    gap: 14px;
+    &__header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 10px;
+      h1 {
+        text-align: left;
+      }
+      &__submit {
+        margin-left: 30px;
+      }
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+    &__account-info {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 10px;
+      &__submit-change {
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+        width: 50%;
+      }
+    }
+    &__customization {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    &__danger-zone {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 10px;
+      &__submit-delete {
+        background-color: white;
+        color: red;
+        border: 2px solid red;
+        width: 40%;
+      }
+    }
+  }
+}
