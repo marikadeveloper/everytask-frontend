@@ -79,7 +79,6 @@ function Kanban({ tasks, onTaskUpdate }) {
   }, [tasks]);
 
   const onDragEnd = (result) => {
-    console.log({ dragResult: result });
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
