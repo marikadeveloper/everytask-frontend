@@ -44,30 +44,69 @@ function ProfileScreen() {
   };
 
   return (
-    <div className='layout profile'>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <header>
+    <div className='profile-layout'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='profile-layout__form'
+      >
+        <header className='profile-layout__form__header'>
           <h1>Profile</h1>
           <Button
             isLoading={isLoading}
-            size='lg'
-            type='submit'>
+            className='profile-layout__form__header__submit'
+            type='submit'
+          >
             Save
           </Button>
         </header>
 
-        {/* Sezione di test */}
-        <section>
-          <h2>Bla bla bla</h2>
-          {/* Input di test, ha come valore di default l'email dell'utente ma si può sovrascrivere */}
+        <section className='profile-layout__form__account-info'>
+          <h2>Account information</h2>
           <Input
-            id='test'
+            id='name'
             type='text'
-            label='Test field'
-            placeholder='This is a test field'
-            defaultValue={user.email}
-            {...register('test', { required: false, disabled: false })}
+            label='Name'
+            placeholder='Your name'
+            defaultValue={user.name}
+            {...register('name')}
           />
+          <Input
+            id='email'
+            type='email'
+            label='Email'
+            placeholder='Your email'
+            defaultValue={user.email}
+            {...register('email')}
+            disabled
+          />
+          <Button
+            className='profile-layout__form__account-info__submit-change'
+            type='button'
+          >
+            Change password
+          </Button>
+        </section>
+
+        <section className='profile-layout__form__customization'>
+          <h2>Customization</h2>
+          <Input
+            id='dateFormat'
+            type='text'
+            label='Date format'
+            placeholder='DD/MM/YYYY'
+            defaultValue={user.dateFormat}
+            {...register('dateFormat')}
+          />
+        </section>
+
+        <section className='profile-layout__form__danger-zone'>
+          <h2>Danger zone</h2>
+          <Button
+            className='profile-layout__form__danger-zone__submit-delete'
+            type='button'
+          >
+            Delete account
+          </Button>
         </section>
       </form>
     </div>
