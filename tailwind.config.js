@@ -13,7 +13,6 @@ export default {
   darkMode: "class",
   plugins: [
     nextui({
-      prefix: "everytask",
       themes: {
         light: {
           colors: {

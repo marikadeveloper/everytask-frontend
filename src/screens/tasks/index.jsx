@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Button } from "../../components/button";
 import Kanban from "../../components/kanban";
+import TaskCreateModal from "../../components/task-create-modal";
 import { useTasks, useUpdateTask } from "../../utils/task";
 import "./styles.scss";
 
@@ -14,10 +14,6 @@ function TasksScreen() {
       refetch();
     }
   }, [status]);
-
-  const addTask = () => {
-    console.log("Add task");
-  };
 
   const onTaskStatusUpdate = (task) => {
     // update task
@@ -40,7 +36,7 @@ function TasksScreen() {
     <div className="layout tasks">
       <header className="tasks__header">
         <h1>My Tasks</h1>
-        <Button onClick={addTask}>Add task</Button>
+        <TaskCreateModal />
       </header>
       <section>{/* TODO: filters + view choice */}</section>
       <section>

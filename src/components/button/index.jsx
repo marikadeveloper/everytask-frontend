@@ -4,15 +4,26 @@ import { Link } from "react-router-dom";
 import { ArrowBack } from "../../assets/icons/index";
 import "./styles.scss";
 
-function Button({ isLoading, type, size, className, children, onClick }) {
+function Button({
+  isLoading,
+  type,
+  size,
+  className,
+  children,
+  onClick,
+  onPress,
+  variant,
+}) {
   return (
     <NuiButton
       color="primary"
       onClick={onClick}
+      onPress={onPress}
       isLoading={isLoading}
       type={type}
       size={size}
       className={className}
+      variant={variant}
     >
       {children}
     </NuiButton>
@@ -25,6 +36,8 @@ Button.defaultProps = {
   className: "",
   children: null,
   onClick: () => {},
+  onPress: () => {},
+  variant: "solid",
 };
 Button.propTypes = {
   isLoading: PropTypes.bool,
@@ -33,6 +46,8 @@ Button.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   onClick: PropTypes.func,
+  onPress: PropTypes.func,
+  variant: PropTypes.string,
 };
 
 function LinkButton({ size = "sm", to, className, children }) {
