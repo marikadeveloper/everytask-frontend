@@ -1,4 +1,4 @@
-.tasks-kanban {
+.kanban {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
@@ -19,7 +19,6 @@
       }
     }
     &__column {
-      // width: clamp(200px, 30%, 300px);
       min-width: 250px;
       min-height: 500px;
     }

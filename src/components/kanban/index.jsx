@@ -100,11 +100,11 @@ function Kanban({ tasks, onTaskUpdate }) {
 
   return (
     // TODO: empty state
-    <div className="tasks-kanban">
+    <div className="kanban">
       <DragDropContext onDragEnd={onDragEnd}>
         {boards.map((el, ind) => (
-          <div key={"board -" + el.id} className="tasks-kanban__board">
-            <div className="tasks-kanban__board__column-title">
+          <div key={"board -" + el.id} className="kanban__board">
+            <div className="kanban__board__column-title">
               <TaskStatusDot status={el.id} />
               <p>
                 {el.title} ({countPerStatus[el.id] || 0})
@@ -115,7 +115,7 @@ function Kanban({ tasks, onTaskUpdate }) {
                 return (
                   <div
                     ref={provided.innerRef}
-                    className="tasks-kanban__board__column"
+                    className="kanban__board__column"
                     style={{
                       background: snapshot.isDraggingOver ? "white" : "white",
                     }}
