@@ -1,8 +1,10 @@
+import { Select, SelectItem } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { useAuth } from '../../context/auth-context';
 import { useAsync } from '../../utils/hooks';
+import { dateFormats } from './data';
 import './styles.scss';
 
 function ProfileScreen() {
@@ -70,14 +72,20 @@ function ProfileScreen() {
 
           <section className='profile-layout__form__customization'>
             <h2>Customization</h2>
-            <Input
-              id='dateFormat'
-              type='text'
-              label='Date format'
-              placeholder='DD/MM/YYYY'
-              defaultValue={user.dateFormat}
-              {...register('dateFormat')}
-            />
+            <Select
+              items={dateFormats}
+              label='Date Format'
+              placeholder='Select a date format'
+              defaultSelectedKeys={['DD/MM/YYYY']}
+              className='input'
+              color='default'
+            >
+              {(dateFormat) => (
+                <SelectItem key={dateFormat.value}>
+                  {dateFormat.label}
+                </SelectItem>
+              )}
+            </Select>
           </section>
 
           <section className='profile-layout__form__danger-zone'>
