@@ -7,6 +7,7 @@ const Input = React.forwardRef((props, ref) => {
       variant='bordered'
       size='md'
       ref={ref}
+      className='input'
       {...props}
     />
   );
