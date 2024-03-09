@@ -27,13 +27,15 @@ function ProfileScreen() {
       <div className='profile-layout'>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className='profile-layout__form'>
+          className='profile-layout__form'
+        >
           <header className='profile-layout__form__header'>
             <h1>Profile</h1>
             <Button
               isLoading={isLoading}
-              className='profile-layout__form__header__submit'
-              type='submit'>
+              className='profile-layout__form__header__submit-save'
+              type='submit'
+            >
               Save
             </Button>
           </header>
@@ -49,18 +51,19 @@ function ProfileScreen() {
               {...register('name')}
             />
             <Input
+              isDisabled
               id='email'
               type='email'
               label='Email'
               placeholder='Your email'
               defaultValue={user.email}
               {...register('email')}
-              disabled
             />
-            {/* il bordo puyò essere fatto con la prop variant='bordered' del pulsante */}
             <Button
               className='profile-layout__form__account-info__submit-change'
-              type='button'>
+              type='button'
+              variant={'bordered'}
+            >
               Change password
             </Button>
           </section>
@@ -79,10 +82,12 @@ function ProfileScreen() {
 
           <section className='profile-layout__form__danger-zone'>
             <h2>Danger zone</h2>
-            {/* il bordo ed il colore puyò essere fatto con la prop variant='bordered' e color="danger" del pulsante */}
             <Button
               className='profile-layout__form__danger-zone__submit-delete'
-              type='button'>
+              type='button'
+              color='danger'
+              variant='bordered'
+            >
               Delete account
             </Button>
           </section>
