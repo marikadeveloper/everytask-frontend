@@ -76,14 +76,12 @@ function ProfileScreen() {
               <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                placement='top-center'
+                placement='auto'
               >
                 <ModalContent>
                   {(onClose) => (
                     <>
-                      <ModalHeader className='flex flex-col gap-1'>
-                        Log in
-                      </ModalHeader>
+                      <ModalHeader>Change password</ModalHeader>
                       <ModalBody>
                         <Input
                           id='currentPassword'
@@ -108,7 +106,20 @@ function ProfileScreen() {
                         />
                       </ModalBody>
                       <ModalFooter>
-                        <Button onPress={onClose}>Submit</Button>
+                        <Button
+                          variant='bordered'
+                          size='md'
+                          onPress={onClose}
+                        >
+                          Close
+                        </Button>
+                        <Button
+                          color='primary'
+                          size='md'
+                          onPress={onClose}
+                        >
+                          Submit
+                        </Button>
                       </ModalFooter>
                     </>
                   )}
