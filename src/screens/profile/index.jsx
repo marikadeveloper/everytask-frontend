@@ -1,5 +1,4 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
@@ -10,6 +9,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
+import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { useAuth } from '../../context/auth-context';
 import { dateFormats } from '../../utils/constants';
