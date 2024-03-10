@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { useAuth } from '../../context/auth-context';
+import { dateFormats } from '../../utils/constants';
 import { useAsync } from '../../utils/hooks';
-import { dateFormats } from './data';
 import './styles.scss';
 
 function ProfileScreen() {
