@@ -1,6 +1,15 @@
-import { Select, SelectItem } from '@nextui-org/react';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Select,
+  SelectItem,
+  useDisclosure,
+} from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
-import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { useAuth } from '../../context/auth-context';
 import { dateFormats } from '../../utils/constants';
@@ -11,13 +20,7 @@ function ProfileScreen() {
   const { user } = useAuth();
   const { error, isLoading, isError, run } = useAsync();
   const { test, handleSubmit, register } = useForm();
-  {
-    /* 
-    🤔 Alberto: 2.
-      - https://nextui.org/docs/components/input cerca qui come fare un campo input non modificabile
-      - https://nextui.org/docs/components/button#colors cerca qui come fare un bottone rosso ("danger")
-    */
-  }
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const onSubmit = (data) => {
     // lascia pure questa funzione così
@@ -61,13 +64,57 @@ function ProfileScreen() {
               defaultValue={user.email}
               {...register('email')}
             />
-            <Button
-              className='profile-layout__form__account-info__submit-change'
-              type='button'
-              variant={'bordered'}
-            >
-              Change password
-            </Button>
+            <>
+              <Button
+                className='profile-layout__form__account-info__submit-change'
+                type='button'
+                variant={'bordered'}
+                onPress={onOpen}
+              >
+                Change password
+              </Button>
+              <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement='top-center'
+              >
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className='flex flex-col gap-1'>
+                        Log in
+                      </ModalHeader>
+                      <ModalBody>
+                        <Input
+                          id='currentPassword'
+                          type='password'
+                          label='Current Password'
+                          placeholder='Enter your current password'
+                          {...register('currentPassword')}
+                        />
+                        <Input
+                          id='newPassword'
+                          type='password'
+                          label='New Password'
+                          placeholder='Enter your new password'
+                          {...register('newPassword')}
+                        />
+                        <Input
+                          id='confirmPassword'
+                          type='password'
+                          label='Confirm Password'
+                          placeholder='Confirm your new password'
+                          {...register('confirmPassword')}
+                        />
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button onPress={onClose}>Submit</Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
+            </>
           </section>
 
           <section className='profile-layout__form__customization'>
