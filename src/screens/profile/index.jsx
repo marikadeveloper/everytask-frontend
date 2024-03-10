@@ -78,6 +78,7 @@ function ProfileScreen() {
               placeholder='Select a date format'
               defaultSelectedKeys={['DD/MM/YYYY']}
               className='input'
+              variant={'bordered'}
               color='default'
             >
               {(dateFormat) => (
