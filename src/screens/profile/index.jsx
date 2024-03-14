@@ -28,138 +28,134 @@ function ProfileScreen() {
   };
 
   return (
-    <div className='layout'>
-      <div className='profile-layout'>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className='profile-layout__form'
-        >
-          <header className='profile-layout__form__header'>
-            <h1>Profile</h1>
+    <div className='layout profile'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='profile__form'
+      >
+        <header className='profile__form__header'>
+          <h1>Profile</h1>
+          <Button
+            isLoading={isLoading}
+            className='profile__form__header__submit-save'
+            type='submit'
+          >
+            Save
+          </Button>
+        </header>
+
+        <section className='profile__form__account-info'>
+          <h2>Account information</h2>
+          <Input
+            id='name'
+            type='text'
+            label='Name'
+            placeholder='Your name'
+            defaultValue={user.name}
+            {...register('name')}
+          />
+          <Input
+            isDisabled
+            id='email'
+            type='email'
+            label='Email'
+            placeholder='Your email'
+            defaultValue={user.email}
+            {...register('email')}
+          />
+          <>
             <Button
-              isLoading={isLoading}
-              className='profile-layout__form__header__submit-save'
-              type='submit'
-            >
-              Save
-            </Button>
-          </header>
-
-          <section className='profile-layout__form__account-info'>
-            <h2>Account information</h2>
-            <Input
-              id='name'
-              type='text'
-              label='Name'
-              placeholder='Your name'
-              defaultValue={user.name}
-              {...register('name')}
-            />
-            <Input
-              isDisabled
-              id='email'
-              type='email'
-              label='Email'
-              placeholder='Your email'
-              defaultValue={user.email}
-              {...register('email')}
-            />
-            <>
-              <Button
-                className='profile-layout__form__account-info__submit-change'
-                type='button'
-                variant={'bordered'}
-                onPress={onOpen}
-              >
-                Change password
-              </Button>
-              <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                placement='auto'
-              >
-                <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalHeader>Change password</ModalHeader>
-                      <ModalBody>
-                        <Input
-                          id='currentPassword'
-                          type='password'
-                          label='Current Password'
-                          placeholder='Enter your current password'
-                          {...register('currentPassword')}
-                        />
-                        <Input
-                          id='newPassword'
-                          type='password'
-                          label='New Password'
-                          placeholder='Enter your new password'
-                          {...register('newPassword')}
-                        />
-                        <Input
-                          id='confirmPassword'
-                          type='password'
-                          label='Confirm Password'
-                          placeholder='Confirm your new password'
-                          {...register('confirmPassword')}
-                        />
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          variant='bordered'
-                          size='md'
-                          onPress={onClose}
-                        >
-                          Close
-                        </Button>
-                        <Button
-                          color='primary'
-                          size='md'
-                          onPress={onClose}
-                        >
-                          Submit
-                        </Button>
-                      </ModalFooter>
-                    </>
-                  )}
-                </ModalContent>
-              </Modal>
-            </>
-          </section>
-
-          <section className='profile-layout__form__customization'>
-            <h2>Customization</h2>
-            <Select
-              items={dateFormats}
-              label='Date Format'
-              placeholder='Select a date format'
-              defaultSelectedKeys={['DD/MM/YYYY']}
-              className='input'
-              variant={'bordered'}
-              color='default'
-            >
-              {(dateFormat) => (
-                <SelectItem key={dateFormat.value}>
-                  {dateFormat.label}
-                </SelectItem>
-              )}
-            </Select>
-          </section>
-
-          <section className='profile-layout__form__danger-zone'>
-            <h2>Danger zone</h2>
-            <Button
-              className='profile-layout__form__danger-zone__submit-delete'
+              className='profile__form__account-info__submit-change'
               type='button'
-              color='danger'
-              variant='bordered'
+              variant={'bordered'}
+              onPress={onOpen}
             >
-              Delete account
+              Change password
             </Button>
-          </section>
-        </form>
-      </div>
+            <Modal
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+              placement='auto'
+            >
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader>Change password</ModalHeader>
+                    <ModalBody>
+                      <Input
+                        id='currentPassword'
+                        type='password'
+                        label='Current Password'
+                        placeholder='Enter your current password'
+                        {...register('currentPassword')}
+                      />
+                      <Input
+                        id='newPassword'
+                        type='password'
+                        label='New Password'
+                        placeholder='Enter your new password'
+                        {...register('newPassword')}
+                      />
+                      <Input
+                        id='confirmPassword'
+                        type='password'
+                        label='Confirm Password'
+                        placeholder='Confirm your new password'
+                        {...register('confirmPassword')}
+                      />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        variant='bordered'
+                        size='md'
+                        onPress={onClose}
+                      >
+                        Close
+                      </Button>
+                      <Button
+                        color='primary'
+                        size='md'
+                        onPress={onClose}
+                      >
+                        Submit
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
+          </>
+        </section>
+
+        <section className='profile__form__customization'>
+          <h2>Customization</h2>
+          <Select
+            items={dateFormats}
+            label='Date Format'
+            placeholder='Select a date format'
+            defaultSelectedKeys={['DD/MM/YYYY']}
+            className='input'
+            variant={'bordered'}
+            color='default'
+          >
+            {(dateFormat) => (
+              <SelectItem key={dateFormat.value}>{dateFormat.label}</SelectItem>
+            )}
+          </Select>
+        </section>
+
+        <section className='profile__form__danger-zone'>
+          <h2>Danger zone</h2>
+          <Button
+            className='profile__form__danger-zone__submit-delete'
+            type='button'
+            color='danger'
+            variant='bordered'
+          >
+            Delete account
+          </Button>
+        </section>
+      </form>
     </div>
   );
 }
