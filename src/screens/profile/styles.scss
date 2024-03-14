@@ -1,13 +1,13 @@
-.profile-layout {
+.profile {
   $grid-gap: 14px;
-  max-width: 500px;
+  $input-max-width: 280px;
 
   &__form {
     padding: 1rem;
     display: grid;
     gap: 25px;
     .input {
-      width: 65%;
+      max-width: $input-max-width;
     }
     &__header {
       display: flex;
