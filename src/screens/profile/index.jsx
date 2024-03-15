@@ -137,6 +137,7 @@ function ProfileScreen() {
             className='input'
             variant={'bordered'}
             color='default'
+            {...register('dateFormat')}
           >
             {(dateFormat) => (
               <SelectItem key={dateFormat.value}>{dateFormat.label}</SelectItem>
