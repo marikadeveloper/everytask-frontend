@@ -19,13 +19,29 @@ import './styles.scss';
 function ProfileScreen() {
   const { user } = useAuth();
   const { error, isLoading, isError, run } = useAsync();
-  const { test, handleSubmit, register } = useForm();
+  const { test, handleSubmit, register, getValues } = useForm();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const onSubmit = (data) => {
     // lascia pure questa funzione così
     console.log(data);
   };
+
+  /*}  const modalOnSubmit = (data) => {
+    console.log('Current Password:', data.currentPassword);
+    console.log('New Password:', data.newPassword);
+    console.log('Confirm Password:', data.confirmPassword);
+  };*/
+
+  /*const modalOnSubmit = () => {
+    const currentPassword = getValues('currentPassword');
+    const newPassword = getValues('newPassword');
+    const confirmPassword = getValues('confirmPassword');
+
+    console.log('Current Password:', currentPassword);
+    console.log('New Password:', newPassword);
+    console.log('Confirm Password:', confirmPassword);
+  };*/
 
   return (
     <div className='layout profile'>
@@ -115,7 +131,7 @@ function ProfileScreen() {
                       <Button
                         color='primary'
                         size='md'
-                        onPress={onClose}
+                        onPress={handleSubmit(modalOnSubmit)}
                       >
                         Submit
                       </Button>
@@ -137,7 +153,7 @@ function ProfileScreen() {
             className='input'
             variant={'bordered'}
             color='default'
-            {...register('dateFormat')}
+            {...register('date')}
           >
             {(dateFormat) => (
               <SelectItem key={dateFormat.value}>{dateFormat.label}</SelectItem>
