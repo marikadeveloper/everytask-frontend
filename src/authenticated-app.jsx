@@ -35,13 +35,6 @@ function AppRoutes() {
         element={<ProfileScreen />} // Add the ProfileScreen route
       />
 
-      {/* 
-        🤔 Alberto: 1. 
-        - aggiungi una Route con path '/profile' ed element '<ProfileScreen />'
-        - importa ProfileScreen da './screens/profile'
-        - per la pt. 2 vedi il file src/screens/profile/index.jsx
-      */}
-
       <Route
         path='/'
         element={<DashboardScreen />}
