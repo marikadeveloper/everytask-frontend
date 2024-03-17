@@ -6,7 +6,7 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 import { useAuth } from '../../context/auth-context.jsx';
-import { Avatar } from '../avatar.jsx';
+import Avatar from '../avatar.jsx';
 import './styles.scss';
 
 function UserDropdownMenu() {
@@ -21,22 +21,26 @@ function UserDropdownMenu() {
         className='user-dropdown-menu'
         disabledKeys={['user']}
         aria-label='Profile Actions'
-        variant='flat'>
+        variant='flat'
+      >
         <DropdownItem
           key='user'
           className='h-14 gap-2'
-          textValue={'Signed in as ' + user.email}>
+          textValue={'Signed in as ' + user.email}
+        >
           <p className='font-medium'>Signed in as</p>
           <p className='font-medium'>{user.email}</p>
         </DropdownItem>
         <DropdownItem
           key='profile'
-          href='/profile'>
+          href='/profile'
+        >
           Profile
         </DropdownItem>
         <DropdownItem
           key='logout'
-          onClick={logout}>
+          onClick={logout}
+        >
           Log Out
         </DropdownItem>
       </DropdownMenu>
