@@ -18,28 +18,11 @@ function ChangePassword() {
   const { handleSubmit, register, getValues } = useForm();
   const { mutate, isPending, isSuccess, error, isError } = useUpdatePassword();
 
-  /* 🤔 Alberto: 3.
-    il pulsante di submit deve ricevere una prop isLoading con il valore di isPending
-    OK, fatto
-     */
-
-  /* 🤔 Alberto: 4.
-    se isSuccess è true, mostra un toast con scritto "Password changed successfully"
-    useeffect
-    */
-
   const modalOnSubmit = () => {
     const currentPassword = getValues('currentPassword');
     const newPassword = getValues('newPassword');
     const confirmPassword = getValues('confirmPassword');
 
-    /* 🤔 Alberto: 2.
-    chiama la funzione mutate(payload) passando un oggetto con le chiavi:
-    - oldPassword (la password vecchia dell'utente)
-    - password (la nuova password)
-    - passwordConfirmation (la conferma della nuova password)
-    OK, fatto 
-    */
     const payload = {
       oldPassword: currentPassword,
       password: newPassword,
@@ -49,17 +32,16 @@ function ChangePassword() {
     mutate(payload);
 
     // 🤔 Alberto: 4.
-    if (isSuccess) {
-      //  if (testSuccess) {
-      toast.success('Password changed successfully');
-    }
+    useEffect(() => {
+      if (isSuccess) {
+        toast.success('Password changed successfully');
+      }
+    }, [isSuccess]);
 
     console.log('Current Password:', currentPassword);
     console.log('New Password:', newPassword);
     console.log('Confirm Password:', confirmPassword);
   };
-
-  // const testSuccess = true; // test
 
   return (
     <>
