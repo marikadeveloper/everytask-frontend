@@ -1,7 +1,7 @@
 import { Select, SelectItem } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../components/button';
-import { ChangePassword } from '../../components/change-password.jsx';
+import { ChangePassword } from '../../components/change-password/change-password.jsx';
 import { Input } from '../../components/input';
 import { useAuth } from '../../context/auth-context';
 import { dateFormats } from '../../utils/constants';

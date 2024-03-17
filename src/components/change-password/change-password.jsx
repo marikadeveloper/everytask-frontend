@@ -8,10 +8,10 @@ import {
 } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useUpdatePassword } from '../utils/user.js';
-import { Button } from './button/index.jsx';
-import { ErrorMessage } from './errors/index.jsx';
-import { Input } from './input.jsx';
+import { useUpdatePassword } from '../../utils/user.js';
+import { Button } from '../button/index.jsx';
+import { ErrorMessage } from '../errors/index.jsx';
+import { Input } from '../input.jsx';
 
 function ChangePassword() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
