@@ -7,8 +7,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify'; // 🤔 Alberto: 4.
-import 'react-toastify/dist/ReactToastify.css'; // 🤔 Alberto: 4.
+import { toast } from 'react-toastify';
 import { useUpdatePassword } from '../utils/user.js';
 import { Button } from './button/index.jsx';
 import { ErrorMessage } from './errors/index.jsx';
@@ -26,20 +25,8 @@ function ChangePassword() {
 
   /* 🤔 Alberto: 4.
     se isSuccess è true, mostra un toast con scritto "Password changed successfully"
-    
-    Marika: all'inizio pensavo che avessi mispellato "tasto" con "toast" ma poi ho
-    visto che toast una specie di alert. Poi ho scoperto che ci sono vari modi per
-    aggiungere un toast. Ho scelto di usare react-toastify, ma non ho idea se sia 
-    stata una buona scelta. Ho cercato se nextui avesse un componente simile ma non
-    ho trovato nulla.
+    useeffect
     */
-
-  /* 🤔 Alberto: 5.
-    se error è definito, vai a vedere nel file screens/login/index.jsx come è stato gestito l'errore e fai la stessa cosa
-    HINT: usa <ErrorMessage ...
-    mettilo infondo al body del modal
-    Ok, fatto
-   */
 
   const modalOnSubmit = () => {
     const currentPassword = getValues('currentPassword');
@@ -118,7 +105,6 @@ function ChangePassword() {
                   placeholder='Confirm your new password'
                   {...register('confirmPassword')}
                 />
-                <ToastContainer /> {/* 🤔 Alberto: 4.*/}
                 {isError ? <ErrorMessage error={error} /> : null}
               </ModalBody>
               <ModalFooter>
