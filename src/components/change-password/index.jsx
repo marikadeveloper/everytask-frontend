@@ -12,6 +12,7 @@ import { useUpdatePassword } from '../../utils/user.js';
 import { Button } from '../button/index.jsx';
 import { ErrorMessage } from '../errors/index.jsx';
 import { Input } from '../input.jsx';
+import './styles.scss';
 
 function ChangePassword() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -46,7 +47,7 @@ function ChangePassword() {
   return (
     <>
       <Button
-        className='profile__form__account-info__submit-change'
+        className='submit-change'
         /* Marika: se tolgo la classe perdo lo stile width:fit-content nel
           file styles.scss della cartella profile      
         */
