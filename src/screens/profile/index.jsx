@@ -15,7 +15,8 @@ function ProfileScreen() {
   const { handleSubmit, register } = useForm();
   const { mutate } = useUpdateUser();
 
-  const onSubmit = (data) => {
+  const onSubmit = ($event, data) => {
+    $event.preventDefault();
     console.log(data);
     mutate(data);
     /* 🤔 Alberto: 1. scrivi questo:
@@ -31,7 +32,7 @@ function ProfileScreen() {
   return (
     <div className='layout profile'>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         className='profile__form'
       >
         <header className='profile__form__header'>
