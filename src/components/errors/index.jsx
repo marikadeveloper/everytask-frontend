@@ -6,7 +6,8 @@ function ErrorMessage({ error }) {
   return (
     <div
       className='error-message'
-      role='alert'>
+      role='alert'
+    >
       <span>There was an error: </span>
       <pre>{error.message}</pre>
     </div>
@@ -21,7 +22,8 @@ function FullPageErrorFallback({ error }) {
   return (
     <div
       className='full-page-error-fallback'
-      role='alert'>
+      role='alert'
+    >
       <p>There is a problem. Try refreshing the app.</p>
       <pre>{error.message}</pre>
     </div>
