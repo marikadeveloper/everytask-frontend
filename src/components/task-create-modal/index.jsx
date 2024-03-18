@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { Button } from "../button";
-import { EmojiInput, Input } from "../input";
+import { EmojiInput, Input } from "../input/index";
 
 function TaskCreateModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

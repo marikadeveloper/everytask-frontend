@@ -1,4 +1,8 @@
-import { Input as NuiInput } from "@nextui-org/react";
+import {
+  Input as NuiInput,
+  Select as NuiSelect,
+  SelectItem,
+} from "@nextui-org/react";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -6,9 +10,23 @@ import { Close } from "../../assets/icons";
 import { Button, IconButton } from "../button";
 import "./styles.scss";
 
-const Input = React.forwardRef((props, ref) => {
-  return <NuiInput variant="bordered" size="md" ref={ref} {...props} />;
+const Input = React.forwardRef(({ className, ...rest }, ref) => {
+  return (
+    <NuiInput
+      className={`input ${className || ""}`}
+      ref={ref}
+      size="md"
+      variant="bordered"
+      {...rest}
+    />
+  );
 });
+Input.defaultProps = {
+  className: "",
+};
+Input.propTypes = {
+  className: PropTypes.string,
+};
 
 function EmojiInput({ onEmojiChange }) {
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
@@ -18,7 +36,7 @@ function EmojiInput({ onEmojiChange }) {
     setEmojiPickerOpen(!emojiPickerOpen);
   };
 
-  const onEmojiClick = ({ emoji, imageUrl, unified }) => {
+  const onEmojiClick = ({ unified }) => {
     setEmojiPickerOpen(false);
     setEmoji(unified);
     onEmojiChange(unified);
@@ -48,9 +66,58 @@ function EmojiInput({ onEmojiChange }) {
     </div>
   );
 }
+
 EmojiInput.propTypes = {
   onEmojiChange: PropTypes.func.isRequired,
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { EmojiInput, Input };
+const Select = React.forwardRef(
+  (
+    {
+      className,
+      color,
+      defaultSelectedKeys,
+      items,
+      label,
+      placeholder,
+      variant,
+      ...rest
+    },
+    ref,
+  ) => {
+    return (
+      <NuiSelect
+        className={`input ${className || ""}`}
+        color={color}
+        defaultSelectedKeys={defaultSelectedKeys}
+        items={items}
+        label={label}
+        placeholder={placeholder}
+        ref={ref}
+        variant={variant}
+        {...rest}
+      >
+        {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
+      </NuiSelect>
+    );
+  },
+);
+Select.defaultProps = {
+  className: "",
+  color: "default",
+  defaultSelectedKeys: [],
+  label: "",
+  placeholder: "",
+  variant: "bordered",
+};
+Select.propTypes = {
+  className: PropTypes.string,
+  color: PropTypes.string,
+  defaultSelectedKeys: PropTypes.array,
+  items: PropTypes.array.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  variant: PropTypes.string,
+};
+
+export { EmojiInput, Input, Select };

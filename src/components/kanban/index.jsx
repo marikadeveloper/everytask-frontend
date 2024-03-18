@@ -22,7 +22,7 @@ const boards = [
   },
 ];
 
-const KanbanTask = ({ task, provided, snapshot }) => {
+function KanbanTask({ task, provided, snapshot }) {
   return (
     <div
       className="kanban-task"
@@ -60,6 +60,12 @@ const KanbanTask = ({ task, provided, snapshot }) => {
       </div>
     </div>
   );
+}
+
+KanbanTask.propTypes = {
+  task: PropTypes.object.isRequired,
+  provided: PropTypes.object.isRequired,
+  snapshot: PropTypes.object.isRequired,
 };
 
 function Kanban({ tasks, onTaskUpdate }) {
@@ -89,7 +95,7 @@ function Kanban({ tasks, onTaskUpdate }) {
     ) {
       return;
     }
-    const task = tasks.find((task) => task.id === draggableId);
+    const task = tasks.find((t) => t.id === draggableId);
     const newTask = {
       ...task,
       status: destination.droppableId,
@@ -102,8 +108,8 @@ function Kanban({ tasks, onTaskUpdate }) {
     // TODO: empty state
     <div className="kanban">
       <DragDropContext onDragEnd={onDragEnd}>
-        {boards.map((el, ind) => (
-          <div key={"board -" + el.id} className="kanban__board">
+        {boards.map((el) => (
+          <div key={`board-${el.id}`} className="kanban__board">
             <div className="kanban__board__column-title">
               <TaskStatusDot status={el.id} />
               <p>
@@ -130,12 +136,12 @@ function Kanban({ tasks, onTaskUpdate }) {
                             draggableId={task.id}
                             index={index}
                           >
-                            {(provided, snapshot) => {
+                            {(innerProvided, innerSnapshot) => {
                               return (
                                 <KanbanTask
                                   task={task}
-                                  provided={provided}
-                                  snapshot={snapshot}
+                                  provided={innerProvided}
+                                  snapshot={innerSnapshot}
                                 />
                               );
                             }}

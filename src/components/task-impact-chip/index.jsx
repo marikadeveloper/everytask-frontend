@@ -3,8 +3,8 @@ import { Cog, Flash, Leaf, Rocket } from "../../assets/icons";
 import "./styles.scss";
 
 function TaskImpactChip({ impact, iconOnly = false }) {
-  const getIcon = (impact) => {
-    switch (impact) {
+  const getIcon = (impactValue) => {
+    switch (impactValue) {
       case "HIGH_IMPACT_LOW_EFFORT":
         return <Flash />;
       case "HIGH_IMPACT_HIGH_EFFORT":
@@ -18,8 +18,8 @@ function TaskImpactChip({ impact, iconOnly = false }) {
     }
   };
 
-  const getImpactString = (impact) => {
-    switch (impact) {
+  const getImpactString = (impactValue) => {
+    switch (impactValue) {
       case "HIGH_IMPACT_LOW_EFFORT":
         return "High impact, low effort";
       case "HIGH_IMPACT_HIGH_EFFORT":
@@ -42,6 +42,9 @@ function TaskImpactChip({ impact, iconOnly = false }) {
     </div>
   );
 }
+TaskImpactChip.defaultProps = {
+  iconOnly: false,
+};
 TaskImpactChip.propTypes = {
   impact: PropTypes.string.isRequired,
   iconOnly: PropTypes.bool,

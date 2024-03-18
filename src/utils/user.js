@@ -1,8 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
-import { queryCache } from "./api-client";
-
-// TODO: test this
 
 const userQueryConfig = {
   staleTime: 1000 * 60 * 60,
@@ -17,12 +14,6 @@ const loadingUser = {
   level: "loading level...",
 };
 
-const defaultMutationOptions = {
-  onError: (err, variables, recover) =>
-    typeof recover === "function" ? recover() : null,
-  onSettled: () => queryCache.remove("me"),
-};
-
 function useUser() {
   const client = useClient();
   const { data } = useQuery({
@@ -33,32 +24,29 @@ function useUser() {
   return data ?? loadingUser;
 }
 
-function onUpdateMutation(newMe) {
-  const oldMe = queryCache.getQueryData("me");
-
-  queryCache.setQueryData("me", (old) => ({
-    ...old,
-    ...newMe,
-  }));
-
-  return () => queryCache.setQueryData("me", oldMe);
-}
-
-function useUpdateUser(options) {
+function useUpdateUser() {
   const client = useClient();
-
-  return useMutation(
-    (updates) =>
-      client("me", {
+  return useMutation({
+    mutationFn: (updates) =>
+      client(`me`, {
         method: "PUT",
         data: updates,
       }),
-    {
-      onMutate: onUpdateMutation,
-      ...defaultMutationOptions,
-      ...options,
+    onSettled: () => {
+      client.invalidateQueries("me");
     },
-  );
+  });
 }
 
-export { useUpdateUser, useUser };
+function useUpdatePassword() {
+  const client = useClient();
+  return useMutation({
+    mutationFn: (updates) =>
+      client(`change-password`, {
+        method: "POST",
+        data: updates,
+      }),
+  });
+}
+
+export { useUser, useUpdateUser, useUpdatePassword };

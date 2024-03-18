@@ -13,7 +13,7 @@ function TasksScreen() {
     if (status === "success") {
       refetch();
     }
-  }, [status]);
+  }, [status, refetch]);
 
   const onTaskStatusUpdate = (task) => {
     // update task
@@ -26,7 +26,9 @@ function TasksScreen() {
     // optimistic update of status and relativeOrder (to avoid flickering)
     tasks.forEach((t) => {
       if (t.id === task.id) {
+        // eslint-disable-next-line no-param-reassign
         t.status = task.status;
+        // eslint-disable-next-line no-param-reassign
         t.relativeOrder = task.relativeOrder;
       }
     });

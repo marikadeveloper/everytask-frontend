@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../context/auth-context";
 import { useAsync } from "../../utils/hooks";
 import "./styles.scss";
-import { Input } from "../../components/input";
+import { Input } from "../../components/input/index";
 import { ErrorMessage } from "../../components/errors/index";
 import { Button } from "../../components/button/index";
 

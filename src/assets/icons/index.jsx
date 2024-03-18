@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/no-unresolved
+// disable eslint check for this file for (import/no-unresolved)
+/* eslint-disable import/no-unresolved */
 import ArrowBackIcon from "./arrow-back-outline.svg?react";
 import CloseIcon from "./close-outline.svg?react";
 import CogIcon from "./cog-outline.svg?react";
