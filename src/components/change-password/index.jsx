@@ -5,54 +5,38 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from '@nextui-org/react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import { useUpdatePassword } from '../../utils/user.js';
-import { Button } from '../button/index.jsx';
-import { ErrorMessage } from '../errors/index.jsx';
-import { Input } from '../input.jsx';
-import './styles.scss';
+} from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useUpdatePassword } from "../../utils/user.js";
+import { Button } from "../button/index.jsx";
+import { ErrorMessage } from "../errors/index.jsx";
+import { Input } from "../input.jsx";
+import "./styles.scss";
+import { useEffect } from "react";
 
 function ChangePassword() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { handleSubmit, register, getValues } = useForm();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { formState, handleSubmit, register, getValues } = useForm();
   const { mutate, isPending, isSuccess, error, isError } = useUpdatePassword();
 
-  const modalOnSubmit = () => {
-    const currentPassword = getValues('currentPassword');
-    const newPassword = getValues('newPassword');
-    const confirmPassword = getValues('confirmPassword');
+  useEffect(() => {
+    if (isSuccess) {
+      toast("Password changed successfully");
+      onClose();
+    }
+  }, [isSuccess, onClose]);
 
-    const payload = {
-      oldPassword: currentPassword,
-      password: newPassword,
-      passwordConfirmation: confirmPassword,
-    };
-
-    mutate(payload);
-
-    // 🤔 Alberto: 4.
-    useEffect(() => {
-      if (isSuccess) {
-        toast.success('Password changed successfully');
-      }
-    }, [isSuccess]);
-
-    console.log('Current Password:', currentPassword);
-    console.log('New Password:', newPassword);
-    console.log('Confirm Password:', confirmPassword);
+  const onSubmit = (data) => {
+    mutate(data);
   };
 
   return (
     <>
       <Button
-        className='submit-change'
-        /* Marika: se tolgo la classe perdo lo stile width:fit-content nel
-          file styles.scss della cartella profile      
-        */
-        type='button'
-        variant={'bordered'}
+        className="change-password__submit-change"
+        type="button"
+        variant={"bordered"}
         onPress={onOpen}
       >
         Change password
@@ -60,49 +44,65 @@ function ChangePassword() {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        placement='auto'
+        placement="auto"
       >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader>Change password</ModalHeader>
               <ModalBody>
-                <Input
-                  id='currentPassword'
-                  type='password'
-                  label='Current Password'
-                  placeholder='Enter your current password'
-                  {...register('currentPassword')}
-                />
-                <Input
-                  id='newPassword'
-                  type='password'
-                  label='New Password'
-                  placeholder='Enter your new password'
-                  {...register('newPassword')}
-                />
-                <Input
-                  id='confirmPassword'
-                  type='password'
-                  label='Confirm Password'
-                  placeholder='Confirm your new password'
-                  {...register('confirmPassword')}
-                />
+                <form className="change-password__form" id="change-password-form" onSubmit={handleSubmit(onSubmit)}>
+                  <Input
+                    id="oldPassword"
+                    type="password"
+                    label="Current Password"
+                    placeholder="Enter your current password"
+                    isInvalid={formState.errors?.oldPassword}
+                    errorMessage={formState.errors?.oldPassword?.message}
+                    {...register("oldPassword", {
+                      required: "Please enter your current password",
+                    })}
+                  />
+                  <Input
+                    id="password"
+                    type="password"
+                    label="New Password"
+                    placeholder="Enter your new password"
+                    isInvalid={formState.errors?.password}
+                    errorMessage={formState.errors?.password?.message}
+                    {...register("password", {
+                      required: "Please enter your new password",
+                    })}
+                  />
+                  <Input
+                    id="passwordConfirmation"
+                    type="password"
+                    label="Confirm Password"
+                    placeholder="Confirm your new password"
+                    isInvalid={formState.errors?.passwordConfirmation}
+                    errorMessage={formState.errors?.passwordConfirmation?.message}
+                    {...register("passwordConfirmation", {
+                      required: "Please confirm your new password",
+                      validate: (value) => value === getValues("password") || "Passwords do not match",
+                    })}
+                  />
+                </form>
                 {isError ? <ErrorMessage error={error} /> : null}
               </ModalBody>
               <ModalFooter>
                 <Button
-                  variant='bordered'
-                  size='md'
+                  variant="bordered"
+                  size="md"
                   onPress={onClose}
                 >
                   Close
                 </Button>
                 <Button
-                  color='primary'
-                  size='md'
-                  onPress={modalOnSubmit}
+                  color="primary"
+                  size="md"
                   isLoading={isPending}
+                  type="submit"
+                  form="change-password-form"
                 >
                   Submit
                 </Button>
