@@ -11,7 +11,10 @@ async function bootstrapAppData() {
 	const token = await auth.getToken();
 	if (token) {
 		const data = await client('me', { token });
-		user = data.user;
+		user = {
+			...data.user,
+			token,
+		};
 	}
 	return user;
 }

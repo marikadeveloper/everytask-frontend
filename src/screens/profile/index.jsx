@@ -12,27 +12,17 @@ import './styles.scss';
 function ProfileScreen() {
   const { user } = useAuth();
   const { isLoading } = useAsync();
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, getValues } = useForm();
   const { mutate } = useUpdateUser();
 
-  const onSubmit = ($event, data) => {
-    $event.preventDefault();
-    console.log(data);
+  const onSubmit = (data) => {
     mutate(data);
-    /* 🤔 Alberto: 1. scrivi questo:
-                          mutate(data);
-    * così avrai finito la funzionalità di modifica dei dati del profilo :D
-    *
-    *  Attenzione: fatto ma adesso quando clicco save ricarica la pagina
-    * profile e compare Sorry.. nothing here. Go home. Quando vado alla home
-    * devo rifare il log in
-    * */
-  };
+  }
 
   return (
     <div className='layout profile'>
       <form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className='profile__form'
       >
         <header className='profile__form__header'>
@@ -76,7 +66,7 @@ function ProfileScreen() {
             className='input'
             variant={'bordered'}
             color='default'
-            {...register('date')}
+            {...register('dateFormat')}
           >
             {(dateFormat) => (
               <SelectItem key={dateFormat.value}>{dateFormat.label}</SelectItem>
