@@ -1,7 +1,8 @@
 import { Avatar as NuiAvatar } from '@nextui-org/react';
 import React from 'react';
 
-const Avatar = React.forwardRef((props, ref) => (
+// eslint-disable-next-line react/prop-types
+const Avatar = React.forwardRef(({ originalProps, ...props }, ref) => (
   <NuiAvatar
     ref={ref}
     showFallback
@@ -12,4 +13,4 @@ const Avatar = React.forwardRef((props, ref) => (
   />
 ));
 
-export { Avatar };
+export default Avatar;

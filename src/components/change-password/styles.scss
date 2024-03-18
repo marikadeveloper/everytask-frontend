@@ -1,0 +1,11 @@
+.change-password {
+  &__submit-change {
+    width: fit-content;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

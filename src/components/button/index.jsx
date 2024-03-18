@@ -1,49 +1,102 @@
 import { Button as NuiButton } from '@nextui-org/react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowBack } from '../../assets/icons/index.jsx';
+import { ArrowBack } from '../../assets/icons/index';
 import './styles.scss';
 
-function Button({ isLoading, type, size, className, children }) {
+function Button({
+  children,
+  className,
+  color = 'primary',
+  form,
+  isLoading,
+  onClick,
+  onPress,
+  size,
+  type,
+  variant,
+}) {
   return (
     <NuiButton
-      color='primary'
+      className={className}
+      color={color}
+      form={form}
       isLoading={isLoading}
-      type={type}
+      onClick={onClick}
+      onPress={onPress}
       size={size}
-      className={className}>
+      type={type}
+      variant={variant}
+    >
       {children}
     </NuiButton>
   );
 }
+Button.defaultProps = {
+  children: null,
+  className: '',
+  color: 'primary',
+  form: '',
+  isLoading: false,
+  onClick: () => {},
+  onPress: () => {},
+  size: 'md',
+  type: 'button',
+  variant: 'solid',
+};
 Button.propTypes = {
-  isLoading: PropTypes.bool,
-  type: PropTypes.string,
-  size: PropTypes.string,
-  className: PropTypes.string,
   children: PropTypes.node,
+  className: PropTypes.string,
+  color: PropTypes.string,
+  form: PropTypes.string,
+  isLoading: PropTypes.bool,
+  onClick: PropTypes.func,
+  onPress: PropTypes.func,
+  size: PropTypes.string,
+  type: PropTypes.string,
+  variant: PropTypes.string,
 };
 
 function LinkButton({ size = 'sm', to, className, children }) {
   return (
     <NuiButton
-      className={'link-button ' + className}
-      color='primary'
-      variant='bordered'
-      startContent={<ArrowBack />}
       as={Link}
+      className={`link-button ${className}`}
+      color='primary'
+      size={size}
+      startContent={<ArrowBack />}
       to={to}
-      size={size}>
+      variant='bordered'
+    >
       {children}
     </NuiButton>
   );
 }
+
+LinkButton.defaultProps = {
+  children: null,
+  className: '',
+  size: 'sm',
+  to: '/',
+};
 LinkButton.propTypes = {
-  to: PropTypes.string,
-  size: PropTypes.string,
-  className: PropTypes.string,
   children: PropTypes.node,
+  className: PropTypes.string,
+  size: PropTypes.string,
+  to: PropTypes.string,
 };
 
-export { Button, LinkButton };
+function IconButton({ icon, ...props }) {
+  return (
+    <NuiButton
+      className='icon-button'
+      color='danger'
+      isIconOnly
+      startContent={icon}
+      variant='light'
+      {...props}
+    />
+  );
+}
+
+export { Button, IconButton, LinkButton };
