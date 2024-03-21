@@ -7,9 +7,11 @@
   padding: 10px 10px 4px;
 
   &__title {
-    color: black;
     display: flex;
     gap: 12px;
+    p {
+      color: black;
+    }
   }
   &__footer {
     margin-top: 12px;

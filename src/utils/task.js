@@ -79,7 +79,7 @@ function useUpdateTask() {
 
   return useMutation({
     mutationFn: ({ id, ...updates }) =>
-      client(`task/${id}`, {
+      client(`tasks/${id}`, {
         method: "PUT",
         data: updates,
       }),
