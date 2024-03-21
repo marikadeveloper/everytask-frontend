@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../components/button";
 import ChangePassword from "../../components/change-password";
 import { useAuth } from "../../context/auth-context";
-import { dateFormats } from "../../utils/constants";
+import { dateFormats } from "../../utils/misc.js";
 import { useAsync } from "../../utils/hooks";
 import { useUpdateUser } from "../../utils/user";
 import { Input, Select } from "../../components/input/index";

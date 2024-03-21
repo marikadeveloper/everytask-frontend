@@ -19,14 +19,14 @@ function KanbanTask({ task, provided, snapshot }) {
         ...provided.draggableProps.style,
       }}
     >
-      <p className="kanban-task__title">
+      <div className="kanban-task__title">
         {task.emoji && (
           <div className="kanban-task__emoji">
             <Emoji size={20} lazyLoad unified={task.emoji} />
           </div>
         )}
-        {task.title}
-      </p>
+        <p>{task.title}</p>
+      </div>
       <div className="kanban-task__footer">
         <div>
           <TaskImpactChip impact={task.impact} iconOnly />

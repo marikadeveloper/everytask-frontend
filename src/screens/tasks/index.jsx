@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import Kanban from "../../components/kanban";
 import TaskCreateModal from "../../components/task-create-modal";
-import { useTasks, useUpdateTask } from "../../utils/task";
+import { TASK_STATUS, useTasks, useUpdateTask } from "../../utils/task";
+import { hurray } from "../../utils/misc";
 import "./styles.scss";
 
 function TasksScreen() {
@@ -16,6 +17,10 @@ function TasksScreen() {
   }, [status, refetch]);
 
   const onTaskStatusUpdate = (task) => {
+    if (task.status === TASK_STATUS.DONE) {
+      hurray();
+    }
+
     // update task
     mutate({
       id: task.id,
