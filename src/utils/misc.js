@@ -1,5 +1,6 @@
-// eslint-disable-next-line import/prefer-default-export
-export const dateFormats = [
+import { confetti } from "@tsparticles/confetti";
+
+const dateFormats = [
   {
     label: "DD/MM/YYYY",
     value: "DD/MM/YYYY",
@@ -16,3 +17,15 @@ export const dateFormats = [
     description: "Year/Month/Day (e.g., 2024/03/09)",
   },
 ];
+
+function randomInRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function hurray() {
+  (async () => {
+    await confetti();
+  })();
+}
+
+export { dateFormats, randomInRange, hurray };
