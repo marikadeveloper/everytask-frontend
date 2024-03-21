@@ -8,7 +8,9 @@ import {
 } from "@nextui-org/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useCreateTask } from "../../utils/task";
 import { Button } from "../button";
+
 import {
   CategoryInput,
   DatetimePicker,
@@ -29,12 +31,19 @@ const taskImpacts = [
 function TaskCreateModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { register, handleSubmit, setValue } = useForm();
+  const { mutate, status } = useCreateTask();
 
   useEffect(() => {
+    console.log(status);
+  }, [status]);
+
+  {
+    /*useEffect(() => {
     // register manually form fields that are not native inputs
     register("emoji");
     register("dueDate", { required: true });
-  }, [register]);
+  }, [register]);*/
+  }
 
   const onEmojiChange = (emoji) => {
     setValue("emoji", emoji);
@@ -45,6 +54,7 @@ function TaskCreateModal() {
   };
 
   const onSubmit = (data) => {
+    mutate(data);
     console.log(data);
   };
 
@@ -89,7 +99,7 @@ function TaskCreateModal() {
                     {...register("description")}
                   />
                   {/* Keep these for last */}
-                  <CategoryInput {...register("category")} />
+                  <CategoryInput {...register("categoryId")} />
                   <EmojiInput onEmojiChange={onEmojiChange} />
                 </form>
               </ModalBody>
