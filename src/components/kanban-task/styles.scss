@@ -8,6 +8,8 @@
 
   &__title {
     color: black;
+    display: flex;
+    gap: 12px;
   }
   &__footer {
     margin-top: 12px;

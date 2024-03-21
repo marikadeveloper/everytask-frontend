@@ -6,30 +6,57 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import {
+  taskImpactArray,
+  taskImpactLabels,
+  useCreateTask,
+} from "../../utils/task";
 import { Button } from "../button";
-import { CategoryInput, EmojiInput, Input } from "../input/index";
+import {
+  CategoryInput,
+  DatetimePicker,
+  EmojiInput,
+  Input,
+  Select,
+} from "../input/index";
+import { ErrorMessage } from "../errors/index";
 import "./styles.scss";
 
+const taskImpacts = taskImpactArray.map((impact) => ({
+  value: impact,
+  label: taskImpactLabels[impact],
+}));
+
 function TaskCreateModal() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { register, handleSubmit, setValue } = useForm();
+  const { mutate, status, error, isError } = useCreateTask();
 
   useEffect(() => {
-    // register emoji field for form validation
+    if (status === "success") {
+      toast("Task created successfully");
+      onClose();
+    }
+  }, [status, onClose]);
+
+  useEffect(() => {
+    // register manually form fields that are not native inputs
     register("emoji");
+    register("dueDate", { required: true });
+    register("categoryId");
   }, [register]);
 
-  const onEmojiChange = (emoji) => {
-    setValue("emoji", emoji);
+  const onManualFieldChange = ({ field, value }) => {
+    setValue(field, value);
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    mutate(data);
   };
 
-  /* TODO: finish */
   return (
     <>
       <Button onClick={onOpen} size="lg">
@@ -37,40 +64,62 @@ function TaskCreateModal() {
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>New Task</ModalHeader>
-              <ModalBody>
-                <form
-                  className="task-create"
-                  id="task-create-form"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <Input
-                    autoFocus
-                    id="title"
-                    label="Title"
-                    placeholder="Enter the task title"
-                    {...register("title", { required: true })}
-                  />
-                  {/* TODO: deadline (required) */}
-                  {/* TODO: impact & effort (required) */}
-                  {/* TODO: description */}
-                  {/* Keep those for last */}
-                  <CategoryInput {...register("category")} />
-                  <EmojiInput onEmojiChange={onEmojiChange} />
-                </form>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="bordered" size="md" onPress={onClose}>
-                  Close
-                </Button>
-                <Button size="md" type="submit" form="task-create-form">
-                  Create
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+          <>
+            <ModalHeader>New Task</ModalHeader>
+            <ModalBody>
+              <form
+                className="task-create"
+                id="task-create-form"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <Input
+                  autoFocus
+                  id="title"
+                  label="Title"
+                  placeholder="Enter the task title"
+                  {...register("title", { required: true })}
+                />
+                <DatetimePicker
+                  onDateChange={(value) =>
+                    onManualFieldChange({ field: "dueDate", value })
+                  }
+                />
+                <Select
+                  label="Impact"
+                  placeholder="Select impact"
+                  items={taskImpacts}
+                  {...register("impact", { required: true })}
+                />
+                <Input
+                  id="description"
+                  label="Description"
+                  placeholder="Enter a description"
+                  {...register("description")}
+                />
+                {/* Keep these for last */}
+                <CategoryInput
+                  onCategoryChange={(value) =>
+                    onManualFieldChange({ field: "categoryId", value })
+                  }
+                />
+                <EmojiInput
+                  onEmojiChange={(value) =>
+                    onManualFieldChange({ field: "emoji", value })
+                  }
+                />
+
+                {isError ? <ErrorMessage error={error} /> : null}
+              </form>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="bordered" size="md" onPress={onClose}>
+                Close
+              </Button>
+              <Button size="md" type="submit" form="task-create-form">
+                Create
+              </Button>
+            </ModalFooter>
+          </>
         </ModalContent>
       </Modal>
     </>

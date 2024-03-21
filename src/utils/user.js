@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
 
 const userQueryConfig = {
@@ -26,6 +26,8 @@ function useUser() {
 
 function useUpdateUser() {
   const client = useClient();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (updates) =>
       client(`me`, {
@@ -33,7 +35,7 @@ function useUpdateUser() {
         data: updates,
       }),
     onSettled: () => {
-      client.invalidateQueries("me");
+      queryClient.invalidateQueries("me");
     },
   });
 }
