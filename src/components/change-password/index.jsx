@@ -8,12 +8,12 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useUpdatePassword } from "../../utils/user.js";
-import { Button } from "../button/index.jsx";
-import { ErrorMessage } from "../errors/index.jsx";
-import { Input } from "../input.jsx";
-import "./styles.scss";
 import { useEffect } from "react";
+import { useUpdatePassword } from "../../utils/user";
+import { Button } from "../button/index";
+import { ErrorMessage } from "../errors/index";
+import { Input } from "../input/index";
+import "./styles.scss";
 
 function ChangePassword() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -36,22 +36,22 @@ function ChangePassword() {
       <Button
         className="change-password__submit-change"
         type="button"
-        variant={"bordered"}
+        variant="bordered"
         onPress={onOpen}
       >
         Change password
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="auto"
-      >
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader>Change password</ModalHeader>
               <ModalBody>
-                <form className="change-password__form" id="change-password-form" onSubmit={handleSubmit(onSubmit)}>
+                <form
+                  className="change-password__form"
+                  id="change-password-form"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
                   <Input
                     id="oldPassword"
                     type="password"
@@ -80,21 +80,21 @@ function ChangePassword() {
                     label="Confirm Password"
                     placeholder="Confirm your new password"
                     isInvalid={formState.errors?.passwordConfirmation}
-                    errorMessage={formState.errors?.passwordConfirmation?.message}
+                    errorMessage={
+                      formState.errors?.passwordConfirmation?.message
+                    }
                     {...register("passwordConfirmation", {
                       required: "Please confirm your new password",
-                      validate: (value) => value === getValues("password") || "Passwords do not match",
+                      validate: (value) =>
+                        value === getValues("password") ||
+                        "Passwords do not match",
                     })}
                   />
                 </form>
                 {isError ? <ErrorMessage error={error} /> : null}
               </ModalBody>
               <ModalFooter>
-                <Button
-                  variant="bordered"
-                  size="md"
-                  onPress={onClose}
-                >
+                <Button variant="bordered" size="md" onPress={onClose}>
                   Close
                 </Button>
                 <Button
@@ -115,4 +115,4 @@ function ChangePassword() {
   );
 }
 
-export { ChangePassword };
+export default ChangePassword;

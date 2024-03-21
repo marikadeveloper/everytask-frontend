@@ -1,13 +1,13 @@
-import { Button as NuiButton } from '@nextui-org/react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { ArrowBack } from '../../assets/icons/index';
-import './styles.scss';
+import { Button as NuiButton } from "@nextui-org/react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { ArrowBack } from "../../assets/icons/index";
+import "./styles.scss";
 
 function Button({
   children,
   className,
-  color = 'primary',
+  color = "primary",
   form,
   isLoading,
   onClick,
@@ -34,15 +34,15 @@ function Button({
 }
 Button.defaultProps = {
   children: null,
-  className: '',
-  color: 'primary',
-  form: '',
+  className: "",
+  color: "primary",
+  form: "",
   isLoading: false,
   onClick: () => {},
   onPress: () => {},
-  size: 'md',
-  type: 'button',
-  variant: 'solid',
+  size: "md",
+  type: "button",
+  variant: "solid",
 };
 Button.propTypes = {
   children: PropTypes.node,
@@ -57,16 +57,16 @@ Button.propTypes = {
   variant: PropTypes.string,
 };
 
-function LinkButton({ size = 'sm', to, className, children }) {
+function LinkButton({ size = "sm", to, className, children }) {
   return (
     <NuiButton
       as={Link}
       className={`link-button ${className}`}
-      color='primary'
+      color="primary"
       size={size}
       startContent={<ArrowBack />}
       to={to}
-      variant='bordered'
+      variant="bordered"
     >
       {children}
     </NuiButton>
@@ -75,9 +75,9 @@ function LinkButton({ size = 'sm', to, className, children }) {
 
 LinkButton.defaultProps = {
   children: null,
-  className: '',
-  size: 'sm',
-  to: '/',
+  className: "",
+  size: "sm",
+  to: "/",
 };
 LinkButton.propTypes = {
   children: PropTypes.node,
@@ -89,14 +89,17 @@ LinkButton.propTypes = {
 function IconButton({ icon, ...props }) {
   return (
     <NuiButton
-      className='icon-button'
-      color='danger'
+      className="icon-button"
+      color="danger"
       isIconOnly
       startContent={icon}
-      variant='light'
+      variant="light"
       {...props}
     />
   );
 }
+IconButton.propTypes = {
+  icon: PropTypes.node.isRequired,
+};
 
 export { Button, IconButton, LinkButton };

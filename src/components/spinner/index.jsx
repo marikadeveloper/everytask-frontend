@@ -1,5 +1,4 @@
-import React from 'react';
-import './styles.scss';
+import "./styles.scss";
 
 function Spinner() {
   return <div>loading...</div>;
@@ -7,7 +6,7 @@ function Spinner() {
 
 function FullPageSpinner() {
   return (
-    <div className='full-page-spinner'>
+    <div className="full-page-spinner">
       <Spinner />
     </div>
   );

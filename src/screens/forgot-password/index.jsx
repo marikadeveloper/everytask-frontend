@@ -1,50 +1,51 @@
-import { useForm } from 'react-hook-form';
-import { Button, LinkButton } from '../../components/button/index.jsx';
-import { ErrorMessage } from '../../components/errors/index.jsx';
-import { Input } from '../../components/input.jsx';
-import { useAuth } from '../../context/auth-context.jsx';
-import { useAsync } from '../../utils/hooks.js';
-import './styles.scss';
+import { useForm } from "react-hook-form";
+import { Button, LinkButton } from "../../components/button/index";
+import { ErrorMessage } from "../../components/errors/index";
+import { Input } from "../../components/input/index";
+import { useAuth } from "../../context/auth-context";
+import { useAsync } from "../../utils/hooks";
+import "./styles.scss";
 
 function ForgotPasswordScreen() {
   const { resetPasswordRequest } = useAuth();
-  const { register, handleSubmit, formState } = useForm();
-  const { errors } = formState;
+  const { register, handleSubmit } = useForm();
 
-  const { data, error, isLoading, isError, isSuccess, run } = useAsync();
+  const { error, isLoading, isError, isSuccess, run } = useAsync();
 
   function onSubmit(data) {
     run(resetPasswordRequest(data));
   }
 
   return (
-    <div className='forgot-password'>
-      <div className='forgot-password__back'>
-        <LinkButton to='/'>Back to login</LinkButton>
+    <div className="forgot-password">
+      <div className="forgot-password__back">
+        <LinkButton to="/">Back to login</LinkButton>
       </div>
       <h1>Forgot Password</h1>
       {isSuccess ? (
-        <div className='forgot-password__success-message'>
+        <div className="forgot-password__success-message">
           Password reset instructions sent to your email
         </div>
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className='forgot-password__form'>
+          className="forgot-password__form"
+        >
           <Input
-            label='Email'
-            id='email'
-            type='email'
-            placeholder='Email'
-            {...register('email', {
-              required: 'Required',
+            label="Email"
+            id="email"
+            type="email"
+            placeholder="Email"
+            {...register("email", {
+              required: "Required",
             })}
           />
           <div>
             <Button
-              type='submit'
+              type="submit"
               isLoading={isLoading}
-              className='forgot-password__form__submit'>
+              className="forgot-password__form__submit"
+            >
               Submit
             </Button>
           </div>
