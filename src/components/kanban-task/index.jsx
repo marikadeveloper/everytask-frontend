@@ -4,6 +4,8 @@ import TaskDeadline from "../task-deadline/index";
 import { ListCircle } from "../../assets/icons/index";
 import { TASK_STATUS } from "../../utils/task";
 import "./styles.scss";
+// eslint-disable-next-line import/order
+import { Emoji } from "emoji-picker-react";
 
 function KanbanTask({ task, provided, snapshot }) {
   return (
@@ -18,13 +20,21 @@ function KanbanTask({ task, provided, snapshot }) {
       }}
     >
       <p className="kanban-task__title">
-        <span className="kanban-task__emoji">{task.emoji}</span>
+        {task.emoji && (
+          <div className="kanban-task__emoji">
+            <Emoji size={20} lazyLoad unified={task.emoji} />
+          </div>
+        )}
         {task.title}
       </p>
       <div className="kanban-task__footer">
         <div>
           <TaskImpactChip impact={task.impact} iconOnly />
-          <TaskDeadline deadline={task.dueDate} isDone={task.status === TASK_STATUS.DONE} short />
+          <TaskDeadline
+            deadline={task.dueDate}
+            isDone={task.status === TASK_STATUS.DONE}
+            short
+          />
           {task.category && (
             <p className="kanban-task__footer__category">
               {task.category?.name}

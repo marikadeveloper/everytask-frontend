@@ -1,6 +1,5 @@
 .emoji-picker {
   &__label {
-    font-size: 13px;
     padding-left: 13px;
     margin-bottom: 4px;
   }
@@ -13,6 +12,49 @@
     &__preview {
       display: flex;
       gap: 4px;
+    }
+  }
+}
+
+.datetime-picker {
+  display: flex;
+  flex-direction: column;
+
+  .react-datetime-picker__wrapper {
+    border: none;
+  }
+
+  .react-datetime-picker__calendar, .react-datetime-picker__clock {
+    z-index: 11;
+  }
+
+  .react-datetime-picker__calendar {
+    .react-calendar {
+      font-family: "Inter", sans-serif;
+      border: 2px solid var(--everytask-primary);
+      border-radius: var(--nextui-radius-medium);
+
+      &__navigation {
+        button {
+          border-radius: var(--nextui-radius-medium);
+        }
+      }
+
+      &__tile {
+        border-radius: var(--nextui-radius-medium);
+
+        &--active {
+          background-color: var(--everytask-primary);
+          color: var(--everytask-contrast);
+          abbr {
+            font-weight: bold;
+          }
+        }
+
+        &--hasActive {
+          background-color: #d5d5d5;
+        }
+      }
     }
   }
 }
