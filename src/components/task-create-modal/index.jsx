@@ -9,27 +9,35 @@ import {
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Button } from "../button";
-import { CategoryInput, EmojiInput, Input } from "../input/index";
+import { CategoryInput, DatetimePicker, EmojiInput, Input } from "../input/index";
+import { taskImpactArray } from "../../utils/task";
 import "./styles.scss";
+
+// 🤔 Alberto: usa questi valori per la <Select> dell'impact
+const taskImpacts = taskImpactArray;
 
 function TaskCreateModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    // register emoji field for form validation
+    // register manually form fields that are not native inputs
     register("emoji");
+    register("dueDate", { required: true });
   }, [register]);
 
   const onEmojiChange = (emoji) => {
     setValue("emoji", emoji);
   };
 
+  const onDateChange = (date) => {
+    setValue("dueDate", date);
+  };
+
   const onSubmit = (data) => {
     console.log(data);
   };
 
-  /* TODO: finish */
   return (
     <>
       <Button onClick={onOpen} size="lg">
@@ -53,10 +61,13 @@ function TaskCreateModal() {
                     placeholder="Enter the task title"
                     {...register("title", { required: true })}
                   />
-                  {/* TODO: deadline (required) */}
-                  {/* TODO: impact & effort (required) */}
-                  {/* TODO: description */}
-                  {/* Keep those for last */}
+                  <DatetimePicker onDateChange={onDateChange} />
+
+                  {/* 🤔Alberto: */}
+                  {/* TODO: impact (select) (required) */}
+                  {/* TODO: description (normal input) */}
+
+                  {/* Keep these for last */}
                   <CategoryInput {...register("category")} />
                   <EmojiInput onEmojiChange={onEmojiChange} />
                 </form>

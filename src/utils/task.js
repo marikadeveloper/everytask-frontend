@@ -22,7 +22,7 @@ const TASK_IMPACT = {
 const taskImpactArray = Object.values(TASK_IMPACT);
 
 function getFilterStringFromFilterObject(filters) {
-  console.log("getFilterStringFromFilterObject", filters);
+  // console.log("getFilterStringFromFilterObject", filters);
   return "";
 }
 
