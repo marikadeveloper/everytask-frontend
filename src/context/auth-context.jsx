@@ -1,9 +1,9 @@
 import * as React from "react";
-import * as auth from "../auth-provider.js";
-import { client, queryCache } from "../utils/api-client.js";
-import { useAsync } from "../utils/hooks.js";
-import { FullPageSpinner } from "../components/spinner/index.jsx";
-import { FullPageErrorFallback } from "../components/errors/index.jsx";
+import * as auth from "../auth-provider";
+import { FullPageErrorFallback } from "../components/errors/index";
+import { FullPageSpinner } from "../components/spinner/index";
+import { client, queryCache } from "../utils/api-client";
+import { useAsync } from "../utils/hooks";
 
 async function bootstrapAppData() {
   let user = null;
@@ -42,18 +42,16 @@ function AuthProvider(props) {
 
   const login = React.useCallback(
     (form) =>
-      auth.login(form).then((user) => {
-        setData(user);
+      auth.login(form).then((loggedUser) => {
+        console.log({ loggedUser });
+        setData(loggedUser);
       }),
     [setData],
   );
 
-  const register = React.useCallback(
-    (form) => {
-      return auth.register(form);
-    },
-    [],
-  );
+  const register = React.useCallback((form) => {
+    return auth.register(form);
+  }, []);
 
   const logout = React.useCallback(() => {
     auth.logout();
@@ -70,7 +68,14 @@ function AuthProvider(props) {
   }, []);
 
   const value = React.useMemo(
-    () => ({ user, login, logout, register, resetPasswordRequest, resetPassword }),
+    () => ({
+      user,
+      login,
+      logout,
+      register,
+      resetPasswordRequest,
+      resetPassword,
+    }),
     [login, logout, register, user, resetPasswordRequest, resetPassword],
   );
 
@@ -83,12 +88,7 @@ function AuthProvider(props) {
   }
 
   if (isSuccess) {
-    return (
-      <AuthContext.Provider
-        value={value}
-        {...props}
-      />
-    );
+    return <AuthContext.Provider value={value} {...props} />;
   }
 
   throw new Error(`Unhandled status: ${status}`);
@@ -105,6 +105,7 @@ function useAuth() {
 function useClient() {
   const { user } = useAuth();
   const token = user?.token;
+
   return React.useCallback(
     (endpoint, config) => client(endpoint, { ...config, token }),
     [token],

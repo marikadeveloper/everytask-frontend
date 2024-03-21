@@ -20,14 +20,14 @@
     }
 
     &__link {
-      color: #6A6A6A;
+      color: #6a6a6a;
       text-decoration: none;
 
       &--active {
         color: var(--everytask-primary);
         font-weight: 500;
 
-       /* &::before {
+        /* &::before {
           content: '• '
         }*/
       }
