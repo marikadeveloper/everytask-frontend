@@ -83,11 +83,12 @@ function useUpdateTask() {
 }
 
 export {
+  TASK_IMPACT,
+  TASK_STATUS,
+  taskImpactArray,
+  taskStatusArray,
+  useCreateTask,
   useTask,
   useTasks,
   useUpdateTask,
-  TASK_STATUS,
-  TASK_IMPACT,
-  taskStatusArray,
-  taskImpactArray,
 };
