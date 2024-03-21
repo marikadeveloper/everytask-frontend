@@ -27,6 +27,7 @@ function ProfileScreen() {
             isLoading={isLoading}
             className="profile__form__header__submit-save"
             type="submit"
+            size="lg"
           >
             Save
           </Button>

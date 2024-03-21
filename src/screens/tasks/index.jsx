@@ -44,6 +44,12 @@ function TasksScreen() {
       <section>
         {/* Kanban */}
         <Kanban tasks={tasks} onTaskUpdate={onTaskStatusUpdate} />
+        {/* Empty state */}
+        {tasks.length === 0 && (
+          <div className="empty-state">
+            <p>Wow, such emptiness! Maybe consider creating a task?</p>
+          </div>
+        )}
       </section>
     </div>
   );

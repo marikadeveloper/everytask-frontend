@@ -1,72 +1,25 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { ListCircle } from "../../assets/icons";
-import TaskDeadline from "../task-deadline";
-import TaskImpactChip from "../task-impact-chip";
 import TaskStatusDot from "../task-status-dot";
+import KanbanTask from "../kanban-task/index";
+import { TASK_STATUS } from "../../utils/task";
 import "./styles.scss";
 
 const boards = [
   {
-    id: "TODO",
+    id: TASK_STATUS.TODO,
     title: "Not started",
   },
   {
-    id: "IN_PROGRESS",
-    title: "Doing",
+    id: TASK_STATUS.IN_PROGRESS,
+    title: "In progress",
   },
   {
-    id: "DONE",
+    id: TASK_STATUS.DONE,
     title: "Done",
   },
 ];
-
-function KanbanTask({ task, provided, snapshot }) {
-  return (
-    <div
-      className="kanban-task"
-      ref={provided.innerRef}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-      style={{
-        backgroundColor: snapshot.isDragging ? "white" : "white",
-        ...provided.draggableProps.style,
-      }}
-    >
-      <p className="kanban-task__title">
-        <span className="kanban-task__emoji">{task.emoji}</span>
-        {task.title}
-      </p>
-      <div className="kanban-task__footer">
-        <div>
-          <TaskImpactChip impact={task.impact} iconOnly />
-          <TaskDeadline deadline={task.dueDate} short />
-          {task.category && (
-            <p className="kanban-task__footer__category">
-              {task.category?.name}
-            </p>
-          )}
-        </div>
-        {!!task.checklistItems?.length && (
-          <div className="kanban-task__footer__checklist">
-            <ListCircle />
-            <span>
-              {task.checklistItems.filter((item) => item.checked).length}/
-              {task.checklistItems.length}
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-KanbanTask.propTypes = {
-  task: PropTypes.object.isRequired,
-  provided: PropTypes.object.isRequired,
-  snapshot: PropTypes.object.isRequired,
-};
 
 function Kanban({ tasks, onTaskUpdate }) {
   const [countPerStatus, setCountPerStatus] = useState({});
@@ -98,14 +51,13 @@ function Kanban({ tasks, onTaskUpdate }) {
     const task = tasks.find((t) => t.id === draggableId);
     const newTask = {
       ...task,
-      status: destination.droppableId,
+      status: TASK_STATUS[destination.droppableId],
       relativeOrder: destination.index,
     };
     onTaskUpdate(newTask);
   };
 
   return (
-    // TODO: empty state
     <div className="kanban">
       <DragDropContext onDragEnd={onDragEnd}>
         {boards.map((el) => (

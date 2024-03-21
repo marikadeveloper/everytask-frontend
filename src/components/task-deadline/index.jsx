@@ -7,7 +7,11 @@ import "./styles.scss";
 
 dayjs.extend(relativeTime);
 
-const getClassFromDeadline = (deadline) => {
+const getClassFromDeadline = ({ deadline, isDone }) => {
+  if (isDone) {
+    return "task-deadline--done";
+  }
+
   const date = dayjs(deadline);
 
   // in more than one week -> black
@@ -29,9 +33,13 @@ const getClassFromDeadline = (deadline) => {
   return "task-deadline--black";
 };
 
-const getTextFromDeadline = (deadlineValue, short) => {
+const getTextFromDeadline = ({ deadline, short, isDone }) => {
+  const date = dayjs(deadline);
+  if (isDone) {
+    return date.format("DD MMM YYYY");
+  }
+
   // e.g. -> Due in 2 weeks
-  const date = dayjs(deadlineValue);
   const relative = date.fromNow();
   if (date.isBefore(dayjs(), "day")) {
     const relativeOverdue = date.toNow();
@@ -50,14 +58,14 @@ const getTextFromDeadline = (deadlineValue, short) => {
   return `Due in ${relative} (${date.format("DD MMM YYYY")})`;
 };
 
-function TaskDeadline({ deadline, short = true }) {
+function TaskDeadline({ deadline, short = true, isDone }) {
   // deadline: 2024-03-30T20:52:26.326Z
   const deadlineClass = useMemo(() => {
-    return getClassFromDeadline(deadline);
+    return getClassFromDeadline({ deadline, isDone });
   }, [deadline]);
 
   const deadlineText = useMemo(() => {
-    return getTextFromDeadline(deadline, short);
+    return getTextFromDeadline({ deadline, short, isDone });
   }, [deadline, short]);
 
   return (
@@ -72,10 +80,12 @@ function TaskDeadline({ deadline, short = true }) {
 
 TaskDeadline.defaultProps = {
   short: true,
+  isDone: false,
 };
 TaskDeadline.propTypes = {
   deadline: PropTypes.string.isRequired,
   short: PropTypes.bool,
+  isDone: PropTypes.bool,
 };
 
 export default TaskDeadline;

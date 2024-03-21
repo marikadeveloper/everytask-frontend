@@ -1,14 +1,17 @@
 import {
+  Autocomplete, AutocompleteItem,
   Input as NuiInput,
   Select as NuiSelect,
   SelectItem,
+  Tooltip,
 } from "@nextui-org/react";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Close } from "../../assets/icons";
-import { Button, IconButton } from "../button";
+import { IconButton } from "../button";
 import "./styles.scss";
+import { useCategories } from "../../utils/category.js";
 
 const Input = React.forwardRef(({ className, ...rest }, ref) => {
   return (
@@ -29,12 +32,8 @@ Input.propTypes = {
 };
 
 function EmojiInput({ onEmojiChange }) {
-  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(true);
   const [emoji, setEmoji] = useState(null);
-
-  const toggleEmojiPicker = () => {
-    setEmojiPickerOpen(!emojiPickerOpen);
-  };
 
   const onEmojiClick = ({ unified }) => {
     setEmojiPickerOpen(false);
@@ -43,26 +42,39 @@ function EmojiInput({ onEmojiChange }) {
   };
 
   const removeEmoji = () => {
+    setEmojiPickerOpen(true);
     setEmoji(null);
     onEmojiChange(null);
   };
 
   return (
     <div className="emoji-picker">
-      <div className="emoji-picker__preview">
-        {emoji && <Emoji unified={emoji} size="32" />}
-        <Button variant="bordered" size="sm" onClick={toggleEmojiPicker}>
-          Emoji
-        </Button>
-        {emoji && (
-          <IconButton
-            size="sm"
-            startContent={<Close />}
-            onClick={removeEmoji}
-          />
-        )}
+      <p className="emoji-picker__label">Emoji</p>
+      <div className="emoji-picker__picker">
+        <div className="emoji-picker__picker__preview">
+          {emoji && (
+            <Tooltip content="Change emoji">
+              <button
+                type="button"
+                aria-label="Selected emoji"
+                onClick={() => setEmojiPickerOpen(true)}
+                style={{ background: "none", border: "none" }}
+              >
+                <Emoji unified={emoji} size="32" />
+              </button>
+            </Tooltip>
+          )}
+          {emoji && (
+            <IconButton size="sm" icon={<Close />} onClick={removeEmoji} />
+          )}
+        </div>
+        <EmojiPicker
+          reactionsDefaultOpen
+          open={emojiPickerOpen}
+          onEmojiClick={onEmojiClick}
+        />
       </div>
-      <EmojiPicker open={emojiPickerOpen} onEmojiClick={onEmojiClick} />
+
     </div>
   );
 }
@@ -120,4 +132,25 @@ Select.propTypes = {
   variant: PropTypes.string,
 };
 
-export { EmojiInput, Input, Select };
+const CategoryInput = React.forwardRef((props, ref) => {
+  const { categories } = useCategories();
+  const [value, setValue] = useState(null);
+
+  return (
+    <Autocomplete
+      label="Category"
+      variant="bordered"
+      defaultItems={categories}
+      placeholder="Search a category"
+      selectedKey={value}
+      onSelectionChange={setValue}
+      shouldCloseOnBlur
+      ref={ref}
+      {...props}
+    >
+      {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
+    </Autocomplete>
+  );
+});
+
+export { EmojiInput, Input, Select, CategoryInput };

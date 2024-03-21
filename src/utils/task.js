@@ -1,59 +1,25 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
 
-/**
- * /tasks response - 7/03/2024
- *
- * {
- "data": [
- {
- "id": "c26e3305-7913-4d9c-aad9-6a48ab6ba6e6",
- "emoji": null,
- "title": "Task 2",
- "description": null,
- "status": "TODO",
- "dueDate": "2024-03-30T20:52:26.326Z",
- "createdAt": "2024-03-07T15:29:19.586Z",
- "categoryId": null,
- "userId": "d1fffe0a-2e6d-458c-b976-ca14ef67bc3d",
- "impact": "LOW_IMPACT_LOW_EFFORT",
- "checklistItems": []
- },
- {
- "id": "655299d2-cae6-470b-a66f-d85ddc989f23",
- "emoji": "👻",
- "title": "Task cambiato",
- "description": null,
- "status": "TODO",
- "dueDate": "2024-03-10T20:52:26.326Z",
- "createdAt": "2024-03-01T20:53:14.505Z",
- "categoryId": null,
- "userId": "d1fffe0a-2e6d-458c-b976-ca14ef67bc3d",
- "impact": "HIGH_IMPACT_LOW_EFFORT",
- "checklistItems": [
- {
- "id": "b4ca649a-10b7-471d-8e3b-92bd119574aa",
- "title": "Checklist item 1",
- "completed": false,
- "order": 0,
- "taskId": "655299d2-cae6-470b-a66f-d85ddc989f23"
- },
- {
- "id": "1ab30587-8afc-465c-a310-891bb8892858",
- "title": "Checklist item 2",
- "completed": false,
- "order": 1,
- "taskId": "655299d2-cae6-470b-a66f-d85ddc989f23"
- }
- ]
- }
- ]
- }
- */
 const taskQueryConfig = {
   staleTime: 1000,
   cacheTime: 1000,
 };
+
+const TASK_STATUS = {
+  DONE: "DONE",
+  IN_PROGRESS: "IN_PROGRESS",
+  TODO: "TODO",
+};
+const taskStatusArray = Object.values(TASK_STATUS);
+
+const TASK_IMPACT = {
+  HIGH_IMPACT_HIGH_EFFORT: "HIGH_IMPACT_HIGH_EFFORT",
+  HIGH_IMPACT_LOW_EFFORT: "HIGH_IMPACT_LOW_EFFORT",
+  LOW_IMPACT_HIGH_EFFORT: "LOW_IMPACT_HIGH_EFFORT",
+  LOW_IMPACT_LOW_EFFORT: "LOW_IMPACT_LOW_EFFORT",
+};
+const taskImpactArray = Object.values(TASK_IMPACT);
 
 function getFilterStringFromFilterObject(filters) {
   console.log("getFilterStringFromFilterObject", filters);
@@ -88,6 +54,18 @@ function useTask(taskId) {
   return useQuery(config);
 }
 
+// Create task
+function useCreateTask() {
+  const client = useClient();
+
+  return useMutation({
+    mutationFn: (newTask) => client(`tasks`, { data: newTask }),
+    onSettled: () => {
+      client.invalidateQueries("tasks");
+    },
+  });
+}
+
 // Update task
 function useUpdateTask() {
   const client = useClient();
@@ -104,4 +82,12 @@ function useUpdateTask() {
   });
 }
 
-export { useTask, useTasks, useUpdateTask };
+export {
+  useTask,
+  useTasks,
+  useUpdateTask,
+  TASK_STATUS,
+  TASK_IMPACT,
+  taskStatusArray,
+  taskImpactArray,
+};

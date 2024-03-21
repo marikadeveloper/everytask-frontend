@@ -1,10 +1,18 @@
 .emoji-picker {
-  &__preview {
+  &__label {
+    font-size: 13px;
+    padding-left: 13px;
+    margin-bottom: 4px;
+  }
+
+  &__picker {
     display: flex;
+    align-items: center;
     gap: 4px;
 
-    img {
-      margin-right: 10px;
+    &__preview {
+      display: flex;
+      gap: 4px;
     }
   }
 }

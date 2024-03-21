@@ -14,10 +14,11 @@
     }
   }
 
-  &--overdue {
+  &--overdue,
+  &--done {
     svg,
     p {
-      color: #6a6a6a;
+      color: #747474;
     }
   }
   &--red {
