@@ -137,9 +137,13 @@ Select.propTypes = {
   variant: PropTypes.string,
 };
 
-const CategoryInput = React.forwardRef((props, ref) => {
+function CategoryInput({ onCategoryChange }) {
   const { categories } = useCategories();
   const [value, setValue] = useState(null);
+  const onSelectionChange = (selected) => {
+    setValue(selected);
+    onCategoryChange(selected);
+  };
 
   return (
     <Autocomplete
@@ -148,15 +152,16 @@ const CategoryInput = React.forwardRef((props, ref) => {
       defaultItems={categories}
       placeholder="Search a category"
       selectedKey={value}
-      onSelectionChange={setValue}
+      onSelectionChange={onSelectionChange}
       shouldCloseOnBlur
-      ref={ref}
-      {...props}
     >
       {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
     </Autocomplete>
   );
-});
+}
+CategoryInput.propTypes = {
+  onCategoryChange: PropTypes.func.isRequired,
+};
 
 function DatetimePicker({ onDateChange }) {
   const [value, onChange] = useState(new Date());

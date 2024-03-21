@@ -8,9 +8,13 @@ import {
 } from "@nextui-org/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useCreateTask } from "../../utils/task";
+import { toast } from "react-toastify";
+import {
+  taskImpactArray,
+  taskImpactLabels,
+  useCreateTask,
+} from "../../utils/task";
 import { Button } from "../button";
-
 import {
   CategoryInput,
   DatetimePicker,
@@ -18,44 +22,39 @@ import {
   Input,
   Select,
 } from "../input/index";
+import { ErrorMessage } from "../errors/index";
 import "./styles.scss";
 
-// 🤔 Alberto: usa questi valori per la <Select> dell'impact FATTO!
-const taskImpacts = [
-  { value: "HIGH_EFFORT_HIGH_IMPACT", label: "High effort high impact" },
-  { value: "HIGH_EFFORT_LOW_IMPACT", label: "High effort low impact" },
-  { value: "LOW_EFFORT_HIGH_IMPACT", label: "Low effort high impact" },
-  { value: "LOW_EFFORT_LOW_IMPACT", label: "Low effort low impact" },
-];
+const taskImpacts = taskImpactArray.map((impact) => ({
+  value: impact,
+  label: taskImpactLabels[impact],
+}));
 
 function TaskCreateModal() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { register, handleSubmit, setValue } = useForm();
-  const { mutate, status } = useCreateTask();
+  const { mutate, status, error, isError } = useCreateTask();
 
   useEffect(() => {
-    console.log(status);
-  }, [status]);
+    if (status === "success") {
+      toast("Task created successfully");
+      onClose();
+    }
+  }, [status, onClose]);
 
-  {
-    /*useEffect(() => {
+  useEffect(() => {
     // register manually form fields that are not native inputs
     register("emoji");
     register("dueDate", { required: true });
-  }, [register]);*/
-  }
+    register("categoryId");
+  }, [register]);
 
-  const onEmojiChange = (emoji) => {
-    setValue("emoji", emoji);
-  };
-
-  const onDateChange = (date) => {
-    setValue("dueDate", date);
+  const onManualFieldChange = ({ field, value }) => {
+    setValue(field, value);
   };
 
   const onSubmit = (data) => {
     mutate(data);
-    console.log(data);
   };
 
   return (
@@ -65,54 +64,62 @@ function TaskCreateModal() {
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>New Task</ModalHeader>
-              <ModalBody>
-                <form
-                  className="task-create"
-                  id="task-create-form"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <Input
-                    autoFocus
-                    id="title"
-                    label="Title"
-                    placeholder="Enter the task title"
-                    {...register("title", { required: true })}
-                  />
-                  <DatetimePicker onDateChange={onDateChange} />
+          <>
+            <ModalHeader>New Task</ModalHeader>
+            <ModalBody>
+              <form
+                className="task-create"
+                id="task-create-form"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <Input
+                  autoFocus
+                  id="title"
+                  label="Title"
+                  placeholder="Enter the task title"
+                  {...register("title", { required: true })}
+                />
+                <DatetimePicker
+                  onDateChange={(value) =>
+                    onManualFieldChange({ field: "dueDate", value })
+                  }
+                />
+                <Select
+                  label="Impact"
+                  placeholder="Select impact"
+                  items={taskImpacts}
+                  {...register("impact", { required: true })}
+                />
+                <Input
+                  id="description"
+                  label="Description"
+                  placeholder="Enter a description"
+                  {...register("description")}
+                />
+                {/* Keep these for last */}
+                <CategoryInput
+                  onCategoryChange={(value) =>
+                    onManualFieldChange({ field: "categoryId", value })
+                  }
+                />
+                <EmojiInput
+                  onEmojiChange={(value) =>
+                    onManualFieldChange({ field: "emoji", value })
+                  }
+                />
 
-                  {/* 🤔Alberto: */}
-                  {/* TODO: impact (select) (required) FATTO! */}
-                  <Select
-                    label="Impact"
-                    placeholder="Select impact"
-                    items={taskImpacts}
-                    {...register("impact", { required: true })}
-                  />
-                  {/* TODO: description (normal input) FATTO! */}
-                  <Input
-                    id="description"
-                    label="Description"
-                    placeholder="Enter a description"
-                    {...register("description")}
-                  />
-                  {/* Keep these for last */}
-                  <CategoryInput {...register("categoryId")} />
-                  <EmojiInput onEmojiChange={onEmojiChange} />
-                </form>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="bordered" size="md" onPress={onClose}>
-                  Close
-                </Button>
-                <Button size="md" type="submit" form="task-create-form">
-                  Create
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+                {isError ? <ErrorMessage error={error} /> : null}
+              </form>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="bordered" size="md" onPress={onClose}>
+                Close
+              </Button>
+              <Button size="md" type="submit" form="task-create-form">
+                Create
+              </Button>
+            </ModalFooter>
+          </>
         </ModalContent>
       </Modal>
     </>

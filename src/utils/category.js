@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
 
 const categoryQueryConfig = {
@@ -21,23 +21,25 @@ function useCategories() {
 
 function useCreateCategory() {
   const client = useClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (newCategory) => client(`categories`, { data: newCategory }),
     onSettled: () => {
-      client.invalidateQueries("categories");
+      queryClient.invalidateQueries("categories");
     },
   });
 }
 
 function useUpdateCategory() {
   const client = useClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (category) =>
       client(`categories/${category.id}`, { data: category }),
     onSettled: () => {
-      client.invalidateQueries("categories");
+      queryClient.invalidateQueries("categories");
     },
   });
 }

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
 
 const taskQueryConfig = {
@@ -20,6 +20,12 @@ const TASK_IMPACT = {
   LOW_IMPACT_LOW_EFFORT: "LOW_IMPACT_LOW_EFFORT",
 };
 const taskImpactArray = Object.values(TASK_IMPACT);
+const taskImpactLabels = {
+  [TASK_IMPACT.HIGH_IMPACT_HIGH_EFFORT]: "High impact, high effort",
+  [TASK_IMPACT.HIGH_IMPACT_LOW_EFFORT]: "High impact, low effort",
+  [TASK_IMPACT.LOW_IMPACT_HIGH_EFFORT]: "Low impact, high effort",
+  [TASK_IMPACT.LOW_IMPACT_LOW_EFFORT]: "Low impact, low effort",
+};
 
 function getFilterStringFromFilterObject(filters) {
   // console.log("getFilterStringFromFilterObject", filters);
@@ -57,11 +63,11 @@ function useTask(taskId) {
 // Create task
 function useCreateTask() {
   const client = useClient();
-
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newTask) => client(`tasks`, { data: newTask }),
+    mutationFn: (newTask) => client(`task`, { data: newTask, method: "POST" }),
     onSettled: () => {
-      client.invalidateQueries("tasks");
+      queryClient.invalidateQueries("tasks");
     },
   });
 }
@@ -69,15 +75,16 @@ function useCreateTask() {
 // Update task
 function useUpdateTask() {
   const client = useClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, ...updates }) =>
-      client(`tasks/${id}`, {
+      client(`task/${id}`, {
         method: "PUT",
         data: updates,
       }),
     onSettled: () => {
-      client.invalidateQueries("tasks");
+      queryClient.invalidateQueries("tasks");
     },
   });
 }
@@ -86,6 +93,7 @@ export {
   TASK_IMPACT,
   TASK_STATUS,
   taskImpactArray,
+  taskImpactLabels,
   taskStatusArray,
   useCreateTask,
   useTask,
