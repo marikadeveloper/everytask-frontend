@@ -6,15 +6,25 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { Button } from "../button";
-import { CategoryInput, DatetimePicker, EmojiInput, Input } from "../input/index";
-import { taskImpactArray } from "../../utils/task";
+import {
+  CategoryInput,
+  DatetimePicker,
+  EmojiInput,
+  Input,
+  Select,
+} from "../input/index";
 import "./styles.scss";
 
-// 🤔 Alberto: usa questi valori per la <Select> dell'impact
-const taskImpacts = taskImpactArray;
+// 🤔 Alberto: usa questi valori per la <Select> dell'impact FATTO!
+const taskImpacts = [
+  { value: "HIGH_EFFORT_HIGH_IMPACT", label: "High effort high impact" },
+  { value: "HIGH_EFFORT_LOW_IMPACT", label: "High effort low impact" },
+  { value: "LOW_EFFORT_HIGH_IMPACT", label: "Low effort high impact" },
+  { value: "LOW_EFFORT_LOW_IMPACT", label: "Low effort low impact" },
+];
 
 function TaskCreateModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -64,9 +74,20 @@ function TaskCreateModal() {
                   <DatetimePicker onDateChange={onDateChange} />
 
                   {/* 🤔Alberto: */}
-                  {/* TODO: impact (select) (required) */}
-                  {/* TODO: description (normal input) */}
-
+                  {/* TODO: impact (select) (required) FATTO! */}
+                  <Select
+                    label="Impact"
+                    placeholder="Select impact"
+                    items={taskImpacts}
+                    {...register("impact", { required: true })}
+                  />
+                  {/* TODO: description (normal input) FATTO! */}
+                  <Input
+                    id="description"
+                    label="Description"
+                    placeholder="Enter a description"
+                    {...register("description")}
+                  />
                   {/* Keep these for last */}
                   <CategoryInput {...register("category")} />
                   <EmojiInput onEmojiChange={onEmojiChange} />
