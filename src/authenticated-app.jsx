@@ -25,11 +25,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/dashboard" element={<DashboardScreen />} />
       <Route path="/tasks" element={<TasksScreen />} />
-
-      <Route
-        path="/profile"
-        element={<ProfileScreen />} // Add the ProfileScreen route
-      />
+      <Route path="/profile" element={<ProfileScreen />} />
 
       <Route path="/" element={<DashboardScreen />} />
       <Route path="*" element={<NotFoundScreen />} />

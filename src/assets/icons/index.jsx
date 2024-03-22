@@ -6,8 +6,10 @@ import CogIcon from "./cog-outline.svg?react";
 import FlashIcon from "./flash-outline.svg?react";
 import LeafIcon from "./leaf-outline.svg?react";
 import ListCircleIcon from "./list-circle-outline.svg?react";
+import PencilIcon from "./pencil-outline.svg?react";
 import RocketIcon from "./rocket-outline.svg?react";
 import StopwatchIcon from "./stopwatch-outline.svg?react";
+import TrashIcon from "./trash-outline.svg?react";
 
 function ArrowBack() {
   return <ArrowBackIcon />;
@@ -37,8 +39,27 @@ function Rocket() {
   return <RocketIcon />;
 }
 
+function Pencil() {
+  return <PencilIcon />;
+}
+
 function Stopwatch() {
   return <StopwatchIcon />;
 }
 
-export { ArrowBack, Close, Cog, Flash, Leaf, ListCircle, Rocket, Stopwatch };
+function Trash() {
+  return <TrashIcon />;
+}
+
+export {
+  ArrowBack,
+  Close,
+  Cog,
+  Flash,
+  Leaf,
+  ListCircle,
+  Pencil,
+  Rocket,
+  Stopwatch,
+  Trash,
+};
