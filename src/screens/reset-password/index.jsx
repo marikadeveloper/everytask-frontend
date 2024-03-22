@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { useAuth } from "../../context/auth-context";
 import { useAsync } from "../../utils/hooks";
 import "./styles.scss";

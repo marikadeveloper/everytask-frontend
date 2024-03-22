@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import {
   taskImpactArray,
   taskImpactLabels,
@@ -33,7 +33,7 @@ const taskImpacts = taskImpactArray.map((impact) => ({
 function TaskCreateModal() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { register, handleSubmit, setValue } = useForm();
-  const { mutate, status, error, isError } = useCreateTask();
+  const { mutate, status, isPending, error, isError } = useCreateTask();
 
   useEffect(() => {
     if (status === "success") {
@@ -115,7 +115,12 @@ function TaskCreateModal() {
               <Button variant="bordered" size="md" onPress={onClose}>
                 Close
               </Button>
-              <Button size="md" type="submit" form="task-create-form">
+              <Button
+                isLoading={isPending}
+                size="md"
+                type="submit"
+                form="task-create-form"
+              >
                 Create
               </Button>
             </ModalFooter>
