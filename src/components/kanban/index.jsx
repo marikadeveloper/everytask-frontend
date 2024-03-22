@@ -87,6 +87,7 @@ function Kanban({ tasks, onTaskUpdate }) {
                             key={task.id}
                             draggableId={task.id}
                             index={index}
+                            isDragDisabled={task.status === TASK_STATUS.DONE}
                           >
                             {(innerProvided, innerSnapshot) => {
                               return (

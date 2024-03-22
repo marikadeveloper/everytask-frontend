@@ -1,18 +1,31 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Button } from "../../components/button";
 import ChangePassword from "../../components/change-password";
 import { useAuth } from "../../context/auth-context";
-import { dateFormats } from "../../utils/misc.js";
-import { useAsync } from "../../utils/hooks";
+import { dateFormats } from "../../utils/misc";
 import { useUpdateUser } from "../../utils/user";
 import { Input, Select } from "../../components/input/index";
+import { ErrorMessage } from "../../components/errors/index";
 import "./styles.scss";
 
 function ProfileScreen() {
   const { user } = useAuth();
-  const { isLoading } = useAsync();
   const { handleSubmit, register } = useForm();
-  const { mutate } = useUpdateUser();
+  const { mutate, status, isPending, isError, error } = useUpdateUser();
+
+  // TODO: make this generic?
+  useEffect(() => {
+    if (status === "pending") {
+      toast.dismiss();
+      toast.loading("Updating profile...");
+    }
+    if (status === "success") {
+      toast.dismiss();
+      toast("Profile updated successfully");
+    }
+  }, [status]);
 
   const onSubmit = (data) => {
     mutate(data);
@@ -20,13 +33,18 @@ function ProfileScreen() {
 
   return (
     <div className="layout profile">
-      <form onSubmit={handleSubmit(onSubmit)} className="profile__form">
+      <form
+        id="profile-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="profile__form"
+      >
         <header className="profile__form__header">
           <h1>Profile</h1>
           <Button
-            isLoading={isLoading}
-            className="profile__form__header__submit-save"
+            form="profile-form"
             type="submit"
+            isLoading={isPending}
+            className="profile__form__header__submit-save"
             size="lg"
           >
             Save
@@ -63,6 +81,7 @@ function ProfileScreen() {
             {...register("dateFormat")}
           />
         </section>
+        {isError && <ErrorMessage error={error} />}
         <section className="profile__form__danger-zone">
           <h2>Danger zone</h2>
           <Button

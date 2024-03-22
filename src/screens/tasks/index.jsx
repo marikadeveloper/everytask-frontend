@@ -18,6 +18,7 @@ function TasksScreen() {
 
   const onTaskStatusUpdate = (task) => {
     if (task.status === TASK_STATUS.DONE) {
+      // TODO: also show a quick toast showing the points (and badges, if any) earned
       hurray();
     }
 
