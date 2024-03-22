@@ -1,10 +1,11 @@
 import { ErrorBoundary } from "react-error-boundary";
 import { Route, Routes } from "react-router-dom";
 import { ErrorMessage, FullPageErrorFallback } from "./components/errors/index";
+import CategoriesScreen from "./screens/categories";
 import DashboardScreen from "./screens/dashboard";
 import { NotFoundScreen } from "./screens/not-found";
+import ProfileScreen from "./screens/profile";
 import TasksScreen from "./screens/tasks";
-import ProfileScreen from "./screens/profile"; // Import ProfileScreen
 
 function AuthenticatedApp() {
   return (
@@ -26,6 +27,7 @@ function AppRoutes() {
       <Route path="/dashboard" element={<DashboardScreen />} />
       <Route path="/tasks" element={<TasksScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
+      <Route path="/categories" element={<CategoriesScreen />} />
 
       <Route path="/" element={<DashboardScreen />} />
       <Route path="*" element={<NotFoundScreen />} />
