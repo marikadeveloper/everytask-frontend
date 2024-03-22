@@ -28,6 +28,7 @@ const taskImpactLabels = {
 };
 
 function getFilterStringFromFilterObject(filters) {
+  // TODO: filters
   // console.log("getFilterStringFromFilterObject", filters);
   return "";
 }

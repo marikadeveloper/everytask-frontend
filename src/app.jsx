@@ -1,11 +1,10 @@
 import * as React from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./app.scss";
+import { Toaster } from "react-hot-toast";
 import BottomBar from "./components/bottom-bar";
 import Navbar from "./components/navbar";
 import { FullPageSpinner } from "./components/spinner/index";
 import { useAuth } from "./context/auth-context";
+import "./app.scss";
 
 const AuthenticatedApp = React.lazy(() => import("./authenticated-app"));
 const UnauthenticatedApp = React.lazy(() => import("./unauthenticated-app"));
@@ -22,7 +21,7 @@ function App() {
         {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
         {user && <BottomBar />}
       </div>
-      <ToastContainer />
+      <Toaster position="top-right" />
     </React.Suspense>
   );
 }
