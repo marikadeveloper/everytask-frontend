@@ -118,12 +118,19 @@ function CategoriesScreen() {
     deleteCategory(deletingCategory.id, {
       onSuccess: () => {
         console.log(`Category ${deletingCategory.id} deleted successfully.`);
+        toast.success(
+          `Category ${deletingCategory.name} deleted successfully.`,
+        );
+
         setDeletingCategory(null);
         onCloseDeleteModal();
       },
       onError: (error) => {
         console.error(
           `Failed to delete category ${deletingCategory.id}: ${error.message}`,
+        );
+        toast.error(
+          `Failed to delete category ${deletingCategory.name}: ${error.message}`,
         );
       },
     });
