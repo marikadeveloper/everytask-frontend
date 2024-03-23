@@ -37,12 +37,34 @@ function useUpdateCategory() {
 
   return useMutation({
     mutationFn: (category) =>
-      client(`categories/${category.id}`, { data: category }),
+      client(`categories/${category.id}`, {
+        method: "PUT",
+        data: category,
+      }),
     onSettled: () => {
       queryClient.invalidateQueries("categories");
     },
   });
 }
 
+function useDeleteCategory() {
+  const client = useClient();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (categoryId) =>
+      client(`categories/${categoryId}`, { method: "DELETE" }),
+    onSettled: () => {
+      // Invalidate categories query to refresh data after deletion
+      queryClient.invalidateQueries("categories");
+    },
+  });
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export { useCategories, useCreateCategory, useUpdateCategory };
+export {
+  useCategories,
+  useCreateCategory,
+  useUpdateCategory,
+  useDeleteCategory,
+};
