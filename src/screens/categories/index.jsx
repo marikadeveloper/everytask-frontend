@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalBody,
+  ModalContent,
   ModalFooter,
   ModalHeader,
   Table,
@@ -30,7 +31,8 @@ function CategoriesScreen() {
   const { mutate: deleteCategory } = useDeleteCategory();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryName, setCategoryName] = useState("");
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [isPending, setIsPending] = useState(false);
 
   const handleAddClick = () => {
     setSelectedCategory(null);
@@ -39,31 +41,42 @@ function CategoriesScreen() {
   };
 
   const handleModalClose = () => {
-    onOpenChange(false); // Use onOpenChange from useDisclosure
+    onOpenChange(false);
   };
 
   const handleModalConfirm = () => {
+    setIsPending(true);
     if (selectedCategory) {
-      // Update category
       updateCategory(
         { id: selectedCategory.id, name: categoryName },
         {
           onSuccess: () => {
-            // This is where you could close the modal and reset state
+            setIsPending(false);
             onOpenChange(false);
-            // Possibly refetch categories or update local state
+            console.log(
+              `Category ${selectedCategory.id} updated successfully.`,
+            );
+          },
+          onError: (error) => {
+            console.error(
+              `Failed to update category ${selectedCategory.id}: ${error.message}`,
+            );
+            setIsPending(false);
           },
         },
       );
     } else {
-      // Create new category
       createCategory(
         { name: categoryName },
         {
           onSuccess: () => {
-            // This is where you could close the modal and reset state
+            setIsPending(false);
             onOpenChange(false);
-            // Possibly refetch categories or update local state
+            console.log(`Category created successfully.`);
+          },
+          onError: (error) => {
+            console.error(`Failed to create category: ${error.message}`);
+            setIsPending(false);
           },
         },
       );
@@ -79,8 +92,13 @@ function CategoriesScreen() {
   const handleDeleteClick = (category) => {
     deleteCategory(category.id, {
       onSuccess: () => {
-        // Handle successful deletion
-        // Optionally update UI or refetch categories
+        console.log(`Category ${category.id} deleted successfully.`);
+      },
+      onError: (error) => {
+        // Handle the error
+        console.error(
+          `Failed to delete category ${category.id}: ${error.message}`,
+        );
       },
     });
   };
@@ -96,6 +114,42 @@ function CategoriesScreen() {
         <div className="categories__header-row">
           <h1>Categories</h1>
           <Button onClick={handleAddClick}>Add category</Button>
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
+            <ModalContent>
+              {() => (
+                <>
+                  <ModalHeader>
+                    {selectedCategory ? "Edit Category" : "Add Category"}
+                  </ModalHeader>
+                  <ModalBody>
+                    <Input
+                      autoFocus
+                      id="categoryName"
+                      label="Category name"
+                      placeholder="Enter category name"
+                      value={categoryName}
+                      onChange={(e) => setCategoryName(e.target.value)}
+                    />
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button variant="bordered" size="md" onPress={onClose}>
+                      Cancel
+                    </Button>
+                    <Button
+                      isLoading={isPending}
+                      size="md"
+                      type="submit"
+                      form="category-form"
+                      auto
+                      onPress={handleModalConfirm}
+                    >
+                      {selectedCategory ? "Save" : "Add"}
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
         </div>
         <Table aria-label="Example table with custom cells">
           <TableHeader columns={columns}>
@@ -127,35 +181,6 @@ function CategoriesScreen() {
             ))}
           </TableBody>
         </Table>
-        <Modal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          closeButton
-          aria-labelledby="modal-title"
-        >
-          <ModalHeader>
-            <span id="modal-title">
-              {selectedCategory ? "Edit Category" : "Add Category"}
-            </span>
-          </ModalHeader>
-          <ModalBody>
-            <Input
-              clearable
-              underlined
-              label="Category name"
-              initialValue=""
-              onChange={(e) => setCategoryName(e.target.value)}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button auto flat color="error" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button auto onClick={handleModalConfirm}>
-              {selectedCategory ? "Save" : "Add"}
-            </Button>
-          </ModalFooter>
-        </Modal>
       </div>
     </>
   );
