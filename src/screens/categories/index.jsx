@@ -1,32 +1,33 @@
 import {
   Modal,
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-  getKeyValue,
-  useDisclosure,
-  ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalHeader,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import { Pencil, Trash } from "../../assets/icons";
-import { Button } from "../../components/button";
+import { Button, IconButton } from "../../components/button";
 import { Input } from "../../components/input/index";
 import {
   useCategories,
   useCreateCategory,
+  useDeleteCategory,
   useUpdateCategory,
 } from "../../utils/category";
+import "./styles.scss";
 
 function CategoriesScreen() {
   const { categories } = useCategories();
   const { mutate: createCategory } = useCreateCategory();
   const { mutate: updateCategory } = useUpdateCategory();
+  const { mutate: deleteCategory } = useDeleteCategory();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryName, setCategoryName] = useState("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -41,14 +42,32 @@ function CategoriesScreen() {
     onOpenChange(false); // Use onOpenChange from useDisclosure
   };
 
-  // Use this function to confirm the modal
   const handleModalConfirm = () => {
     if (selectedCategory) {
-      updateCategory({ ...selectedCategory, name: categoryName });
+      // Update category
+      updateCategory(
+        { id: selectedCategory.id, name: categoryName },
+        {
+          onSuccess: () => {
+            // This is where you could close the modal and reset state
+            onOpenChange(false);
+            // Possibly refetch categories or update local state
+          },
+        },
+      );
     } else {
-      createCategory({ name: categoryName });
+      // Create new category
+      createCategory(
+        { name: categoryName },
+        {
+          onSuccess: () => {
+            // This is where you could close the modal and reset state
+            onOpenChange(false);
+            // Possibly refetch categories or update local state
+          },
+        },
+      );
     }
-    onOpenChange(false); // Use onOpenChange from useDisclosure
   };
 
   const handleEditClick = (category) => {
@@ -57,90 +76,87 @@ function CategoriesScreen() {
     onOpen();
   };
 
+  const handleDeleteClick = (category) => {
+    deleteCategory(category.id, {
+      onSuccess: () => {
+        // Handle successful deletion
+        // Optionally update UI or refetch categories
+      },
+    });
+  };
+
   const columns = [
-    {
-      key: "name",
-      label: "Name",
-    },
-    {
-      key: "actions",
-      label: "Actions",
-      // Render function for actions column, if needed
-    },
+    { name: "Name", uid: "name" },
+    { name: "Actions", uid: "actions" },
   ];
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "10px",
-        }}
-      >
-        <h1>Categories</h1>
-        <Button onClick={handleAddClick}>Add category</Button>
+      <div className="layout categories">
+        <div className="categories__header-row">
+          <h1>Categories</h1>
+          <Button onClick={handleAddClick}>Add category</Button>
+        </div>
+        <Table aria-label="Example table with custom cells">
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+              >
+                {column.name}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody>
+            {categories.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>
+                  <IconButton
+                    icon={<Pencil />}
+                    color="black"
+                    onClick={() => handleEditClick(item)}
+                  />
+                  <IconButton
+                    icon={<Trash />}
+                    onClick={() => handleDeleteClick(item)}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          closeButton
+          aria-labelledby="modal-title"
+        >
+          <ModalHeader>
+            <span id="modal-title">
+              {selectedCategory ? "Edit Category" : "Add Category"}
+            </span>
+          </ModalHeader>
+          <ModalBody>
+            <Input
+              clearable
+              underlined
+              label="Category name"
+              initialValue=""
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button auto flat color="error" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button auto onClick={handleModalConfirm}>
+              {selectedCategory ? "Save" : "Add"}
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
-      <Table aria-label="Example table with categories">
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn key={column.key}>{column.label}</TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={categories}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {" "}
-              {/* Make sure each category has a unique 'id' */}
-              {(columnKey) => {
-                if (columnKey === "actions") {
-                  return (
-                    <TableCell>
-                      <Button onClick={() => handleEditClick(item)}>
-                        Edit
-                      </Button>
-                      <Button onClick={() => handleDeleteClick(item)}>
-                        Delete
-                      </Button>
-                    </TableCell>
-                  );
-                }
-                return <TableCell>{getKeyValue(item, columnKey)}</TableCell>;
-              }}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        closeButton
-        aria-labelledby="modal-title"
-      >
-        <ModalHeader>
-          <span id="modal-title">
-            {selectedCategory ? "Edit Category" : "Add Category"}
-          </span>
-        </ModalHeader>
-        <ModalBody>
-          <Input
-            clearable
-            underlined
-            label="Category name"
-            initialValue=""
-            onChange={(e) => setCategoryName(e.target.value)}
-          />
-        </ModalBody>
-        <ModalFooter>
-          <Button auto flat color="error" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button auto onClick={handleModalConfirm}>
-            {selectedCategory ? "Save" : "Add"}
-          </Button>
-        </ModalFooter>
-      </Modal>
     </>
   );
 }
