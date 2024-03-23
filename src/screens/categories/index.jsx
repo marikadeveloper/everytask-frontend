@@ -13,9 +13,11 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { Pencil, Trash } from "../../assets/icons";
 import { Button, IconButton } from "../../components/button";
 import { Input } from "../../components/input/index";
+
 import {
   useCategories,
   useCreateCategory,
@@ -33,6 +35,12 @@ function CategoriesScreen() {
   const [categoryName, setCategoryName] = useState("");
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [isPending, setIsPending] = useState(false);
+  const [deletingCategory, setDeletingCategory] = useState(null);
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onOpenDeleteModal,
+    onClose: onCloseDeleteModal,
+  } = useDisclosure();
 
   const handleAddClick = () => {
     setSelectedCategory(null);
@@ -56,11 +64,16 @@ function CategoriesScreen() {
             console.log(
               `Category ${selectedCategory.id} updated successfully.`,
             );
+            toast.success(`Category ${categoryName} updated successfully.`);
           },
           onError: (error) => {
             console.error(
               `Failed to update category ${selectedCategory.id}: ${error.message}`,
             );
+            toast.error(
+              `Failed to update category ${categoryName}: ${error.message}`,
+            );
+
             setIsPending(false);
           },
         },
@@ -73,9 +86,11 @@ function CategoriesScreen() {
             setIsPending(false);
             onOpenChange(false);
             console.log(`Category created successfully.`);
+            toast.success(`Category created successfully.`);
           },
           onError: (error) => {
             console.error(`Failed to create category: ${error.message}`);
+            toast.error(`Failed to create category: ${error.message}`);
             setIsPending(false);
           },
         },
@@ -90,14 +105,25 @@ function CategoriesScreen() {
   };
 
   const handleDeleteClick = (category) => {
-    deleteCategory(category.id, {
+    setDeletingCategory(category);
+    onOpenDeleteModal();
+  };
+
+  const handleDiscardClick = () => {
+    setDeletingCategory(null);
+    onCloseDeleteModal();
+  };
+
+  const handleConfirmDeletionClick = () => {
+    deleteCategory(deletingCategory.id, {
       onSuccess: () => {
-        console.log(`Category ${category.id} deleted successfully.`);
+        console.log(`Category ${deletingCategory.id} deleted successfully.`);
+        setDeletingCategory(null);
+        onCloseDeleteModal();
       },
       onError: (error) => {
-        // Handle the error
         console.error(
-          `Failed to delete category ${category.id}: ${error.message}`,
+          `Failed to delete category ${deletingCategory.id}: ${error.message}`,
         );
       },
     });
@@ -121,31 +147,33 @@ function CategoriesScreen() {
                   <ModalHeader>
                     {selectedCategory ? "Edit Category" : "Add Category"}
                   </ModalHeader>
-                  <ModalBody>
-                    <Input
-                      autoFocus
-                      id="categoryName"
-                      label="Category name"
-                      placeholder="Enter category name"
-                      value={categoryName}
-                      onChange={(e) => setCategoryName(e.target.value)}
-                    />
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button variant="bordered" size="md" onPress={onClose}>
-                      Cancel
-                    </Button>
-                    <Button
-                      isLoading={isPending}
-                      size="md"
-                      type="submit"
-                      form="category-form"
-                      auto
-                      onPress={handleModalConfirm}
-                    >
-                      {selectedCategory ? "Save" : "Add"}
-                    </Button>
-                  </ModalFooter>
+                  <form id="category-form" onSubmit={handleModalConfirm}>
+                    <ModalBody>
+                      <Input
+                        autoFocus
+                        id="categoryName"
+                        label="Category name"
+                        placeholder="Enter category name"
+                        value={categoryName}
+                        onChange={(e) => setCategoryName(e.target.value)}
+                      />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button variant="bordered" size="md" onPress={onClose}>
+                        Cancel
+                      </Button>
+                      <Button
+                        isLoading={isPending}
+                        size="md"
+                        type="submit"
+                        form="category-form"
+                        auto
+                        onPress={handleModalConfirm}
+                      >
+                        {selectedCategory ? "Save" : "Add"}
+                      </Button>
+                    </ModalFooter>
+                  </form>
                 </>
               )}
             </ModalContent>
@@ -176,6 +204,39 @@ function CategoriesScreen() {
                     icon={<Trash />}
                     onClick={() => handleDeleteClick(item)}
                   />
+                  <Modal
+                    isOpen={isDeleteModalOpen}
+                    onOpenChange={onCloseDeleteModal}
+                    placement="auto"
+                  >
+                    <ModalContent>
+                      {() => (
+                        <>
+                          <ModalHeader>Delete Category</ModalHeader>
+                          <ModalBody>
+                            Are you sure you want to delete this category?
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button
+                              variant="bordered"
+                              size="md"
+                              onPress={handleDiscardClick}
+                            >
+                              Discard
+                            </Button>
+                            <Button
+                              size="md"
+                              color="danger"
+                              auto
+                              onPress={handleConfirmDeletionClick}
+                            >
+                              Confirm deletion
+                            </Button>
+                          </ModalFooter>
+                        </>
+                      )}
+                    </ModalContent>
+                  </Modal>
                 </TableCell>
               </TableRow>
             ))}
