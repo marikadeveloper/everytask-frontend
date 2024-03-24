@@ -6,6 +6,7 @@ import "./styles.scss";
 
 function Button({
   children,
+  isDisabled,
   className,
   color = "primary",
   form,
@@ -21,6 +22,7 @@ function Button({
       className={className}
       color={color}
       form={form}
+      isDisabled={isDisabled}
       isLoading={isLoading}
       onClick={onClick}
       onPress={onPress}
