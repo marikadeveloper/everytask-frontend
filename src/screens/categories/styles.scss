@@ -1,14 +1,9 @@
-@import "../../styles/settings.scss";
 .categories {
-  display: flex;
-  flex-direction: column;
-
-  &__header-row {
+  &__header {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     gap: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
   &__table {
     max-width: 500px;
