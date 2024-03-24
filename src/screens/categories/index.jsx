@@ -206,7 +206,7 @@ function CategoriesScreen() {
                 <TableCell>
                   <IconButton
                     icon={<Pencil />}
-                    color="black"
+                    color="primary"
                     onClick={() => handleEditClick(item)}
                   />
                   <IconButton
@@ -228,13 +228,11 @@ function CategoriesScreen() {
                           <ModalFooter>
                             <Button
                               variant="bordered"
-                              size="md"
                               onPress={handleDiscardClick}
                             >
                               Discard
                             </Button>
                             <Button
-                              size="md"
                               color="danger"
                               auto
                               onPress={handleConfirmDeletionClick}
