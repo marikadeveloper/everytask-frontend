@@ -144,7 +144,7 @@ function CategoriesScreen() {
   return (
     <>
       <div className="layout categories">
-        <div className="categories__header-row">
+        <div className="categories__header">
           <h1>Categories</h1>
           <Button onClick={handleAddClick} size="lg">
             Add category
@@ -177,6 +177,7 @@ function CategoriesScreen() {
                         form="category-form"
                         auto
                         onPress={handleModalConfirm}
+                        isDisabled={!categoryName.trim()}
                       >
                         {selectedCategory ? "Save" : "Add"}
                       </Button>
