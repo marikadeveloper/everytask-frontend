@@ -168,12 +168,11 @@ function CategoriesScreen() {
                       />
                     </ModalBody>
                     <ModalFooter>
-                      <Button variant="bordered" size="md" onPress={onClose}>
+                      <Button variant="bordered" onPress={onClose}>
                         Cancel
                       </Button>
                       <Button
                         isLoading={isPending}
-                        size="md"
                         type="submit"
                         form="category-form"
                         auto
