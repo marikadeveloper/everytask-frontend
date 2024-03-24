@@ -146,7 +146,9 @@ function CategoriesScreen() {
       <div className="layout categories">
         <div className="categories__header-row">
           <h1>Categories</h1>
-          <Button onClick={handleAddClick}>Add category</Button>
+          <Button onClick={handleAddClick} size="lg">
+            Add category
+          </Button>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
             <ModalContent>
               {() => (
@@ -186,7 +188,7 @@ function CategoriesScreen() {
             </ModalContent>
           </Modal>
         </div>
-        <Table aria-label="Example table with custom cells">
+        <Table className="categories__table">
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn
