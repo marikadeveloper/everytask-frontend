@@ -1,20 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Kanban from "../../components/kanban";
 import TaskCreateModal from "../../components/task-create-modal";
 import { TASK_STATUS, useTasks, useUpdateTask } from "../../utils/task";
 import { hurray } from "../../utils/misc";
 import "./styles.scss";
+import TasksFilters from "../../components/tasks-filters/index";
 
 function TasksScreen() {
   // const { tasks, error, isLoading, isError, isSuccess } = useTasks();
-  const { tasks, refetch } = useTasks();
   const { mutate, status } = useUpdateTask();
+  const [filters, setFilters] = useState();
+  const { tasks, refetch, isPending } = useTasks(filters);
 
   useEffect(() => {
     if (status === "success") {
       refetch();
     }
   }, [status, refetch]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, filters]);
 
   const onTaskStatusUpdate = (task) => {
     if (task.status === TASK_STATUS.DONE) {
@@ -40,13 +46,25 @@ function TasksScreen() {
     });
   };
 
+  const onFiltersUpdated = (newFilters) => {
+    console.log(newFilters);
+    // fetch tasks with filters
+    setFilters(newFilters);
+  };
+
   return (
     <div className="layout tasks">
       <header className="tasks__header">
         <h1>My Tasks</h1>
         <TaskCreateModal />
       </header>
-      <section>{/* TODO: filters + view choice */}</section>
+      <section className="tasks__filters">
+        <TasksFilters
+          onFiltersUpdated={onFiltersUpdated}
+          isFiltering={isPending}
+        />
+        {/* TODO: view choice */}
+      </section>
       <section>
         {/* Kanban */}
         <Kanban tasks={tasks} onTaskUpdate={onTaskStatusUpdate} />

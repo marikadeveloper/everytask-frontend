@@ -37,12 +37,18 @@ h1 {
   font-size: 60px;
   font-weight: 400;
   line-height: 1.2;
+  @media (max-width: 768px) {
+    font-size: 40px;
+  }
 }
 
 h2 {
   font-size: 40px;
   font-weight: 400;
   line-height: 1.2;
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
 }
 
 h3 {
@@ -85,4 +91,7 @@ a {
 */
 .layout {
   padding: 2vw 10vw;
+  @media (max-width: 1264px) {
+    padding: 2vw 5vw;
+  }
 }

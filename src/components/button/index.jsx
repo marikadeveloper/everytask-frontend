@@ -12,7 +12,7 @@ function Button({
   isLoading,
   onClick,
   onPress,
-  size,
+  size = "md",
   type,
   variant,
 }) {

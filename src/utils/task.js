@@ -12,6 +12,11 @@ const TASK_STATUS = {
   TODO: "TODO",
 };
 const taskStatusArray = Object.values(TASK_STATUS);
+const taskStatusLabels = {
+  [TASK_STATUS.DONE]: "Done",
+  [TASK_STATUS.IN_PROGRESS]: "In progress",
+  [TASK_STATUS.TODO]: "To do",
+};
 
 const TASK_IMPACT = {
   HIGH_IMPACT_HIGH_EFFORT: "HIGH_IMPACT_HIGH_EFFORT",
@@ -27,22 +32,15 @@ const taskImpactLabels = {
   [TASK_IMPACT.LOW_IMPACT_LOW_EFFORT]: "Low impact, low effort",
 };
 
-function getFilterStringFromFilterObject(filters) {
-  // TODO: filters
-  // console.log("getFilterStringFromFilterObject", filters);
-  return "";
-}
-
 // Get tasks
 function useTasks(filters) {
   const client = useClient();
 
-  const filterString = getFilterStringFromFilterObject(filters);
   const config = {
     ...taskQueryConfig,
-    queryKey: ["tasks", { filterString }],
+    queryKey: ["tasks"],
     queryFn: () =>
-      client("tasks", { data: { filters } }).then((res) => res.data),
+      client(`tasks`, { data: { ...filters } }).then((res) => res.data),
   };
 
   const result = useQuery(config);
@@ -96,6 +94,7 @@ export {
   taskImpactArray,
   taskImpactLabels,
   taskStatusArray,
+  taskStatusLabels,
   useCreateTask,
   useTask,
   useTasks,

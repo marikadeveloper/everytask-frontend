@@ -1,8 +1,11 @@
 .tasks {
+  &__header,
+  &__filters {
+    margin-bottom: 40px;
+  }
   &__header {
     display: flex;
     align-items: center;
     gap: 30px;
-    margin-bottom: 40px;
   }
 }
