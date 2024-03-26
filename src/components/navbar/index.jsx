@@ -70,7 +70,12 @@ function Navbar() {
       {/** Mobile Navbar * */}
       <nav className="sm:hidden navbar">
         <LogoWithLink />
-        {user && <UserDropdownMenu />}
+        <div />
+        {user && (
+          <div className="navbar__user">
+            <UserDropdownMenu />
+          </div>
+        )}
       </nav>
     </>
   );

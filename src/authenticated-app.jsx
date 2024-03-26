@@ -27,6 +27,7 @@ function AppRoutes() {
       <Route path="/dashboard" element={<DashboardScreen />} />
       <Route path="/tasks" element={<TasksScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
+      <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/categories" element={<CategoriesScreen />} />
 
       <Route path="/" element={<DashboardScreen />} />

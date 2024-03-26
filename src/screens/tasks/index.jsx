@@ -1,27 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Kanban from "../../components/kanban";
 import TaskCreateModal from "../../components/task-create-modal";
-import { TASK_STATUS, useTasks, useUpdateTask } from "../../utils/task";
-import { hurray } from "../../utils/misc";
+import TasksFilters from "../../components/tasks-filters/index";
+import { useTasks, useUpdateTask } from "../../utils/task";
 import "./styles.scss";
 
 function TasksScreen() {
-  // const { tasks, error, isLoading, isError, isSuccess } = useTasks();
-  const { tasks, refetch } = useTasks();
-  const { mutate, status } = useUpdateTask();
+  const { mutate } = useUpdateTask();
+  const [filters, setFilters] = useState();
+  const { tasks, refetch, isPending, dataUpdatedAt } = useTasks(filters);
 
   useEffect(() => {
-    if (status === "success") {
-      refetch();
-    }
-  }, [status, refetch]);
+    refetch();
+  }, [refetch, filters]);
 
   const onTaskStatusUpdate = (task) => {
-    if (task.status === TASK_STATUS.DONE) {
-      // TODO: also show a quick toast showing the points (and badges, if any) earned
-      hurray();
-    }
-
     // update task
     mutate({
       id: task.id,
@@ -40,16 +33,31 @@ function TasksScreen() {
     });
   };
 
+  const onFiltersUpdated = (newFilters) => {
+    // fetch tasks with filters
+    setFilters(newFilters);
+  };
+
   return (
     <div className="layout tasks">
       <header className="tasks__header">
         <h1>My Tasks</h1>
         <TaskCreateModal />
       </header>
-      <section>{/* TODO: filters + view choice */}</section>
+      <section className="tasks__filters">
+        <TasksFilters
+          onFiltersUpdated={onFiltersUpdated}
+          isFiltering={isPending}
+        />
+        {/* TODO: view choice */}
+      </section>
       <section>
         {/* Kanban */}
-        <Kanban tasks={tasks} onTaskUpdate={onTaskStatusUpdate} />
+        <Kanban
+          key={dataUpdatedAt}
+          tasks={tasks}
+          onTaskUpdate={onTaskStatusUpdate}
+        />
         {/* Empty state */}
         {tasks.length === 0 && (
           <div className="empty-state">

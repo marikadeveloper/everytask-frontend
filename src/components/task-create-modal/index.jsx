@@ -37,7 +37,7 @@ function TaskCreateModal() {
 
   useEffect(() => {
     if (status === "success") {
-      toast("Task created successfully");
+      toast.success("Task created successfully");
       onClose();
     }
   }, [status, onClose]);
