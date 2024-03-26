@@ -8,15 +8,15 @@ import TasksFilters from "../../components/tasks-filters/index";
 
 function TasksScreen() {
   // const { tasks, error, isLoading, isError, isSuccess } = useTasks();
-  const { mutate, status } = useUpdateTask();
+  const { mutate, status: updateTaskStatus } = useUpdateTask();
   const [filters, setFilters] = useState();
   const { tasks, refetch, isPending } = useTasks(filters);
 
   useEffect(() => {
-    if (status === "success") {
+    if (updateTaskStatus === "success") {
       refetch();
     }
-  }, [status, refetch]);
+  }, [updateTaskStatus, refetch]);
 
   useEffect(() => {
     refetch();
@@ -47,7 +47,6 @@ function TasksScreen() {
   };
 
   const onFiltersUpdated = (newFilters) => {
-    console.log(newFilters);
     // fetch tasks with filters
     setFilters(newFilters);
   };

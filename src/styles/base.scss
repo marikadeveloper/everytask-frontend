@@ -91,6 +91,9 @@ a {
 */
 .layout {
   padding: 2vw 10vw;
+  @media (max-width: 1400px) {
+    padding: 2vw 7vw;
+  }
   @media (max-width: 1264px) {
     padding: 2vw 5vw;
   }
