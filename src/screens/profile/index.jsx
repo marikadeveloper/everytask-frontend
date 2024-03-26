@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Button } from "../../components/button";

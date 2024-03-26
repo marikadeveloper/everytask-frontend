@@ -44,5 +44,4 @@ function useUpdateCategory() {
   });
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export { useCategories, useCreateCategory, useUpdateCategory };

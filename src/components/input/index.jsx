@@ -10,12 +10,13 @@ import EmojiPicker, { Emoji } from "emoji-picker-react";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import DateTimePicker from "react-datetime-picker";
-import { Close } from "../../assets/icons";
-import { IconButton } from "../button";
-import { useCategories } from "../../utils/category";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
+import { Close } from "../../assets/icons";
+import { IconButton } from "../button";
+import { useCategories } from "../../utils/category";
+
 import "./styles.scss";
 
 const Input = React.forwardRef(({ className, ...rest }, ref) => {
@@ -79,7 +80,6 @@ function EmojiInput({ onEmojiChange }) {
           onEmojiClick={onEmojiClick}
         />
       </div>
-
     </div>
   );
 }
@@ -98,6 +98,8 @@ const Select = React.forwardRef(
       label,
       placeholder,
       variant,
+      itemKey = "value",
+      itemLabel = "label",
       ...rest
     },
     ref,
@@ -114,7 +116,9 @@ const Select = React.forwardRef(
         variant={variant}
         {...rest}
       >
-        {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
+        {(item) => (
+          <SelectItem key={item[itemKey]}>{item[itemLabel]}</SelectItem>
+        )}
       </NuiSelect>
     );
   },
@@ -126,6 +130,8 @@ Select.defaultProps = {
   label: "",
   placeholder: "",
   variant: "bordered",
+  itemKey: "value",
+  itemLabel: "label",
 };
 Select.propTypes = {
   className: PropTypes.string,
@@ -135,6 +141,8 @@ Select.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   variant: PropTypes.string,
+  itemKey: PropTypes.string,
+  itemLabel: PropTypes.string,
 };
 
 function CategoryInput({ onCategoryChange }) {
