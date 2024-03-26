@@ -2,10 +2,10 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger, User,
+  DropdownTrigger,
+  User,
 } from "@nextui-org/react";
 import { useAuth } from "../../context/auth-context";
-import Avatar from "../avatar";
 import "./styles.scss";
 
 function UserDropdownMenu() {
@@ -22,8 +22,8 @@ function UserDropdownMenu() {
             name: "",
             src: "https://images.unsplash.com/broken",
           }}
-          className="transition-transform flex-row-reverse"
-          description={`Level ${user.level}`}
+          className="transition-transform flex-row-reverse user-dropdown-menu__trigger"
+          description={user.level?.name}
           name={user.name}
         />
       </DropdownTrigger>
