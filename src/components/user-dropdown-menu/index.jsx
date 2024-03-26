@@ -2,7 +2,7 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
+  DropdownTrigger, User,
 } from "@nextui-org/react";
 import { useAuth } from "../../context/auth-context";
 import Avatar from "../avatar";
@@ -12,12 +12,23 @@ function UserDropdownMenu() {
   const { user, logout } = useAuth();
 
   return (
-    <Dropdown placement="bottom-end">
+    <Dropdown placement="bottom-end" className="user-dropdown-menu">
       <DropdownTrigger>
-        <Avatar />
+        <User
+          as="button"
+          avatarProps={{
+            isBordered: true,
+            showFallback: true,
+            name: "",
+            src: "https://images.unsplash.com/broken",
+          }}
+          className="transition-transform flex-row-reverse"
+          description={`Level ${user.level}`}
+          name={user.name}
+        />
       </DropdownTrigger>
       <DropdownMenu
-        className="user-dropdown-menu"
+        className="user-dropdown-menu__dropdown"
         disabledKeys={["user"]}
         aria-label="Profile Actions"
         variant="flat"

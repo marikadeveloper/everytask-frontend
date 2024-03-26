@@ -68,13 +68,13 @@ function Kanban({ tasks, onTaskUpdate }) {
               </p>
             </div>
             <Droppable droppableId={el.id}>
-              {(provided, snapshot) => {
+              {(provided) => {
                 return (
                   <div
                     ref={provided.innerRef}
                     className="kanban__board__column"
                     style={{
-                      background: snapshot.isDraggingOver ? "white" : "white",
+                      background: "white",
                     }}
                     {...provided.droppableProps}
                   >

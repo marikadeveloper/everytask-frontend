@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import PropTypes from "prop-types";
 import { NextUIProvider } from "@nextui-org/react";
 import { AuthProvider } from "./auth-context";
-import { CelebrationProvider } from "./celebration-context.jsx";
+import { CelebrationProvider } from "./celebration-context";
 
 const queryConfig = {
   queries: {

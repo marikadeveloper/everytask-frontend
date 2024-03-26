@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
-import { hurray, moreSpecialHurray } from "./misc.js";
-import toast from "react-hot-toast";
-import { CelebrationEvent, useCelebrationContext } from "../context/celebration-context.jsx";
+import {
+  CelebrationEvent,
+  useCelebrationContext,
+} from "../context/celebration-context";
 
 const taskQueryConfig = {
   staleTime: 1000,
@@ -90,7 +91,6 @@ function useUpdateTask() {
       queryClient.invalidateQueries("tasks");
     },
     onSuccess: ({ data }) => {
-      console.log(data);
       /**
        * example data:
        * {
@@ -121,7 +121,6 @@ function useUpdateTask() {
        * }
        */
       if (data.pointsAwarded) {
-        console.log("pointsAwarded", data.pointsAwarded);
         triggerEvent({
           type: CelebrationEvent.Points,
           value: { points: data.pointsAwarded },
@@ -132,6 +131,7 @@ function useUpdateTask() {
           type: CelebrationEvent.LevelUp,
           value: { levelUp: data.levelUp },
         });
+        queryClient.invalidateQueries("me");
       }
       if (data.badges?.length > 0) {
         triggerEvent({

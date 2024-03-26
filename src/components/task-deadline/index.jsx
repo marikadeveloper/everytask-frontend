@@ -62,11 +62,11 @@ function TaskDeadline({ deadline, short = true, isDone }) {
   // deadline: 2024-03-30T20:52:26.326Z
   const deadlineClass = useMemo(() => {
     return getClassFromDeadline({ deadline, isDone });
-  }, [deadline]);
+  }, [deadline, isDone]);
 
   const deadlineText = useMemo(() => {
     return getTextFromDeadline({ deadline, short, isDone });
-  }, [deadline, short]);
+  }, [deadline, short, isDone]);
 
   return (
     <div className={`task-deadline ${deadlineClass}`}>

@@ -7,7 +7,7 @@ import { ListCircle } from "../../assets/icons/index";
 import { TASK_STATUS } from "../../utils/task";
 import "./styles.scss";
 
-function KanbanTask({ task, provided, snapshot }) {
+function KanbanTask({ task, provided }) {
   return (
     <Link className="kanban-task-link" to={`/tasks/${task.id}`}>
       <div
@@ -16,7 +16,7 @@ function KanbanTask({ task, provided, snapshot }) {
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         style={{
-          backgroundColor: snapshot.isDragging ? "white" : "white",
+          backgroundColor: "white",
           ...provided.draggableProps.style,
         }}
       >

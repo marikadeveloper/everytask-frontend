@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import { Button } from "../button/index";
 import Badge from "../badge/index";
-import './styles.scss';
+import "./styles.scss";
 
 function Index({ badges, badgesModalOpen, setBadgesModalOpen }) {
   return (

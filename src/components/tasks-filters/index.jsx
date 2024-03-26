@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input, Select } from "../input/index";
 import {
   taskImpactArray,
@@ -10,8 +12,6 @@ import {
 import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
 import "./styles.scss";
-import { useEffect, useState } from "react";
-import { Accordion, AccordionItem } from "@nextui-org/react";
 
 const taskStatuses = taskStatusArray.map((status) => ({
   value: status,
