@@ -1,5 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
+import { hurray, moreSpecialHurray } from "./misc.js";
+import toast from "react-hot-toast";
+import { CelebrationEvent, useCelebrationContext } from "../context/celebration-context.jsx";
 
 const taskQueryConfig = {
   staleTime: 1000,
@@ -75,6 +78,7 @@ function useCreateTask() {
 function useUpdateTask() {
   const client = useClient();
   const queryClient = useQueryClient();
+  const { triggerEvent } = useCelebrationContext();
 
   return useMutation({
     mutationFn: ({ id, ...updates }) =>
@@ -84,6 +88,57 @@ function useUpdateTask() {
       }),
     onSettled: () => {
       queryClient.invalidateQueries("tasks");
+    },
+    onSuccess: ({ data }) => {
+      console.log(data);
+      /**
+       * example data:
+       * {
+       *     "data": {
+       *         "task": {
+       *             "id": "f41f391e-f415-4704-b525-29265d1cba77",
+       *             "emoji": "1f338",
+       *             "title": "Garden beautification",
+       *             "description": "Do it and you will not regret it!",
+       *             "status": "IN_PROGRESS",
+       *             "dueDate": "2024-04-30T11:48:37.317Z",
+       *             "createdAt": "2024-03-26T12:49:06.092Z",
+       *             "categoryId": "c2fea52b-cef9-4f0f-a1ac-0fe766c40e6d",
+       *             "userId": "d1fffe0a-2e6d-458c-b976-ca14ef67bc3d",
+       *             "impact": "HIGH_IMPACT_HIGH_EFFORT",
+       *             "relativeOrder": 0,
+       *             "firstCompletedAt": null,
+       *             "checklistItems": [],
+       *             "category": {
+       *                 "id": "c2fea52b-cef9-4f0f-a1ac-0fe766c40e6d",
+       *                 "name": "home"
+       *             }
+       *         },
+       *         "badges": [],
+       *         "pointsAwarded": 0,
+       *         "levelUp": null
+       *     }
+       * }
+       */
+      if (data.pointsAwarded) {
+        console.log("pointsAwarded", data.pointsAwarded);
+        triggerEvent({
+          type: CelebrationEvent.Points,
+          value: { points: data.pointsAwarded },
+        });
+      }
+      if (data.levelUp) {
+        triggerEvent({
+          type: CelebrationEvent.LevelUp,
+          value: { levelUp: data.levelUp },
+        });
+      }
+      if (data.badges?.length > 0) {
+        triggerEvent({
+          type: CelebrationEvent.Badges,
+          value: { badges: data.badges },
+        });
+      }
     },
   });
 }

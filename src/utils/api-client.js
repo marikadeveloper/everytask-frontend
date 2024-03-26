@@ -5,20 +5,6 @@ const queryCache = new QueryCache();
 
 const apiURL = import.meta.env.VITE_APP_API_URL;
 
-function getFilterStringFromFilterObject(filterObject) {
-  if (!filterObject) return "";
-  // transforms the filters object in a query param string to give to the backend
-  // e.g. input: { status: "DONE", categoryIds: [1, 2], containsText: "foo", impact: "HIGH_IMPACT_HIGH_EFFORT" } output: "status=DONE&categoryIds[]=1&categoryIds[]=2&containsText=foo&impact=HIGH_IMPACT_HIGH_EFFORT"
-  return Object.entries(filterObject)
-    .reduce((acc, [key, value]) => {
-      if (Array.isArray(value)) {
-        return `${acc}${value.map((v) => `${key}[]=${v}`).join("&")}&`;
-      }
-      return `${acc}${key}=${value}&`;
-    }, "")
-    .slice(0, -1);
-}
-
 async function client(
   endpoint,
   { data, token, method, headers: customHeaders, ...customConfig } = {},

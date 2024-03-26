@@ -25,7 +25,6 @@ function Kanban({ tasks, onTaskUpdate }) {
   const [countPerStatus, setCountPerStatus] = useState({});
 
   useEffect(() => {
-    // TODO: maybe do this on backend side?
     const newCountPerStatus = {};
     tasks.forEach((task) => {
       if (newCountPerStatus[task.status]) {

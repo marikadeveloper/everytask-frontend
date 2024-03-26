@@ -72,7 +72,6 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
   };
 
   const clearFilters = () => {
-    // TODO: make reset work for select components
     reset();
     onFiltersUpdated({});
   };

@@ -1,33 +1,20 @@
 import { useEffect, useState } from "react";
 import Kanban from "../../components/kanban";
 import TaskCreateModal from "../../components/task-create-modal";
-import { TASK_STATUS, useTasks, useUpdateTask } from "../../utils/task";
-import { hurray } from "../../utils/misc";
-import "./styles.scss";
 import TasksFilters from "../../components/tasks-filters/index";
+import { useTasks, useUpdateTask } from "../../utils/task";
+import "./styles.scss";
 
 function TasksScreen() {
-  // const { tasks, error, isLoading, isError, isSuccess } = useTasks();
-  const { mutate, status: updateTaskStatus } = useUpdateTask();
+  const { mutate } = useUpdateTask();
   const [filters, setFilters] = useState();
-  const { tasks, refetch, isPending } = useTasks(filters);
-
-  useEffect(() => {
-    if (updateTaskStatus === "success") {
-      refetch();
-    }
-  }, [updateTaskStatus, refetch]);
+  const { tasks, refetch, isPending, dataUpdatedAt } = useTasks(filters);
 
   useEffect(() => {
     refetch();
   }, [refetch, filters]);
 
   const onTaskStatusUpdate = (task) => {
-    if (task.status === TASK_STATUS.DONE) {
-      // TODO: also show a quick toast showing the points (and badges, if any) earned
-      hurray();
-    }
-
     // update task
     mutate({
       id: task.id,
@@ -66,7 +53,11 @@ function TasksScreen() {
       </section>
       <section>
         {/* Kanban */}
-        <Kanban tasks={tasks} onTaskUpdate={onTaskStatusUpdate} />
+        <Kanban
+          key={dataUpdatedAt}
+          tasks={tasks}
+          onTaskUpdate={onTaskStatusUpdate}
+        />
         {/* Empty state */}
         {tasks.length === 0 && (
           <div className="empty-state">

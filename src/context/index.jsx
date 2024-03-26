@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import PropTypes from "prop-types";
 import { NextUIProvider } from "@nextui-org/react";
 import { AuthProvider } from "./auth-context";
+import { CelebrationProvider } from "./celebration-context.jsx";
 
 const queryConfig = {
   queries: {
@@ -30,7 +31,9 @@ function AppProviders({ children }) {
     <QueryClientProvider client={queryClient} config={queryConfig}>
       <AuthProvider>
         <NextUIProvider>
-          <Router>{children}</Router>
+          <CelebrationProvider>
+            <Router>{children}</Router>
+          </CelebrationProvider>
         </NextUIProvider>
       </AuthProvider>
     </QueryClientProvider>

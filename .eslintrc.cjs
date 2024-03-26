@@ -24,5 +24,6 @@ module.exports = {
     "no-console": "off",
     "react/jsx-props-no-spreading": "off",
     "react/forbid-prop-types": "off",
+    "prefer-object-spread": "off",
   },
 };
