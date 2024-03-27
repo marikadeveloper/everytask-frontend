@@ -183,6 +183,7 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
       selectedKey={value}
       onSelectionChange={onSelectionChange}
       shouldCloseOnBlur
+      allowsCustomValue
     >
       {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
     </Autocomplete>
