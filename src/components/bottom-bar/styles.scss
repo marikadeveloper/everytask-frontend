@@ -1,16 +1,19 @@
+@import "src/styles/settings";
 .bottom-bar {
   align-items: center;
+  background-color: white;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
   border-top: 1px solid var(--everytask-primary);
   bottom: -60px;
   contain: paint;
   display: grid;
-  height: 125px;
+  height: $bottom-bar-height;
   left: 0px;
   padding-bottom: 60px;
   position: fixed;
   right: 0px;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  z-index: 20;
 
   &__links {
     ul {

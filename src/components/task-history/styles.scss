@@ -1,0 +1,45 @@
+.task-history {
+  h2 {
+    margin-bottom: 20px;
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: relative;
+    gap: 10px;
+
+    &::before {
+      border-left: 1px solid var(--everytask-primary);
+      bottom: 0.75em;
+      content: "";
+      margin-left: 3px;
+      position: absolute;
+      top: 0.5em;
+    }
+
+    &__item {
+      overflow: hidden;
+      padding-left: 1em;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      z-index: 20;
+      display: flex;
+      gap: 30px;
+
+      &::before {
+        background-color: var(--everytask-primary);
+        border-radius: 50%;
+        content: "";
+        height: 11px;
+        border: 2px solid white;
+        margin-left: calc(-1em - 2px);
+        position: absolute;
+        top: calc(0.5em - 3px);
+        width: 11px;
+        z-index: 20;
+      }
+    }
+  }
+}

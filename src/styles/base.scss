@@ -94,12 +94,12 @@ a {
   Layout
 */
 .layout {
-  padding: 2vw 10vw;
+  padding: 2vw 10vw calc($bottom-bar-height + 10px);
   @media (max-width: 1400px) {
-    padding: 2vw 7vw;
+    padding: 2vw 7vw calc($bottom-bar-height + 10px);
   }
   @media (max-width: 1264px) {
-    padding: 2vw 5vw;
+    padding: 2vw 5vw calc($bottom-bar-height + 10px);
   }
 }
 

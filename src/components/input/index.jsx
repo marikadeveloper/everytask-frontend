@@ -1,7 +1,6 @@
 import {
   Autocomplete,
   AutocompleteItem,
-  extendVariants,
   Input as NuiInput,
   Select as NuiSelect,
   SelectItem,
@@ -38,9 +37,15 @@ Input.propTypes = {
   className: PropTypes.string,
 };
 
-function EmojiInput({ onEmojiChange }) {
+function EmojiInput({ onEmojiChange, defaultEmoji = null }) {
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(true);
   const [emoji, setEmoji] = useState(null);
+
+  useEffect(() => {
+    if (defaultEmoji) {
+      setEmoji(defaultEmoji);
+    }
+  }, [defaultEmoji]);
 
   const onEmojiClick = ({ unified }) => {
     setEmojiPickerOpen(false);
@@ -89,9 +94,12 @@ function EmojiInput({ onEmojiChange }) {
     </div>
   );
 }
-
+EmojiInput.defaultProps = {
+  defaultEmoji: null,
+};
 EmojiInput.propTypes = {
   onEmojiChange: PropTypes.func.isRequired,
+  defaultEmoji: PropTypes.string,
 };
 
 const Select = React.forwardRef(
@@ -151,9 +159,16 @@ Select.propTypes = {
   itemLabel: PropTypes.string,
 };
 
-function CategoryInput({ onCategoryChange }) {
+function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
   const { categories } = useCategories();
   const [value, setValue] = useState(null);
+
+  useEffect(() => {
+    if (preselectedCategory) {
+      setValue(preselectedCategory);
+    }
+  }, [preselectedCategory]);
+
   const onSelectionChange = (selected) => {
     setValue(selected);
     onCategoryChange(selected);
@@ -173,8 +188,12 @@ function CategoryInput({ onCategoryChange }) {
     </Autocomplete>
   );
 }
+CategoryInput.defaultProps = {
+  preselectedCategory: null,
+};
 CategoryInput.propTypes = {
   onCategoryChange: PropTypes.func.isRequired,
+  preselectedCategory: PropTypes.string,
 };
 
 function DatetimePicker({ onDateChange, date = new Date() }) {
@@ -201,6 +220,7 @@ function DatetimePicker({ onDateChange, date = new Date() }) {
     </div>
   );
 }
+
 DatetimePicker.defaultProps = {
   date: new Date(),
 };

@@ -172,6 +172,7 @@ function TaskChecklist({ taskChecklistItems, taskId, readonly = false }) {
                       ) : (
                         <Checkbox
                           lineThrough
+                          isDisabled={readonly}
                           isSelected={item.completed}
                           onValueChange={(value) =>
                             onItemCheckChange(value, item)
@@ -230,15 +231,7 @@ TaskChecklist.defaultProps = {
   readonly: false,
 };
 TaskChecklist.propTypes = {
-  taskChecklistItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired,
-      order: PropTypes.number.isRequired,
-      taskId: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
+  taskChecklistItems: PropTypes.array.isRequired,
   taskId: PropTypes.string.isRequired,
   readonly: PropTypes.bool,
 };

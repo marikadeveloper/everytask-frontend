@@ -16,7 +16,9 @@ import {
   useUpdateTask,
 } from "../../utils/task";
 import TaskChecklist from "../../components/task-checklist/index";
+import TaskCreateEditModal from "../../components/task-create-edit-modal/index";
 import "./styles.scss";
+import TaskHistory from "../../components/task-history/index.jsx";
 
 const smallScreenThreshold = 768;
 
@@ -102,7 +104,13 @@ function TaskScreen() {
 
   return (
     <div className="layout task">
-      <div className="task__title">{renderTitleAndEmoji()}</div>
+      <div className="task__title">
+        {renderTitleAndEmoji()}
+        <TaskCreateEditModal
+          disabled={task.status === TASK_STATUS.DONE}
+          task={task}
+        />
+      </div>
       <section className="task__sub-header">
         <Select
           label="Status"
@@ -128,6 +136,7 @@ function TaskScreen() {
       )}
       {!!task.description && (
         <section className="task__description">
+          <p className="font-weight-medium">Description</p>
           <p>{task.description}</p>
         </section>
       )}
@@ -137,6 +146,9 @@ function TaskScreen() {
           taskId={taskId}
           taskChecklistItems={task.checklistItems}
         />
+      </section>
+      <section className="task__history">
+        <TaskHistory taskHistory={task.statusHistory} />
       </section>
     </div>
   );
