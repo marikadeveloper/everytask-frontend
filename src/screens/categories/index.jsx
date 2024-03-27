@@ -16,8 +16,8 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Pencil, Trash } from "../../assets/icons";
 import { Button, IconButton } from "../../components/button";
+import DeleteCategoryModal from "../../components/category-delete-modal";
 import { Input } from "../../components/input/index";
-
 import {
   useCategories,
   useCreateCategory,
@@ -211,39 +211,14 @@ function CategoriesScreen() {
                   />
                   <IconButton
                     icon={<Trash />}
+                    color="danger"
                     onClick={() => handleDeleteClick(item)}
                   />
-                  <Modal
+                  <DeleteCategoryModal
                     isOpen={isDeleteModalOpen}
-                    onOpenChange={onCloseDeleteModal}
-                    placement="auto"
-                  >
-                    <ModalContent>
-                      {() => (
-                        <>
-                          <ModalHeader>Delete Category</ModalHeader>
-                          <ModalBody>
-                            Are you sure you want to delete this category?
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button
-                              variant="bordered"
-                              onPress={handleDiscardClick}
-                            >
-                              Discard
-                            </Button>
-                            <Button
-                              color="danger"
-                              auto
-                              onPress={handleConfirmDeletionClick}
-                            >
-                              Confirm deletion
-                            </Button>
-                          </ModalFooter>
-                        </>
-                      )}
-                    </ModalContent>
-                  </Modal>
+                    onClose={onCloseDeleteModal}
+                    onConfirmDeletion={handleConfirmDeletionClick}
+                  />
                 </TableCell>
               </TableRow>
             ))}
