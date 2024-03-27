@@ -21,7 +21,6 @@ import { Input } from "../../components/input/index";
 import {
   useCategories,
   useCreateCategory,
-  useDeleteCategory,
   useUpdateCategory,
 } from "../../utils/category";
 import "./styles.scss";
@@ -30,7 +29,6 @@ function CategoriesScreen() {
   const { categories } = useCategories();
   const { mutate: createCategory } = useCreateCategory();
   const { mutate: updateCategory } = useUpdateCategory();
-  const { mutate: deleteCategory } = useDeleteCategory();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryName, setCategoryName] = useState("");
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -46,10 +44,6 @@ function CategoriesScreen() {
     setSelectedCategory(null);
     setCategoryName("");
     onOpen();
-  };
-
-  const handleModalClose = () => {
-    onOpenChange(false);
   };
 
   const handleModalConfirm = () => {
@@ -109,31 +103,9 @@ function CategoriesScreen() {
     onOpenDeleteModal();
   };
 
-  const handleDiscardClick = () => {
+  const onCategoryDeleted = () => {
     setDeletingCategory(null);
     onCloseDeleteModal();
-  };
-
-  const handleConfirmDeletionClick = () => {
-    deleteCategory(deletingCategory.id, {
-      onSuccess: () => {
-        console.log(`Category ${deletingCategory.id} deleted successfully.`);
-        toast.success(
-          `Category ${deletingCategory.name} deleted successfully.`,
-        );
-
-        setDeletingCategory(null);
-        onCloseDeleteModal();
-      },
-      onError: (error) => {
-        console.error(
-          `Failed to delete category ${deletingCategory.id}: ${error.message}`,
-        );
-        toast.error(
-          `Failed to delete category ${deletingCategory.name}: ${error.message}`,
-        );
-      },
-    });
   };
 
   const columns = [
@@ -214,17 +186,17 @@ function CategoriesScreen() {
                     color="danger"
                     onClick={() => handleDeleteClick(item)}
                   />
-                  <DeleteCategoryModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={onCloseDeleteModal}
-                    onConfirmDeletion={handleConfirmDeletionClick}
-                  />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+      <DeleteCategoryModal
+        isOpen={isDeleteModalOpen}
+        onClose={onCategoryDeleted}
+        category={deletingCategory}
+      />
     </>
   );
 }
