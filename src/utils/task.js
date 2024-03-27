@@ -88,7 +88,7 @@ function useUpdateTask() {
         data: updates,
       }),
     onSettled: () => {
-      queryClient.invalidateQueries("tasks");
+      queryClient.invalidateQueries(["tasks", "task"]);
     },
     onSuccess: ({ data }) => {
       /**

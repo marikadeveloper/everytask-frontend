@@ -1,3 +1,7 @@
+@import "src/styles/settings";
+.input {
+  max-width: $input-max-width;
+}
 .emoji-picker {
   &__label {
     padding-left: 13px;

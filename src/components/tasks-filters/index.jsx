@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input, Select } from "../input/index";
@@ -11,6 +10,7 @@ import {
 } from "../../utils/task";
 import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
+import { useBreakpoint } from "../../utils/hooks";
 import "./styles.scss";
 
 const taskStatuses = taskStatusArray.map((status) => ({
@@ -32,9 +32,8 @@ const filtersLabels = {
 const smallScreenThreshold = 940;
 
 function TasksFilters({ onFiltersUpdated, isFiltering }) {
-  const [isSmallScreen, setIsSmallScreen] = useState(
-    () => window.innerWidth <= smallScreenThreshold,
-  );
+  const isSmallScreen = useBreakpoint(smallScreenThreshold);
+
   const { register, handleSubmit, reset, getValues } = useForm({
     defaultValues: {
       status: "",
@@ -51,14 +50,6 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
    * - impact
    */
   const { categories } = useCategories();
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth <= smallScreenThreshold);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const onSubmit = (data) => {
     let { categoryIds } = data;
