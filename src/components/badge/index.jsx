@@ -5,7 +5,7 @@ function Badge({ code }) {
   return (
     <img
       className="badge"
-      src={`src/assets/badges/${code}.svg`}
+      src={`src/assets/badges/${code}.jpg`}
       alt={`${code} badge`}
     />
   );

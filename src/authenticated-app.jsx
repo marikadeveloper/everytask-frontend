@@ -4,7 +4,8 @@ import { ErrorMessage, FullPageErrorFallback } from "./components/errors/index";
 import DashboardScreen from "./screens/dashboard";
 import { NotFoundScreen } from "./screens/not-found";
 import TasksScreen from "./screens/tasks";
-import ProfileScreen from "./screens/profile"; // Import ProfileScreen
+import ProfileScreen from "./screens/profile";
+import TaskScreen from "./screens/task/index.jsx"; // Import ProfileScreen
 
 function AuthenticatedApp() {
   return (
@@ -25,6 +26,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/dashboard" element={<DashboardScreen />} />
       <Route path="/tasks" element={<TasksScreen />} />
+      <Route path="/tasks/:taskId" element={<TaskScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/" element={<DashboardScreen />} />
       <Route path="*" element={<NotFoundScreen />} />

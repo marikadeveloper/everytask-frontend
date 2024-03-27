@@ -5,6 +5,7 @@
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
   margin: 0;
+
   &:focus {
     outline-color: var(--everytask-primary);
   }
@@ -21,7 +22,7 @@ body {
   font-size: 14px;
   // temp colors
   --everytask-primary: #000000;
-    --everytask-contrast: #ffffff;
+  --everytask-contrast: #ffffff;
   --everytask-success-500: #45d483;
   --everytask-info-500: #338ef7;
   --everytask-danger-500: #f00000;
@@ -83,7 +84,10 @@ a {
 .label {
   font-size: 13px;
   color: #52525b;
+}
 
+.font-weight-medium {
+  font-weight: 500;
 }
 
 /**
@@ -98,3 +102,4 @@ a {
     padding: 2vw 5vw;
   }
 }
+

@@ -1,0 +1,51 @@
+.task {
+  display: grid;
+  gap: 16px;
+
+  &__title {
+    position: relative;
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &__emoji {
+      position: absolute;
+      left: -40px;
+      top: 35px;
+      .emoji-1 {
+        margin-top: -51px;
+        margin-left: 45px;
+      }
+      .emoji-2 {
+        margin-top: -15px;
+        opacity: 70%;
+      }
+      .emoji-3 {
+        margin-top: 17px;
+        margin-left: 13px;
+        opacity: 40%;
+      }
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+
+  &__sub-header {
+    display: grid;
+    grid-template-columns: 200px min-content min-content;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__category {
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+  }
+
+  &__checklist {
+    margin-top: 40px;
+  }
+}

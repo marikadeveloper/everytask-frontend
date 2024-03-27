@@ -85,5 +85,21 @@ function useAsync(initialState) {
   };
 }
 
+function useBreakpoint(threshold) {
+  const [isBelowThreshold, setIsBelowThreshold] = React.useState(
+    window.innerWidth < threshold,
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsBelowThreshold(window.innerWidth < threshold);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [threshold]);
+
+  return isBelowThreshold;
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export { useAsync };
+export { useAsync, useBreakpoint };

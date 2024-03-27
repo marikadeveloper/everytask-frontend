@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   AutocompleteItem,
+  extendVariants,
   Input as NuiInput,
   Select as NuiSelect,
   SelectItem,
@@ -71,7 +72,12 @@ function EmojiInput({ onEmojiChange }) {
             </Tooltip>
           )}
           {emoji && (
-            <IconButton size="sm" icon={<Close />} onClick={removeEmoji} />
+            <IconButton
+              size="sm"
+              color="danger"
+              icon={<Close />}
+              onClick={removeEmoji}
+            />
           )}
         </div>
         <EmojiPicker
@@ -171,12 +177,13 @@ CategoryInput.propTypes = {
   onCategoryChange: PropTypes.func.isRequired,
 };
 
-function DatetimePicker({ onDateChange }) {
-  const [value, onChange] = useState(new Date());
+function DatetimePicker({ onDateChange, date = new Date() }) {
+  const [value, onValueChange] = useState(date);
 
-  useEffect(() => {
-    onDateChange(value);
-  }, [onDateChange, value]);
+  const onChange = (newValue) => {
+    onValueChange(newValue);
+    onDateChange(newValue);
+  };
 
   return (
     /* this is horrible */
@@ -194,7 +201,11 @@ function DatetimePicker({ onDateChange }) {
     </div>
   );
 }
+DatetimePicker.defaultProps = {
+  date: new Date(),
+};
 DatetimePicker.propTypes = {
+  date: PropTypes.instanceOf(Date),
   onDateChange: PropTypes.func.isRequired,
 };
 
