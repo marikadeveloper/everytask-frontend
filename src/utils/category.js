@@ -64,6 +64,6 @@ function useDeleteCategory() {
 export {
   useCategories,
   useCreateCategory,
-  useUpdateCategory,
   useDeleteCategory,
+  useUpdateCategory,
 };
