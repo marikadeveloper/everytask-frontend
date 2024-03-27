@@ -1,6 +1,7 @@
 import { Emoji } from "emoji-picker-react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { FullPageErrorFallback } from "../../components/errors/index";
 import { Select } from "../../components/input/index";
 import { FullPageSpinner } from "../../components/spinner/index";
@@ -12,6 +13,7 @@ import {
   taskStatusArray,
   taskStatusLabels,
   useTask,
+  useUpdateTask,
 } from "../../utils/task";
 import TaskChecklist from "../../components/task-checklist/index";
 import "./styles.scss";
@@ -36,8 +38,9 @@ const getStatusColor = (status) => {
 };
 
 function TaskScreen() {
-  const { register } = useForm();
   const isSmallScreen = useBreakpoint(smallScreenThreshold);
+  const { register, watch } = useForm();
+  const status = watch("status");
   const { taskId } = useParams();
   const {
     data: task,
@@ -45,6 +48,13 @@ function TaskScreen() {
     error,
     isError,
   } = useTask(taskId);
+  const { mutate } = useUpdateTask();
+
+  useEffect(() => {
+    if (status && task?.status !== status) {
+      mutate({ id: taskId, status });
+    }
+  }, [mutate, status, task?.status, taskId]);
 
   const renderEmojis = () => {
     return (
@@ -82,8 +92,6 @@ function TaskScreen() {
     }
     return title;
   };
-
-  // checklist methods
 
   if (isError) {
     return <FullPageErrorFallback error={error} />;
