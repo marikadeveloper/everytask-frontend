@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Kanban from "../../components/kanban";
-import TaskCreateModal from "../../components/task-create-modal";
+import TaskCreateEditModal from "../../components/task-create-edit-modal";
 import TasksFilters from "../../components/tasks-filters/index";
 import { useTasks, useUpdateTask } from "../../utils/task";
 import "./styles.scss";
@@ -42,7 +42,7 @@ function TasksScreen() {
     <div className="layout tasks">
       <header className="tasks__header">
         <h1>My Tasks</h1>
-        <TaskCreateModal />
+        <TaskCreateEditModal />
       </header>
       <section className="tasks__filters">
         <TasksFilters

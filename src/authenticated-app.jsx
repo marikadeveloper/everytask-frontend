@@ -6,6 +6,7 @@ import DashboardScreen from "./screens/dashboard";
 import { NotFoundScreen } from "./screens/not-found";
 import ProfileScreen from "./screens/profile";
 import TasksScreen from "./screens/tasks";
+import TaskScreen from "./screens/task";
 
 function AuthenticatedApp() {
   return (
@@ -26,6 +27,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/dashboard" element={<DashboardScreen />} />
       <Route path="/tasks" element={<TasksScreen />} />
+      <Route path="/tasks/:taskId" element={<TaskScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/categories" element={<CategoriesScreen />} />

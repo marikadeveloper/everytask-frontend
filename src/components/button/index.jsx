@@ -6,14 +6,15 @@ import "./styles.scss";
 
 function Button({
   children,
-  isDisabled,
   className,
   color = "primary",
   form,
+  isDisabled,
   isLoading,
   onClick,
   onPress,
   size = "md",
+  startContent,
   type,
   variant,
 }) {
@@ -27,6 +28,7 @@ function Button({
       onClick={onClick}
       onPress={onPress}
       size={size}
+      startContent={startContent}
       type={type}
       variant={variant}
     >
@@ -39,10 +41,12 @@ Button.defaultProps = {
   className: "",
   color: "primary",
   form: "",
+  isDisabled: false,
   isLoading: false,
   onClick: () => {},
   onPress: () => {},
   size: "md",
+  startContent: null,
   type: "button",
   variant: "solid",
 };
@@ -51,10 +55,12 @@ Button.propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
   form: PropTypes.string,
+  isDisabled: PropTypes.bool,
   isLoading: PropTypes.bool,
   onClick: PropTypes.func,
   onPress: PropTypes.func,
   size: PropTypes.string,
+  startContent: PropTypes.node,
   type: PropTypes.string,
   variant: PropTypes.string,
 };
@@ -88,11 +94,11 @@ LinkButton.propTypes = {
   to: PropTypes.string,
 };
 
-function IconButton({ icon, ...props }) {
+function IconButton({ icon, color, ...props }) {
   return (
     <NuiButton
       className="icon-button"
-      color="danger"
+      color={color}
       isIconOnly
       startContent={icon}
       variant="light"
@@ -100,8 +106,12 @@ function IconButton({ icon, ...props }) {
     />
   );
 }
+IconButton.defaultProps = {
+  color: "primary",
+};
 IconButton.propTypes = {
   icon: PropTypes.node.isRequired,
+  color: PropTypes.string,
 };
 
 export { Button, IconButton, LinkButton };

@@ -1,11 +1,13 @@
 .navbar {
   align-items: center;
+  background: white;
   display: grid;
   grid-template-columns: var(--logo-width) 1fr var(--logo-width);
   left: 0;
   padding: 10px 20px;
   position: sticky;
   top: 0;
+  z-index: 11;
 
   &__links {
     border: 2px solid var(--everytask-primary);
