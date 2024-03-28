@@ -5,7 +5,7 @@ import LoginScreen from "./screens/login";
 import { NotFoundScreen } from "./screens/not-found";
 import RegisterScreen from "./screens/register";
 import ResetPasswordScreen from "./screens/reset-password";
-import { ErrorMessage, FullPageErrorFallback } from "./components/errors/index";
+import { ErrorMessage, FullPageErrorFallback } from "./components/errors";
 
 function UnauthenticatedApp() {
   return (
