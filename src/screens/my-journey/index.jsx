@@ -5,12 +5,28 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import { ResponsivePie } from "@nivo/pie";
 import { useMemo } from "react";
+import { ResponsiveBar } from "@nivo/bar";
+import { ResponsiveCalendar } from "@nivo/calendar";
+import { ResponsiveHeatMap } from "@nivo/heatmap";
+import { Progress } from "@nextui-org/react";
 import {
+  useMyAverageCompletionTimesByImpact, useMyBadges,
   useMyFastestTaskCompletionTime,
-  useMyMostProductiveDay, useMyTasksByCategory, useMyTasksByImpact,
+  useMyMostBusyTimes,
+  useMyMostProductiveDay,
+  useMyStreak,
+  useMyTaskCompletionCalendar,
+  useMyTasksByCategory,
+  useMyTasksByImpact,
   useMyTasksByStatus,
 } from "../../utils/my-journey";
-import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
+import {
+  TASK_IMPACT,
+  taskImpactLabels,
+  taskStatusLabels,
+} from "../../utils/task";
+import { useAuth } from "../../context/auth-context";
+import Badge from "../../components/badge/index.jsx";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -36,12 +52,24 @@ MyJourneySimpleTile.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
+function LoadingTile() {
+  return (
+    <div className="simple-tile loading">
+      <h4>Loading...</h4>
+    </div>
+  );
+}
+
 function MyFastestTaskCompletionTimeTile() {
-  const { data } = useMyFastestTaskCompletionTime();
+  const { data, isPending } = useMyFastestTaskCompletionTime();
 
   const formattedValue = data?.time
     ? dayjs.duration(data.time, "minutes").humanize()
     : "No data";
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
 
   return (
     <MyJourneySimpleTile
@@ -53,12 +81,16 @@ function MyFastestTaskCompletionTimeTile() {
 }
 
 function MyMostProductiveDayTile() {
-  const { data } = useMyMostProductiveDay();
+  const { data, isPending } = useMyMostProductiveDay();
 
   const formattedValue = useMemo(() => {
     if (!data?.date) return "No data";
     return `${dayjs(data.date).format("MMMM D, YYYY")} (${data.tasks} tasks)`;
   }, [data]);
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
 
   return (
     <MyJourneySimpleTile
@@ -70,95 +102,242 @@ function MyMostProductiveDayTile() {
 }
 
 function MyTasksByStatusTile() {
-  const { data } = useMyTasksByStatus();
+  const { data, isPending } = useMyTasksByStatus();
 
-  /**
-   * TODO: Alberto 1
-   * implementa un Pie Chart
-   * la variabile "data" ha questa struttura -> {
-   *    "statusCount": {
-   *      "DONE": 2,
-   *      "TODO": 1
-   *    },
-   *    "statusPercentage": {
-   *      "DONE": "66.67",
-   *      "TODO": "33.33"
-   *    }
-   * }
-   *
-   * - crea una costante "formattedData" che mappa i valori di "data" in un array di oggetti con la seguente struttura:
-   *  { id: string, label: string, value: string } dove "value" deve essere il valore in percentuale dello status
-   *  l'array finale deve avere questa forma ad esempio:
-   *  [
-   *     {
-   *         "id": "Done",
-   *         "label": "Done",
-   *         "value": "50.00"
-   *     },
-   *     {
-   *         "id": "In progress",
-   *         "label": "In progress",
-   *         "value": "25.00"
-   *     },
-   *     {
-   *         "id": "To do",
-   *         "label": "To do",
-   *         "value": "25.00"
-   *     }
-   * ]
-   *
-   * - per tradurre i valori di "status" in label usa la costante "taskStatusLabels", le cui chiavi sono i valori di "TASK_STATUS", ed i valori sono le etichette da mostrare
-   * - usa "useMemo" per memoizare il risultato della formattazione, come dipendenze usa "data"
-   * - usa il componente "ResponsivePie" con queste props: ( import { ResponsivePie } from "@nivo/pie"; )
-   *   - data: formattedData
-   *   - colors: chartsColorScheme
-   *
-   * se ti perdi, le soluzioni sono in index-solutions.jsx
-   */
+  const formattedData = useMemo(() => {
+    if (!data?.statusPercentage) return [];
+
+    return Object.entries(data.statusPercentage).map(([status, count]) => ({
+      id: taskStatusLabels[status],
+      label: taskStatusLabels[status],
+      value: count,
+    }));
+  }, [data]);
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
 
   return (
-    <div className="simple-tile tasks-by-status">
-      <h4>Tasks by Status</h4>
-      {/* <ResponsivePie ... */}
+    <div className="pie-chart-tile tasks-by-status">
+      <h4>Tasks by Status (%)</h4>
+      <ResponsivePie
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        animate={false}
+        data={formattedData}
+        colors={chartsColorScheme}
+      />
     </div>
   );
 }
 
 function MyTasksByImpactTile() {
-  const { data } = useMyTasksByImpact();
+  const { data, isPending } = useMyTasksByImpact();
 
-  /**
-   * TODO: Alberto 2
-   * fai la stessa cosa che hai fatto per "MyTasksByStatusTile" ma per "MyTasksByImpactTile"
-   * la variabile "data" ha la struttura definita in un commento sopra la funzione "useMyTasksByImpact", è molto simile a quella di "useMyTasksByStatus"
-   * la costante "formattedData" deve avere la stessa struttura di quella di "MyTasksByStatusTile"
-   * per tradurre i valori di "impact" in label usa la costante "taskImpactLabels"
-   */
+  const formattedData = useMemo(() => {
+    if (!data?.impactPercentage) return [];
+
+    return Object.entries(data.impactPercentage).map(([impact, count]) => ({
+      id: taskImpactLabels[impact],
+      label: taskImpactLabels[impact],
+      value: count,
+    }));
+  }, [data]);
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
 
   return (
-    <div className="simple-tile tasks-by-impact">
-      <h4>Tasks by Impact</h4>
-      {/* <ResponsivePie ... */}
+    <div className="pie-chart-tile tasks-by-impact">
+      <h4>Tasks by Impact (%)</h4>
+      <ResponsivePie
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        animate={false}
+        data={formattedData}
+        colors={chartsColorScheme}
+      />
     </div>
   );
 }
 
 function MyTasksByCategory() {
-  const { data } = useMyTasksByCategory();
+  const { data, isPending } = useMyTasksByCategory();
 
-  /**
-   * TODO: Alberto 3
-   * fai la stessa cosa che hai fatto per "MyTasksByStatusTile" ma per "MyTasksByCategory"
-   * la variabile "data" ha la struttura definita in un commento sopra la funzione "useMyTasksByCategory"
-   * la costante "formattedData" deve avere la stessa struttura di quella di "MyTasksByStatusTile"
-   * per tradurre i valori di "category" in label usa direttamente la chiave dell'oggetto "data.categoryPercentage"
-   * usa "useMemo" per memoizare il risultato della formattazione, come dipendenze usa "data"
-   */
+  const formattedData = useMemo(() => {
+    if (!data?.categoryPercentage) return [];
+
+    return Object.entries(data.categoryPercentage).map(([category, count]) => ({
+      id: category,
+      label: category,
+      value: count,
+    }));
+  }, [data]);
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
 
   return (
-    <div className="simple-tile tasks-by-category">
-      <h4>Tasks by Category</h4>
-      {/* <ResponsivePie ... */}
+    <div className="pie-chart-tile tasks-by-category">
+      <h4>Tasks by Category (%)</h4>
+      <ResponsivePie
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        animate={false}
+        data={formattedData}
+        colors={chartsColorScheme}
+      />
+    </div>
+  );
+}
+
+function MyTaskCompletionCalendar() {
+  const { data, isPending } = useMyTaskCompletionCalendar();
+  const { calendar, from, to } = data;
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
+
+  return (
+    <div className="simple-tile calendar-tile">
+      <h4>Task Completion Calendar</h4>
+      <ResponsiveCalendar
+        animate={false}
+        data={calendar || []}
+        from={from}
+        to={to}
+        emptyColor="#eeeeee"
+        margin={{ bottom: 30 }}
+      />
+    </div>
+  );
+}
+
+function MyMostBusyTimes() {
+  const { data, isPending } = useMyMostBusyTimes();
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
+
+  return (
+    <div className="simple-tile most-busy-times">
+      <h4>Most Busy Times</h4>
+      <ResponsiveHeatMap
+        animate={false}
+        axisTop={{
+          tickRotation: -90,
+        }}
+        margin={{ top: 50, right: 0, bottom: 0, left: 30 }}
+        data={data}
+        colors={{
+          type: "diverging",
+          scheme: "greens",
+        }}
+      />
+    </div>
+  );
+}
+
+function MyAverageCompletionTimesByImpact() {
+  const { data, isPending } = useMyAverageCompletionTimesByImpact();
+
+  const formattedData = useMemo(() => {
+    if (!data) return [];
+
+    return Object.entries(data).map(([impact, avgTime]) => ({
+      impact: taskImpactLabels[impact],
+      [impact]: avgTime,
+    }));
+  }, [data]);
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
+
+  return (
+    <div className="bar-chart-tile average-completion-times-by-impact">
+      <h4>Average Completion Times by Impact (minutes)</h4>
+      <ResponsiveBar
+        animate={false}
+        data={formattedData}
+        keys={[
+          TASK_IMPACT.HIGH_IMPACT_HIGH_EFFORT,
+          TASK_IMPACT.HIGH_IMPACT_LOW_EFFORT,
+          TASK_IMPACT.LOW_IMPACT_HIGH_EFFORT,
+          TASK_IMPACT.LOW_IMPACT_LOW_EFFORT,
+        ]}
+        indexBy="impact"
+        margin={{ bottom: 30 }}
+        padding={0.3}
+        colors={chartsColorScheme}
+      />
+    </div>
+  );
+}
+
+function MyLevelTile() {
+  const { user } = useAuth();
+
+  return (
+    <div className="simple-tile level-tile">
+      <h4>My Mastery Level</h4>
+      <Progress
+        label={user.level.name}
+        size="md"
+        value={user.points}
+        maxValue={user.points + user.level.pointsToNextLevel}
+        color="secondary"
+        showValueLabel
+      />
+    </div>
+  );
+}
+
+function MyStreakTile() {
+  const { data, isPending } = useMyStreak();
+
+  const { startDate, current, longest } = data;
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
+
+  return (
+    <div className="simple-tile streak-tile">
+      <h4>Current Streak</h4>
+      <p>Longest Streak: {longest} day(s)</p>
+      <p className="font-weight-medium simple-tile__value">
+        {current} day(s)
+        {!!startDate && (
+          <span> (since {dayjs(startDate).format("MMMM D, YYYY")})</span>
+        )}
+      </p>
+    </div>
+  );
+}
+
+function MyBadges() {
+  const { user } = useAuth();
+  const { data, isPending } = useMyBadges();
+
+  if (isPending) {
+    return <LoadingTile />;
+  }
+
+  return (
+    <div className="simple-tile badges-tile">
+      <h4>My Badges</h4>
+      <div className="badges-tile__badges">
+        {data.map((badge) => (
+          <div className="badges-tile__badges__badge" key={badge.id}>
+            <Badge code={badge.badge.code} />
+            <p>{dayjs(badge.earnedAt).format(user.dateFormat)}</p>
+            <p>{badge.badge.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -167,7 +346,18 @@ function MyJourneyScreen() {
   return (
     <div className="layout my-journey">
       <h1>My Journey</h1>
-      <div className="my-journey__content">
+      <section className="my-journey__content">
+        <h2>My Epic Achievements</h2>
+        <div className="my-journey__content__row">
+          {/* User level */}
+          <MyLevelTile />
+          {/* My streak */}
+          <MyStreakTile />
+          {/* My badges */}
+          <MyBadges />
+        </div>
+      </section>
+      <section className="my-journey__content">
         <h2>Task Activities</h2>
         <div className="my-journey__content__row">
           {/* Fastest Task Completion */}
@@ -184,8 +374,16 @@ function MyJourneyScreen() {
         <div className="my-journey__content__row">
           {/* Tasks by Category */}
           <MyTasksByCategory />
+          {/* Task completion calendar like G.Hub */}
+          <MyTaskCompletionCalendar />
         </div>
-      </div>
+        <div className="my-journey__content__row">
+          {/* Most busy times heatmap */}
+          <MyMostBusyTimes />
+          {/* Average completion times by impact */}
+          <MyAverageCompletionTimesByImpact />
+        </div>
+      </section>
     </div>
   );
 }

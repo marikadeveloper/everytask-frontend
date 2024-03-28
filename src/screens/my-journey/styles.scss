@@ -4,6 +4,7 @@
   border-radius: 25px;
   padding: 10px 18px;
   gap: 10px;
+
   &__value {
     justify-self: flex-end;
     font-size: 24px;
@@ -13,12 +14,13 @@
 }
 
 .my-journey {
-  h1 {
-    margin-bottom: 40px;
-  }
+  display: grid;
+  gap: 40px;
+
   &__content {
     display: grid;
     gap: 20px;
+
     &__row {
       align-items: stretch;
       display: flex;
@@ -28,17 +30,61 @@
   }
 }
 
-.tasks-by-status,
-.tasks-by-impact,
-.tasks-by-category {
-  height: 200px;
+.pie-chart-tile {
+  @extend .simple-tile;
+  height: 250px;
 }
-.tasks-by-status {
+
+.tasks-by-status,
+.tasks-by-category {
   width: 400px;
 }
+
 .tasks-by-impact {
   width: 500px;
 }
-.tasks-by-category {
+
+.bar-chart-tile {
+  @extend .simple-tile;
+  height: 200px;
+}
+
+.calendar-tile {
+  height: 250px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.most-busy-times {
+  height: 400px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.line-chart-tile {
+  @extend .simple-tile;
+  height: 300px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.level-tile {
   width: 400px;
+}
+
+.badges-tile {
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    &__badge {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      max-width: 160px;
+      align-items: start;
+      grid-template-rows: min-content min-content 1fr;
+    }
+  }
+
 }
