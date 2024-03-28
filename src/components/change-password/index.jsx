@@ -6,9 +6,9 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
 import { useUpdatePassword } from "../../utils/user";
 import { Button } from "../button/index";
 import { ErrorMessage } from "../errors/index";

@@ -9,13 +9,13 @@ import {
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import DateTimePicker from "react-datetime-picker";
-import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
 import { Close } from "../../assets/icons";
-import { IconButton } from "../button";
 import { useCategories } from "../../utils/category";
+import { IconButton } from "../button";
 
 import "./styles.scss";
 
@@ -229,4 +229,4 @@ DatetimePicker.propTypes = {
   onDateChange: PropTypes.func.isRequired,
 };
 
-export { EmojiInput, Input, Select, CategoryInput, DatetimePicker };
+export { CategoryInput, DatetimePicker, EmojiInput, Input, Select };
