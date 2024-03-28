@@ -1,16 +1,18 @@
-import "./styles.scss";
+import { ResponsivePie } from "@nivo/pie";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import { ResponsivePie } from "@nivo/pie";
 import { useMemo } from "react";
 import {
   useMyFastestTaskCompletionTime,
-  useMyMostProductiveDay, useMyTasksByCategory, useMyTasksByImpact,
+  useMyMostProductiveDay,
+  useMyTasksByCategory,
+  useMyTasksByImpact,
   useMyTasksByStatus,
 } from "../../utils/my-journey";
-import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
+import { taskStatusLabels } from "../../utils/task";
+import "./styles.scss";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -69,57 +71,68 @@ function MyMostProductiveDayTile() {
   );
 }
 
+/**
+ * TODO: Alberto 1
+ * implementa un Pie Chart
+ * la variabile "data" ha questa struttura -> {
+ *    "statusCount": {
+ *      "DONE": 2,
+ *      "TODO": 1
+ *    },
+ *    "statusPercentage": {
+ *      "DONE": "66.67",
+ *      "TODO": "33.33"
+ *    }
+ * }
+ *
+ * - crea una costante "formattedData" che mappa i valori di "data" in un array di oggetti con la seguente struttura:
+ *  { id: string, label: string, value: string } dove "value" deve essere il valore in percentuale dello status
+ *  l'array finale deve avere questa forma ad esempio:
+ *  [
+ *     {
+ *         "id": "Done",
+ *         "label": "Done",
+ *         "value": "50.00"
+ *     },
+ *     {
+ *         "id": "In progress",
+ *         "label": "In progress",
+ *         "value": "25.00"
+ *     },
+ *     {
+ *         "id": "To do",
+ *         "label": "To do",
+ *         "value": "25.00"
+ *     }
+ * ]
+ *
+ * - per tradurre i valori di "status" in label usa la costante "taskStatusLabels", le cui chiavi sono i valori di "TASK_STATUS", ed i valori sono le etichette da mostrare
+ * - usa "useMemo" per memoizare il risultato della formattazione, come dipendenze usa "data"
+ * - usa il componente "ResponsivePie" con queste props: ( import { ResponsivePie } from "@nivo/pie"; )
+ *   - data: formattedData
+ *   - colors: chartsColorScheme
+ *
+ * se ti perdi, le soluzioni sono in index-solutions.jsx
+ */
 function MyTasksByStatusTile() {
   const { data } = useMyTasksByStatus();
 
-  /**
-   * TODO: Alberto 1
-   * implementa un Pie Chart
-   * la variabile "data" ha questa struttura -> {
-   *    "statusCount": {
-   *      "DONE": 2,
-   *      "TODO": 1
-   *    },
-   *    "statusPercentage": {
-   *      "DONE": "66.67",
-   *      "TODO": "33.33"
-   *    }
-   * }
-   *
-   * - crea una costante "formattedData" che mappa i valori di "data" in un array di oggetti con la seguente struttura:
-   *  { id: string, label: string, value: string } dove "value" deve essere il valore in percentuale dello status
-   *  l'array finale deve avere questa forma ad esempio:
-   *  [
-   *     {
-   *         "id": "Done",
-   *         "label": "Done",
-   *         "value": "50.00"
-   *     },
-   *     {
-   *         "id": "In progress",
-   *         "label": "In progress",
-   *         "value": "25.00"
-   *     },
-   *     {
-   *         "id": "To do",
-   *         "label": "To do",
-   *         "value": "25.00"
-   *     }
-   * ]
-   *
-   * - per tradurre i valori di "status" in label usa la costante "taskStatusLabels", le cui chiavi sono i valori di "TASK_STATUS", ed i valori sono le etichette da mostrare
-   * - usa "useMemo" per memoizare il risultato della formattazione, come dipendenze usa "data"
-   * - usa il componente "ResponsivePie" con queste props: ( import { ResponsivePie } from "@nivo/pie"; )
-   *   - data: formattedData
-   *   - colors: chartsColorScheme
-   *
-   * se ti perdi, le soluzioni sono in index-solutions.jsx
-   */
+  const formattedData = useMemo(() => {
+    if (!data) return [];
+
+    return Object.entries(data.statusPercentage).map(
+      ([status, percentage]) => ({
+        id: taskStatusLabels[status],
+        label: taskStatusLabels[status],
+        value: parseFloat(percentage),
+      }),
+    );
+  }, [data]);
 
   return (
     <div className="simple-tile tasks-by-status">
       <h4>Tasks by Status</h4>
-      {/* <ResponsivePie ... */}
+      <ResponsivePie data={formattedData} colors={chartsColorScheme} />
     </div>
   );
 }

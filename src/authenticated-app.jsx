@@ -3,11 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import { ErrorMessage, FullPageErrorFallback } from "./components/errors";
 import CategoriesScreen from "./screens/categories";
 import DashboardScreen from "./screens/dashboard";
+import MyJourneyScreen from "./screens/my-journey";
 import { NotFoundScreen } from "./screens/not-found";
 import ProfileScreen from "./screens/profile";
-import TasksScreen from "./screens/tasks";
 import TaskScreen from "./screens/task";
-import MyJourneyScreen from "./screens/my-journey";
+import TasksScreen from "./screens/tasks";
 
 function AuthenticatedApp() {
   return (
