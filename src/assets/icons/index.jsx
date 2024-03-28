@@ -11,6 +11,7 @@ import ListCircleIcon from "./list-circle-outline.svg?react";
 import PencilIcon from "./pencil-outline.svg?react";
 import RocketIcon from "./rocket-outline.svg?react";
 import StopwatchIcon from "./stopwatch-outline.svg?react";
+import TrashIcon from "./trash-outline.svg?react";
 
 function Add() {
   return <AddIcon />;
@@ -56,6 +57,10 @@ function Stopwatch() {
   return <StopwatchIcon />;
 }
 
+function Trash() {
+  return <TrashIcon />;
+}
+
 export {
   Add,
   ArrowBack,
@@ -68,4 +73,5 @@ export {
   Pencil,
   Rocket,
   Stopwatch,
+  Trash,
 };

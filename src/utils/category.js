@@ -37,11 +37,33 @@ function useUpdateCategory() {
 
   return useMutation({
     mutationFn: (category) =>
-      client(`categories/${category.id}`, { data: category }),
+      client(`categories/${category.id}`, {
+        method: "PUT",
+        data: category,
+      }),
     onSettled: () => {
       queryClient.invalidateQueries("categories");
     },
   });
 }
 
-export { useCategories, useCreateCategory, useUpdateCategory };
+function useDeleteCategory() {
+  const client = useClient();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (categoryId) =>
+      client(`categories/${categoryId}`, { method: "DELETE" }),
+    onSettled: () => {
+      // Invalidate categories query to refresh data after deletion
+      queryClient.invalidateQueries("categories");
+    },
+  });
+}
+
+export {
+  useCategories,
+  useCreateCategory,
+  useDeleteCategory,
+  useUpdateCategory,
+};

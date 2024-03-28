@@ -23,6 +23,7 @@ function Button({
       className={className}
       color={color}
       form={form}
+      isDisabled={isDisabled}
       isLoading={isLoading}
       onClick={onClick}
       onPress={onPress}
@@ -30,7 +31,6 @@ function Button({
       startContent={startContent}
       type={type}
       variant={variant}
-      isDisabled={isDisabled}
     >
       {children}
     </NuiButton>
