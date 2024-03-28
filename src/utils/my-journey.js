@@ -134,10 +134,116 @@ function useMyTasksByCategory() {
   return { data: result.data || {} };
 }
 
+/**
+ * Get the current user's task completion calendar
+ * @returns {{ calendar: { day: string, value: number }[], from: string, to: string }} - data - The current user's task completion calendar
+ */
+function useMyTaskCompletionCalendar() {
+  const client = useClient();
+
+  const config = {
+    ...statQueryConfig,
+    queryKey: ["my-task-completion-calendar"],
+    queryFn: () =>
+      client("my-task-completion-calendar").then((res) => res.data),
+  };
+
+  const result = useQuery(config);
+  return { data: result.data || {} };
+}
+
+/**
+ * Get the current user's most busy times
+ * @returns {{ id: string, data: { x: string, y: number }[] }}[] - data - The current user's most busy times
+ * {
+ *  "data": [
+ *    {
+ *      "id": "monday",
+ *      "data": [
+ *        {
+ *          "x": "00:00",
+ *          "y": 0
+ *        },
+ *        ...
+ */
+function useMyMostBusyTimes() {
+  const client = useClient();
+
+  const config = {
+    ...statQueryConfig,
+    queryKey: ["my-most-busy-times"],
+    queryFn: () => client("my-most-busy-times").then((res) => res.data),
+  };
+
+  const result = useQuery(config);
+  return { data: result.data || [] };
+}
+
+/**
+ * Get the current user's average completion times by impact
+ * @returns {{ [IMPACT]: string }} - data - The current user's average completion times by impact (in minutes)
+ */
+function useMyAverageCompletionTimesByImpact() {
+  const client = useClient();
+
+  const config = {
+    ...statQueryConfig,
+    queryKey: ["my-average-completion-times-by-impact"],
+    queryFn: () =>
+      client("my-average-completion-times-by-impact").then((res) => res.data),
+  };
+
+  const result = useQuery(config);
+  return { data: result.data || {} };
+}
+
+/**
+ * Gamification section
+ */
+
+/**
+ * Get the current user's streak
+ * @returns {{ id: string, startDate: string, updatedAt: string, current: number, longest: number }} - data - The current user's streak
+ */
+function useMyStreak() {
+  const client = useClient();
+
+  const config = {
+    ...statQueryConfig,
+    queryKey: ["my-streak"],
+    queryFn: () => client("my-streak").then((res) => res.data),
+  };
+
+  const result = useQuery(config);
+  return { data: result.data || {} };
+}
+
+/**
+ * Get the current user's badges
+ * @returns {{ id: string, earnedAt: string, badge: { code: string, name: string, description: string, icon: string } }}[] - data - The current user's badges
+ */
+function useMyBadges() {
+  const client = useClient();
+
+  const config = {
+    ...statQueryConfig,
+    queryKey: ["my-badges"],
+    queryFn: () => client("my-badges").then((res) => res.data),
+  };
+
+  const result = useQuery(config);
+  return { data: result.data || [] };
+}
+
 export {
   useMyFastestTaskCompletionTime,
   useMyMostProductiveDay,
   useMyTasksByStatus,
   useMyTasksByImpact,
   useMyTasksByCategory,
+  useMyTaskCompletionCalendar,
+  useMyMostBusyTimes,
+  useMyAverageCompletionTimesByImpact,
+  useMyStreak,
+  useMyBadges,
 };
