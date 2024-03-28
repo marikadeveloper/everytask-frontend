@@ -1,17 +1,18 @@
-import "./styles.scss";
+import { ResponsivePie } from "@nivo/pie";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import { ResponsivePie } from "@nivo/pie";
 import { useMemo } from "react";
 import {
   useMyFastestTaskCompletionTime,
-  useMyMostProductiveDay, useMyTasksByCategory,
+  useMyMostProductiveDay,
+  useMyTasksByCategory,
   useMyTasksByImpact,
   useMyTasksByStatus,
 } from "../../utils/my-journey";
 import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
+import "./styles.scss";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
