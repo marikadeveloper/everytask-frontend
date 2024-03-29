@@ -3,9 +3,13 @@ $small-screen-threshold: 768px;
   display: grid;
   gap: 16px;
 
+  .link-button {
+    justify-self: flex-start;
+    margin-bottom: 4px;
+  }
+
   &__title {
     position: relative;
-    padding-top: 40px;
     display: flex;
     align-items: center;
     gap: 5px;
