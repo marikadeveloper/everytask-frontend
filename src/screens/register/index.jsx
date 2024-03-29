@@ -29,7 +29,7 @@ function RegisterScreen() {
   return (
     <div className="register">
       <h1>Register</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="register__form">
+      <form id="register-form" onSubmit={handleSubmit(onSubmit)} className="register__form">
         <Input
           label="Email"
           id="email"
@@ -63,6 +63,7 @@ function RegisterScreen() {
             type="submit"
             size="lg"
             className="register__form__submit"
+            form="register-form"
           >
             Register
           </Button>
