@@ -13,9 +13,9 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
+import toast from "react-hot-toast";
 import { Close } from "../../assets/icons";
-import { useCategories } from "../../utils/category";
-import { IconButton } from "../button";
+import { useCategories, useCreateCategory } from "../../utils/category";
 
 import "./styles.scss";
 
@@ -161,7 +161,11 @@ Select.propTypes = {
 
 function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
   const { categories } = useCategories();
+  const { mutate: createCategory } = useCreateCategory();
   const [value, setValue] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [autocompleteKey, setAutocompleteKey] = useState(0);
 
   useEffect(() => {
     if (preselectedCategory) {
@@ -170,22 +174,72 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
   }, [preselectedCategory]);
 
   const onSelectionChange = (selected) => {
-    setValue(selected);
-    onCategoryChange(selected);
+    if (selected === "new-category-option") {
+      handleNewCategory();
+    } else {
+      setValue(selected);
+      onCategoryChange(selected);
+    }
+  };
+
+  const handleNewCategory = () => {
+    if (inputValue.trim() === "") {
+      console.error("Category name cannot be empty");
+      toast.error("Category name cannot be empty");
+      return;
+    }
+
+    setIsPending(true);
+    createCategory(
+      { name: inputValue },
+      {
+        onSuccess: (newCategoryId) => {
+          setIsPending(false);
+          console.log(`Category created successfully.`);
+          toast.success(`Category created successfully.`);
+          setValue(newCategoryId);
+          onCategoryChange(newCategoryId);
+          setInputValue("");
+          setAutocompleteKey((prevKey) => prevKey + 1);
+        },
+        onError: (error) => {
+          console.error(`Failed to create category: ${error.message}`);
+          toast.error(`Failed to create category: ${error.message}`);
+          setIsPending(false);
+        },
+      },
+    );
+  };
+
+  const onInputChange = (value) => {
+    setInputValue(value);
   };
 
   return (
-    <Autocomplete
-      label="Category"
-      variant="bordered"
-      defaultItems={categories}
-      placeholder="Search a category"
-      selectedKey={value}
-      onSelectionChange={onSelectionChange}
-      shouldCloseOnBlur
-    >
-      {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
-    </Autocomplete>
+    <div>
+      <Autocomplete
+        key={autocompleteKey}
+        allowsCustomValue
+        label="Category"
+        placeholder="Search or create a category"
+        value={inputValue}
+        onInputChange={onInputChange}
+        onSelectionChange={onSelectionChange}
+        fullWidth
+      >
+        {categories.map((item) => (
+          <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
+        ))}
+        {inputValue &&
+          !categories.some(
+            (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+          ) && (
+            <AutocompleteItem key="new-category-option">
+              {`Add "${inputValue}"`}
+            </AutocompleteItem>
+          )}
+      </Autocomplete>
+    </div>
   );
 }
 CategoryInput.defaultProps = {
