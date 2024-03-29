@@ -45,6 +45,9 @@ function TaskHistory({ taskHistory }) {
   return (
     <div className="task-history">
       <h2>Status history</h2>
+      {/* empty state */}
+      {taskHistory.length === 0 && <p>No status updates (yet)</p>}
+      {/* list of task status history */}
       <div className="task-history__list">
         {taskHistory.map((task, i) => (
           <div
