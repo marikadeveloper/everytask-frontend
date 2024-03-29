@@ -3,9 +3,20 @@
   &__filters {
     margin-bottom: 40px;
   }
+
   &__header {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 40px;
+
+    &__actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 }
