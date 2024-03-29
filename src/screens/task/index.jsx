@@ -1,7 +1,7 @@
 import { Emoji } from "emoji-picker-react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { FullPageErrorFallback } from "../../components/errors/index";
 import { Select } from "../../components/input/index";
 import { FullPageSpinner } from "../../components/spinner/index";
@@ -19,6 +19,7 @@ import TaskChecklist from "../../components/task-checklist/index";
 import TaskCreateEditModal from "../../components/task-create-edit-modal/index";
 import "./styles.scss";
 import TaskHistory from "../../components/task-history/index.jsx";
+import { LinkButton } from "../../components/button/index.jsx";
 
 const smallScreenThreshold = 768;
 
@@ -104,6 +105,9 @@ function TaskScreen() {
 
   return (
     <div className="layout task">
+      <LinkButton to="/tasks" className="link-button">
+        Back to tasks
+      </LinkButton>
       <div className="task__title">
         {renderTitleAndEmoji()}
         <TaskCreateEditModal
