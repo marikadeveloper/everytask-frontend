@@ -26,7 +26,7 @@ function Index({ badges, badgesModalOpen, setBadgesModalOpen }) {
               {/* show badges icons (inside assets/badges/badge-name.png */}
               <div className="badges">
                 {badges.map((badge) => (
-                  <Badge key={badge} code={badge} />
+                  <Badge key={badge} userBadge={badge} />
                 ))}
               </div>
             </ModalBody>
