@@ -35,7 +35,7 @@ const taskImpacts = taskImpactArray.map((impact) => ({
 function TaskCreateEditModal({ task, disabled = false }) {
   const isEditMode = !!task;
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { control, register, handleSubmit, setValue } = useForm({
+  const { control, register, handleSubmit, setValue, reset } = useForm({
     defaultValues: useMemo(() => {
       return {
         title: task ? task.title : "",
@@ -53,9 +53,12 @@ function TaskCreateEditModal({ task, disabled = false }) {
   useEffect(() => {
     if (status === "success") {
       toast.success(`Task ${isEditMode ? "updated" : "created"} successfully`);
+      // reset form values
+      reset();
+      // close dialog
       onClose();
     }
-  }, [status, onClose, isEditMode]);
+  }, [status, onClose, isEditMode, reset]);
 
   useEffect(() => {
     // register manually form fields that are not native inputs
