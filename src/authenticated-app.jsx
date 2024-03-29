@@ -29,7 +29,6 @@ function AppRoutes() {
       <Route path="/tasks" element={<TasksScreen />} />
       <Route path="/tasks/:taskId" element={<TaskScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
-      <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/categories" element={<CategoriesScreen />} />
 
       <Route path="/" element={<DashboardScreen />} />
