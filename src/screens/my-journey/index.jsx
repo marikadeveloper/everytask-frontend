@@ -118,15 +118,13 @@ function MyTasksByStatusTile() {
   const { data } = useMyTasksByStatus();
 
   const formattedData = useMemo(() => {
-    if (!data) return [];
+    if (!data?.statusPercentage) return [];
 
-    return Object.entries(data.statusPercentage).map(
-      ([status, percentage]) => ({
-        id: taskStatusLabels[status],
-        label: taskStatusLabels[status],
-        value: parseFloat(percentage),
-      }),
-    );
+    return Object.entries(data.statusPercentage).map(([status, count]) => ({
+      id: taskStatusLabels[status],
+      label: taskStatusLabels[status],
+      value: count,
+    }));
   }, [data]);
 
   return (
