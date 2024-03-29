@@ -1,5 +1,8 @@
 .badge {
-  // make it round
-  border-radius: 50%;
-  height: 140px;
+  display: grid;
+  img {
+    margin-bottom: 4px;
+    border-radius: 50%;
+    height: 140px;
+  }
 }

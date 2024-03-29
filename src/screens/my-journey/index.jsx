@@ -10,7 +10,8 @@ import { ResponsiveCalendar } from "@nivo/calendar";
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { Progress } from "@nextui-org/react";
 import {
-  useMyAverageCompletionTimesByImpact, useMyBadges,
+  useMyAverageCompletionTimesByImpact,
+  useMyBadges,
   useMyFastestTaskCompletionTime,
   useMyMostBusyTimes,
   useMyMostProductiveDay,
@@ -118,6 +119,10 @@ function MyTasksByStatusTile() {
     return <LoadingTile />;
   }
 
+  if (!formattedData?.length) {
+    return <MyJourneySimpleTile title="Tasks by Status (%)" value="No data" />;
+  }
+
   return (
     <div className="pie-chart-tile tasks-by-status">
       <h4>Tasks by Status (%)</h4>
@@ -146,6 +151,10 @@ function MyTasksByImpactTile() {
 
   if (isPending) {
     return <LoadingTile />;
+  }
+
+  if (!formattedData?.length) {
+    return <MyJourneySimpleTile title="Tasks by Impact (%)" value="No data" />;
   }
 
   return (
@@ -178,6 +187,12 @@ function MyTasksByCategory() {
     return <LoadingTile />;
   }
 
+  if (!formattedData?.length) {
+    return (
+      <MyJourneySimpleTile title="Tasks by Category (%)" value="No data" />
+    );
+  }
+
   return (
     <div className="pie-chart-tile tasks-by-category">
       <h4>Tasks by Category (%)</h4>
@@ -197,6 +212,12 @@ function MyTaskCompletionCalendar() {
 
   if (isPending) {
     return <LoadingTile />;
+  }
+
+  if (!calendar) {
+    return (
+      <MyJourneySimpleTile title="Task Completion Calendar" value="No data" />
+    );
   }
 
   return (
@@ -256,6 +277,15 @@ function MyAverageCompletionTimesByImpact() {
     return <LoadingTile />;
   }
 
+  if (!formattedData?.length) {
+    return (
+      <MyJourneySimpleTile
+        title="Average Completion Times by Impact"
+        value="No data"
+      />
+    );
+  }
+
   return (
     <div className="bar-chart-tile average-completion-times-by-impact">
       <h4>Average Completion Times by Impact (minutes)</h4>
@@ -304,6 +334,10 @@ function MyStreakTile() {
     return <LoadingTile />;
   }
 
+  if (!current && !longest) {
+    return <MyJourneySimpleTile title="Current Streak" value="No data" />;
+  }
+
   return (
     <div className="simple-tile streak-tile">
       <h4>Current Streak</h4>
@@ -319,11 +353,14 @@ function MyStreakTile() {
 }
 
 function MyBadges() {
-  const { user } = useAuth();
   const { data, isPending } = useMyBadges();
 
   if (isPending) {
     return <LoadingTile />;
+  }
+
+  if (!data?.length) {
+    return <MyJourneySimpleTile title="My Badges" value="No data" />;
   }
 
   return (
@@ -332,9 +369,7 @@ function MyBadges() {
       <div className="badges-tile__badges">
         {data.map((badge) => (
           <div className="badges-tile__badges__badge" key={badge.id}>
-            <Badge code={badge.badge.code} />
-            <p>{dayjs(badge.earnedAt).format(user.dateFormat)}</p>
-            <p>{badge.badge.description}</p>
+            <Badge userBadge={badge} />
           </div>
         ))}
       </div>
