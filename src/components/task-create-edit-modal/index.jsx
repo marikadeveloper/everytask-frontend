@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
-import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import {
@@ -123,7 +123,7 @@ function TaskCreateEditModal({ task, disabled = false }) {
                       label="Impact"
                       placeholder="Select impact"
                       items={taskImpacts}
-                      defaultSelectedKeys={[task?.impact]}
+                      defaultSelectedKeys={task ? [task.impact] : []}
                       {...field}
                     />
                   )}
