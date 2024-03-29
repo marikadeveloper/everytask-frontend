@@ -29,13 +29,25 @@ function RegisterScreen() {
   return (
     <div className="register">
       <h1>Register</h1>
-      <form id="register-form" onSubmit={handleSubmit(onSubmit)} className="register__form">
+      <form
+        id="register-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="register__form"
+      >
         <Input
           label="Email"
           id="email"
           type="email"
-          placeholder="Email"
+          placeholder="The email that will be used for log in"
           {...register("email", { required: true })}
+        />
+        
+        <Input
+          label="Name"
+          id="name"
+          type="text"
+          placeholder="The name you want to use"
+          {...register("name")}
         />
 
         <Input
