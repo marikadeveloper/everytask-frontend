@@ -215,33 +215,46 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
     setInputValue(value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && inputValue) {
+      const existingCategory = categories.find(
+        (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+      );
+      if (existingCategory) {
+        setValue(existingCategory.id);
+        onCategoryChange(existingCategory.id);
+      } else {
+        handleNewCategory();
+      }
+    }
+  };
+
   return (
-    <div>
-      <Autocomplete
-        key={autocompleteKey}
-        allowsCustomValue
-        label="Category"
-        variant="bordered"
-        placeholder="Search or create a category"
-        selectedKey={value}
-        value={inputValue}
-        onInputChange={onInputChange}
-        onSelectionChange={onSelectionChange}
-        fullWidth
-      >
-        {categories.map((item) => (
-          <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
-        ))}
-        {inputValue &&
-          !categories.some(
-            (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
-          ) && (
-            <AutocompleteItem key="new-category-option">
-              {`Add "${inputValue}"`}
-            </AutocompleteItem>
-          )}
-      </Autocomplete>
-    </div>
+    <Autocomplete
+      key={autocompleteKey}
+      allowsCustomValue
+      label="Category"
+      variant="bordered"
+      placeholder="Search or create a category"
+      selectedKey={value}
+      value={inputValue}
+      onInputChange={onInputChange}
+      onSelectionChange={onSelectionChange}
+      onKeyDown={handleKeyDown}
+      fullWidth
+    >
+      {categories.map((item) => (
+        <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
+      ))}
+      {inputValue &&
+        !categories.some(
+          (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+        ) && (
+          <AutocompleteItem key="new-category-option">
+            {`Add "${inputValue}"`}
+          </AutocompleteItem>
+        )}
+    </Autocomplete>
   );
 }
 CategoryInput.defaultProps = {
