@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   Modal,
   ModalBody,
@@ -6,8 +5,9 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import { Button } from "../button/index";
+import PropTypes from "prop-types";
 import Badge from "../badge/index";
+import { Button } from "../button/index";
 import "./styles.scss";
 
 function Index({ badges, badgesModalOpen, setBadgesModalOpen }) {
@@ -26,7 +26,7 @@ function Index({ badges, badgesModalOpen, setBadgesModalOpen }) {
               {/* show badges icons (inside assets/badges/badge-name.png */}
               <div className="badges">
                 {badges.map((badge) => (
-                  <Badge key={badge} code={badge} />
+                  <Badge key={badge} userBadge={badge} />
                 ))}
               </div>
             </ModalBody>
