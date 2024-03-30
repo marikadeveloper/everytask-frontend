@@ -196,10 +196,9 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
       {
         onSuccess: (newCategoryId) => {
           setIsPending(false);
-          console.log(`Category created successfully.`);
           toast.success(`Category created successfully.`);
-          setValue(newCategoryId);
-          onCategoryChange(newCategoryId);
+          setValue(newCategoryId.data.id);
+          onCategoryChange(newCategoryId.data.id);
           setInputValue("");
           setAutocompleteKey((prevKey) => prevKey + 1);
         },
