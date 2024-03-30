@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
-import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import {
@@ -35,7 +35,7 @@ const taskImpacts = taskImpactArray.map((impact) => ({
 function TaskCreateEditModal({ task, disabled = false }) {
   const isEditMode = !!task;
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { control, register, handleSubmit, setValue } = useForm({
+  const { control, register, handleSubmit, setValue, reset } = useForm({
     defaultValues: useMemo(() => {
       return {
         title: task ? task.title : "",
@@ -53,9 +53,12 @@ function TaskCreateEditModal({ task, disabled = false }) {
   useEffect(() => {
     if (status === "success") {
       toast.success(`Task ${isEditMode ? "updated" : "created"} successfully`);
+      // reset form values
+      reset();
+      // close dialog
       onClose();
     }
-  }, [status, onClose, isEditMode]);
+  }, [status, onClose, isEditMode, reset]);
 
   useEffect(() => {
     // register manually form fields that are not native inputs
@@ -123,7 +126,7 @@ function TaskCreateEditModal({ task, disabled = false }) {
                       label="Impact"
                       placeholder="Select impact"
                       items={taskImpacts}
-                      defaultSelectedKeys={[task?.impact]}
+                      defaultSelectedKeys={task ? [task.impact] : []}
                       {...field}
                     />
                   )}

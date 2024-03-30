@@ -4,6 +4,11 @@ import TaskCreateEditModal from "../../components/task-create-edit-modal";
 import TasksFilters from "../../components/tasks-filters/index";
 import { useTasks, useUpdateTask } from "../../utils/task";
 import "./styles.scss";
+import { LinkButton } from "../../components/button/index.jsx";
+import { ArrowBack } from "../../assets/icons/index.jsx";
+import { Button as NuiButton } from "@nextui-org/button";
+import { Button } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 
 function TasksScreen() {
   const { mutate } = useUpdateTask();
@@ -42,7 +47,20 @@ function TasksScreen() {
     <div className="layout tasks">
       <header className="tasks__header">
         <h1>My Tasks</h1>
-        <TaskCreateEditModal />
+        <div className="tasks__header__actions">
+          <TaskCreateEditModal />
+          <Button
+            as={Link}
+            className="link-button"
+            color="primary"
+            size="lg"
+            to="/categories"
+            variant="bordered"
+          >
+            Manage Categories
+          </Button>
+        </div>
+
       </header>
       <section className="tasks__filters">
         <TasksFilters

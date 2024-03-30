@@ -25,6 +25,7 @@ function Kanban({ tasks, onTaskUpdate }) {
   const [countPerStatus, setCountPerStatus] = useState({});
 
   useEffect(() => {
+    // initialize count per status (only once)
     const newCountPerStatus = {};
     tasks.forEach((task) => {
       if (newCountPerStatus[task.status]) {
@@ -34,7 +35,18 @@ function Kanban({ tasks, onTaskUpdate }) {
       }
     });
     setCountPerStatus(newCountPerStatus);
-  }, [tasks]);
+  }, []);
+
+  const updateStatusCountAfterTaskUpdate = ({ oldStatus, newStatus }) => {
+    const newCountPerStatus = { ...countPerStatus };
+    newCountPerStatus[oldStatus] -= 1;
+    if (newCountPerStatus[newStatus]) {
+      newCountPerStatus[newStatus] += 1;
+    } else {
+      newCountPerStatus[newStatus] = 1;
+    }
+    setCountPerStatus(newCountPerStatus);
+  };
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
@@ -53,6 +65,10 @@ function Kanban({ tasks, onTaskUpdate }) {
       status: TASK_STATUS[destination.droppableId],
       relativeOrder: destination.index,
     };
+    updateStatusCountAfterTaskUpdate({
+      oldStatus: task.status,
+      newStatus: newTask.status,
+    });
     onTaskUpdate(newTask);
   };
 

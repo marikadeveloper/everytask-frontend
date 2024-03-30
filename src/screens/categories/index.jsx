@@ -15,7 +15,7 @@ import {
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Pencil, Trash } from "../../assets/icons";
-import { Button, IconButton } from "../../components/button";
+import { Button, IconButton, LinkButton } from "../../components/button";
 import DeleteCategoryModal from "../../components/category-delete-modal";
 import { Input } from "../../components/input/index";
 import {
@@ -116,6 +116,9 @@ function CategoriesScreen() {
   return (
     <>
       <div className="layout categories">
+        <LinkButton to="/tasks" className="link-button">
+          Back to tasks
+        </LinkButton>
         <div className="categories__header">
           <h1>Categories</h1>
           <Button onClick={handleAddClick} size="lg">
