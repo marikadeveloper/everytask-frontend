@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Button, LinkButton } from "../../components/button/index";
 import { ErrorMessage } from "../../components/errors/index";
-import { Input } from "../../components/input/index";
+import { Input } from "../../components/input";
 import { useAuth } from "../../context/auth-context";
 import { useAsync } from "../../utils/hooks";
 import "./styles.scss";

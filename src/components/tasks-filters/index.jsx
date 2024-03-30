@@ -1,16 +1,16 @@
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import { Accordion, AccordionItem } from "@nextui-org/react";
-import { Input, Select } from "../input/index";
+import { useCategories } from "../../utils/category";
+import { useBreakpoint } from "../../utils/hooks";
 import {
   taskImpactArray,
   taskImpactLabels,
   taskStatusArray,
   taskStatusLabels,
 } from "../../utils/task";
-import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
-import { useBreakpoint } from "../../utils/hooks";
+import { Input, Select } from "../input";
 import "./styles.scss";
 
 const taskStatuses = taskStatusArray.map((status) => ({

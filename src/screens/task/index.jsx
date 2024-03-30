@@ -1,11 +1,15 @@
 import { Emoji } from "emoji-picker-react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import React, { useEffect } from "react";
+import { LinkButton } from "../../components/button/index.jsx";
 import { FullPageErrorFallback } from "../../components/errors/index";
-import { Select } from "../../components/input/index";
+import { Select } from "../../components/input/index.jsx";
 import { FullPageSpinner } from "../../components/spinner/index";
+import TaskChecklist from "../../components/task-checklist/index";
+import TaskCreateEditModal from "../../components/task-create-edit-modal/index";
 import TaskDeadline from "../../components/task-deadline/index";
+import TaskHistory from "../../components/task-history/index.jsx";
 import TaskImpactChip from "../../components/task-impact-chip/index";
 import { useBreakpoint } from "../../utils/hooks";
 import {
@@ -15,11 +19,7 @@ import {
   useTask,
   useUpdateTask,
 } from "../../utils/task";
-import TaskChecklist from "../../components/task-checklist/index";
-import TaskCreateEditModal from "../../components/task-create-edit-modal/index";
 import "./styles.scss";
-import TaskHistory from "../../components/task-history/index.jsx";
-import { LinkButton } from "../../components/button/index.jsx";
 
 const smallScreenThreshold = 768;
 

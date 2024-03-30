@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Button } from "../../components/button";
 import ChangePassword from "../../components/change-password";
+import { ErrorMessage } from "../../components/errors/index";
+import { Input, Select } from "../../components/input";
 import { useAuth } from "../../context/auth-context";
 import { dateFormats } from "../../utils/misc";
 import { useUpdateUser } from "../../utils/user";
-import { Input, Select } from "../../components/input/index";
-import { ErrorMessage } from "../../components/errors/index";
 import "./styles.scss";
 
 function ProfileScreen() {

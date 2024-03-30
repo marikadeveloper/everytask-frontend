@@ -16,6 +16,7 @@ import "react-datetime-picker/dist/DateTimePicker.css";
 import toast from "react-hot-toast";
 import { Close } from "../../assets/icons";
 import { useCategories, useCreateCategory } from "../../utils/category";
+import { IconButton } from "../button";
 
 import "./styles.scss";
 

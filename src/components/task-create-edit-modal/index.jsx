@@ -24,7 +24,7 @@ import {
   EmojiInput,
   Input,
   Select,
-} from "../input/index";
+} from "../input";
 import "./styles.scss";
 
 const taskImpacts = taskImpactArray.map((impact) => ({

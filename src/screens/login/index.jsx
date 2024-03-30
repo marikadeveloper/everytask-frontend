@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { Button } from "../../components/button/index";
+import { ErrorMessage } from "../../components/errors/index";
+import { Input } from "../../components/input";
 import { useAuth } from "../../context/auth-context";
 import { useAsync } from "../../utils/hooks";
 import "./styles.scss";
-import { Input } from "../../components/input/index";
-import { ErrorMessage } from "../../components/errors/index";
-import { Button } from "../../components/button/index";
 
 function LoginScreen() {
   const { login } = useAuth();
@@ -21,7 +21,11 @@ function LoginScreen() {
   return (
     <div className="login">
       <h1>Login</h1>
-      <form id="login-form" onSubmit={handleSubmit(onSubmit)} className="login__form">
+      <form
+        id="login-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="login__form"
+      >
         <Input
           id="email"
           type="email"

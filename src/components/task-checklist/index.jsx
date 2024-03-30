@@ -9,7 +9,7 @@ import {
   useUpdateChecklistItem,
 } from "../../utils/checklist-item";
 import { Button, IconButton } from "../button/index";
-import { Input } from "../input/index";
+import { Input } from "../input";
 import "./styles.scss";
 
 function TaskChecklist({ taskChecklistItems, taskId, readonly = false }) {

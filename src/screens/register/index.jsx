@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../../components/button/index";
+import { ErrorMessage } from "../../components/errors/index";
+import { Input } from "../../components/input";
 import { useAuth } from "../../context/auth-context";
 import { useAsync } from "../../utils/hooks";
 import "./styles.scss";
-import { Input } from "../../components/input/index";
-import { ErrorMessage } from "../../components/errors/index";
-import { Button } from "../../components/button/index";
 
 function RegisterScreen() {
   const { register: registerUser } = useAuth();
@@ -41,7 +41,7 @@ function RegisterScreen() {
           placeholder="The email that will be used for log in"
           {...register("email", { required: true })}
         />
-        
+
         <Input
           label="Name"
           id="name"

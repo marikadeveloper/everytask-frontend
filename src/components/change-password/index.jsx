@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { useUpdatePassword } from "../../utils/user";
 import { Button } from "../button/index";
 import { ErrorMessage } from "../errors/index";
-import { Input } from "../input/index";
+import { Input } from "../input";
 import "./styles.scss";
 
 function ChangePassword() {
