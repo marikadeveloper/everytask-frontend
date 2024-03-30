@@ -10,7 +10,7 @@ import { Button } from "../button/index";
 import Badge from "../badge/index";
 import "./styles.scss";
 
-function Index({ badges, badgesModalOpen, setBadgesModalOpen }) {
+function BadgesModal({ badges, badgesModalOpen, setBadgesModalOpen }) {
   return (
     <Modal
       isOpen={badgesModalOpen}
@@ -41,10 +41,10 @@ function Index({ badges, badgesModalOpen, setBadgesModalOpen }) {
     </Modal>
   );
 }
-Index.propTypes = {
-  badges: PropTypes.arrayOf(PropTypes.string).isRequired,
+BadgesModal.propTypes = {
+  badges: PropTypes.array.isRequired,
   setBadgesModalOpen: PropTypes.func.isRequired,
   badgesModalOpen: PropTypes.bool.isRequired,
 };
 
-export default Index;
+export default BadgesModal;

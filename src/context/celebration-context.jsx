@@ -9,7 +9,7 @@ import {
 import toast from "react-hot-toast";
 import { hurray, moreSpecialHurray } from "../utils/misc";
 import LevelUpModal from "../components/level-up-modal";
-import Index from "../components/badges-modal/index";
+import BadgesModal from "../components/badges-modal";
 
 export const CelebrationEvent = {
   LevelUp: "level-up",
@@ -74,7 +74,7 @@ export function CelebrationProvider({ children }) {
         />
       )}
       {!!eventValue?.badges && (
-        <Index
+        <BadgesModal
           badges={eventValue.badges}
           badgesModalOpen={badgesModalOpen}
           setBadgesModalOpen={setBadgesModalOpen}
