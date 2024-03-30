@@ -221,6 +221,7 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
         key={autocompleteKey}
         allowsCustomValue
         label="Category"
+        variant="bordered"
         placeholder="Search or create a category"
         value={inputValue}
         onInputChange={onInputChange}
