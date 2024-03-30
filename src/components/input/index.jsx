@@ -224,6 +224,7 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
         label="Category"
         variant="bordered"
         placeholder="Search or create a category"
+        selectedKey={value}
         value={inputValue}
         onInputChange={onInputChange}
         onSelectionChange={onSelectionChange}
