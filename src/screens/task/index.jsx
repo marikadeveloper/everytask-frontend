@@ -104,7 +104,7 @@ function TaskScreen() {
   }
 
   return (
-    <div className="layout task">
+    <div className={`layout task ${task.emoji ? "task--has-emoji" : ""}`}>
       <LinkButton to="/tasks" className="link-button">
         Back to tasks
       </LinkButton>

@@ -8,6 +8,12 @@ $small-screen-threshold: 768px;
     margin-bottom: 4px;
   }
 
+  &--has-emoji {
+    .link-button {
+      margin-bottom: 46px;
+    }
+  }
+
   &__title {
     position: relative;
     display: flex;
@@ -28,6 +34,7 @@ $small-screen-threshold: 768px;
       }
       img {
         grid-area: emoji;
+        justify-self: flex-start;
       }
       button {
         grid-area: button;
@@ -37,7 +44,7 @@ $small-screen-threshold: 768px;
     &__emoji {
       position: absolute;
       left: -40px;
-      top: 35px;
+      top: -5px;
 
       .emoji-1 {
         margin-top: -51px;
