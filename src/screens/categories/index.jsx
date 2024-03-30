@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { Pencil, Trash } from "../../assets/icons";
 import { Button, IconButton, LinkButton } from "../../components/button";
 import DeleteCategoryModal from "../../components/category-delete-modal";
-import { Input } from "../../components/input";
+import { Input } from "../../components/input/index";
 import {
   useCategories,
   useCreateCategory,
