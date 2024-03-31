@@ -134,7 +134,31 @@ function MyTasksByStatusTile() {
   return (
     <div className="simple-tile tasks-by-status">
       <h4>Tasks by Status</h4>
-      <ResponsivePie data={formattedData} colors={chartsColorScheme} />
+      <ResponsivePie
+        data={formattedData}
+        colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+      />
     </div>
   );
 }
@@ -149,6 +173,7 @@ function MyTasksByStatusTile() {
 
 function MyTasksByImpactTile() {
   const { data } = useMyTasksByImpact();
+  console.log(data);
 
   const formattedData = useMemo(() => {
     if (!data?.impactPercentage) return [];
@@ -163,7 +188,31 @@ function MyTasksByImpactTile() {
   return (
     <div className="simple-tile tasks-by-impact">
       <h4>Tasks by Impact</h4>
-      <ResponsivePie data={formattedData} colors={chartsColorScheme} />
+      <ResponsivePie
+        data={formattedData}
+        colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+      />
     </div>
   );
 }
@@ -196,7 +245,27 @@ function MyTasksByCategory() {
       <ResponsivePie
         data={formattedData}
         colors={chartsColorScheme}
-        margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
       />
     </div>
   );
@@ -222,7 +291,7 @@ function MyTaskCompletionCalendar() {
         align="top"
         emptyColor="#eeeeee"
         colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
-        margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+        margin={{ top: 40, right: 20, bottom: 20, left: 20 }}
         yearSpacing={40}
         monthBorderColor="#ffffff"
         dayBorderWidth={2}
@@ -253,7 +322,7 @@ function MyMostBusyTimes() {
       <h4>Most Busy Times</h4>
       <ResponsiveHeatMap
         data={data}
-        margin={{ top: 60, right: 90, bottom: 60, left: 90 }}
+        margin={{ top: 50, right: 90, bottom: 60, left: 90 }}
         valueFormat=">-.2s"
         axisTop={{
           tickSize: 5,
@@ -283,10 +352,10 @@ function MyMostBusyTimes() {
         }}
         colors={{
           type: "diverging",
-          scheme: "red_yellow_blue",
+          scheme: "greens",
           divergeAt: 0.5,
-          minValue: -100000,
-          maxValue: 100000,
+          minValue: 0,
+          maxValue: 10,
         }}
         emptyColor="#555555"
         legends={[
@@ -302,7 +371,7 @@ function MyMostBusyTimes() {
             tickSpacing: 4,
             tickOverlap: false,
             tickFormat: ">-.2s",
-            title: "Value →",
+            title: "Tasks →",
             titleAlign: "start",
             titleOffset: 4,
           },
