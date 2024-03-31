@@ -28,25 +28,23 @@
   }
 }
 
-.tasks-by-status,
-.tasks-by-impact,
-.tasks-by-category {
-  height: 200px;
-}
 .tasks-by-status {
   width: 400px;
+  height: 250px;
 }
 .tasks-by-impact {
   width: 500px;
+  height: 250px;
 }
 .tasks-by-category {
   width: 400px;
+  height: 250px;
 }
 .calendar-tile {
   width: 500px;
-  height: 200px;
+  height: 250px;
 }
 .most-busy-times {
   width: 920px;
-  height: 400px;
+  height: 350px;
 }
