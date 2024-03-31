@@ -1,6 +1,6 @@
 .simple-tile {
   display: grid;
-  border: 2px solid #E1E1E1;
+  border: 2px solid #e1e1e1;
   border-radius: 25px;
   padding: 10px 18px;
   gap: 10px;
@@ -41,4 +41,12 @@
 }
 .tasks-by-category {
   width: 400px;
+}
+.calendar-tile {
+  width: 500px;
+  height: 200px;
+}
+.most-busy-times {
+  width: 920px;
+  height: 400px;
 }
