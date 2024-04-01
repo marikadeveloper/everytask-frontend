@@ -2,20 +2,13 @@ import { Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import DueTodayTask from "../../components/due-today-task/index.jsx";
 import TaskCreateEditModal from "../../components/task-create-edit-modal/index.jsx";
+import UpcomingTask from "../../components/upcoming-task/index.jsx";
 import { useUser } from "../../utils/user.js";
 
 import "./styles.scss";
 
 function DashboardScreen() {
   const user = useUser();
-
-  function UpcomingTask1() {
-    return <div className="simple-tile-2 upcoming-task"></div>;
-  }
-
-  function UpcomingTask2() {
-    return <div className="simple-tile-2 upcoming-task"></div>;
-  }
 
   return (
     <div className="layout dashboard">
@@ -43,8 +36,8 @@ function DashboardScreen() {
           </Button>
         </div>
         <div className="dashboard__content__row-2">
-          <UpcomingTask1 />
-          <UpcomingTask2 />
+          <UpcomingTask />
+          <UpcomingTask />
         </div>
       </div>
     </div>
