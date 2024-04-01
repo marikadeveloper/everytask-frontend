@@ -1,0 +1,16 @@
+.due-today-task {
+  display: flex;
+  border: 0px solid #e1e1e1;
+  width: 520px;
+  height: 55px;
+  align-items: center;
+  gap: 10px;
+  &__status {
+    width: 150px;
+    gap: 10px;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
