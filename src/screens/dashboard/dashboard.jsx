@@ -25,7 +25,8 @@ function DashboardScreen() {
       </div>
       <div className="dashboard__content">
         <h2>Due today</h2>
-        <div className="dashboard__content__row">
+        <div className="dashboard__content__row-1">
+          <DueTodayTask />
           <DueTodayTask />
         </div>
         <div className="dashboard__content__upcoming-tasks-header">
@@ -41,7 +42,7 @@ function DashboardScreen() {
             See all tasks
           </Button>
         </div>
-        <div className="dashboard__content__row">
+        <div className="dashboard__content__row-2">
           <UpcomingTask1 />
           <UpcomingTask2 />
         </div>
