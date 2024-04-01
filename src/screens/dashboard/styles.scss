@@ -1,0 +1,50 @@
+.simple-tile-1 {
+  display: grid;
+  border: 2px solid #e1e1e1;
+  border-radius: 25px;
+  padding: 10px 18px;
+  gap: 10px;
+}
+
+.simple-tile-2 {
+  display: grid;
+  border: 2px solid #e1e1e1;
+  border-radius: 25px;
+  padding: 10px 18px;
+  gap: 10px;
+}
+
+.dashboard {
+  &__header {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  &__content {
+    display: grid;
+    gap: 20px;
+    &__row {
+      align-items: stretch;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    &__upcoming-tasks-header {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+  }
+}
+
+.due-today-task {
+  width: 520px;
+  height: 55px;
+}
+
+.upcoming-task {
+  width: 250px;
+  height: 150px;
+}
