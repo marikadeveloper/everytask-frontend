@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  taskStatusArray,
-  taskStatusLabels,
-  useUpdateTask,
-} from "../../utils/task.js";
+import { taskStatusArray, taskStatusLabels } from "../../utils/task.js";
 import { Select } from "../input/index.jsx";
 import TaskImpactChip from "../task-impact-chip/index.jsx";
 import "./styles.scss";
 
 function DueTodayTask({ task }) {
-  const { mutate } = useUpdateTask();
   const dueTodayTask = {
     title: "Da fare prima che Marika si svegli!",
     status: "IN_PROGRESS",
@@ -33,8 +28,6 @@ function DueTodayTask({ task }) {
         return "default";
     }
   };
-
-  const statusColor = getStatusColor(status);
 
   return (
     <div className="due-today-task">
