@@ -1,7 +1,7 @@
-import { useMemo } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
+import { useMemo } from "react";
 import { Stopwatch } from "../../assets/icons";
 import "./styles.scss";
 
@@ -33,16 +33,21 @@ const getClassFromDeadline = ({ deadline, isDone }) => {
   return "task-deadline--black";
 };
 
+const removeInAndAgo = (str) => {
+  return str.replace(/^(in )|( ago)$/, "");
+};
+
 const getTextFromDeadline = ({ deadline, short, isDone }) => {
   const date = dayjs(deadline);
   if (isDone) {
     return date.format("DD MMM YYYY");
   }
 
-  // e.g. -> Due in 2 weeks
-  const relative = date.fromNow();
-  if (date.isBefore(dayjs(), "day")) {
-    const relativeOverdue = date.toNow();
+  let relative = removeInAndAgo(date.fromNow());
+
+  if (date.isBefore(dayjs())) {
+    let relativeOverdue = removeInAndAgo(date.toNow());
+
     if (short) {
       return "overdue";
     }
@@ -51,10 +56,9 @@ const getTextFromDeadline = ({ deadline, short, isDone }) => {
   }
 
   if (short) {
-    return relative?.replace("in ", "");
+    return relative;
   }
 
-  // Due in 2 weeks (20 apr 2024)
   return `Due in ${relative} (${date.format("DD MMM YYYY")})`;
 };
 
