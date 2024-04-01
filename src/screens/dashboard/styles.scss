@@ -16,17 +16,22 @@
   &__content {
     display: grid;
     gap: 20px;
-    &__row {
-      align-items: stretch;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
+    &__row-1 {
+      //align-items: stretch;
+      display: grid;
+      gap: 5px;
+      margin-bottom: 15px;
     }
     &__upcoming-tasks-header {
       display: flex;
       align-items: center;
       gap: 40px;
+    }
+    &__row-2 {
+      align-items: stretch;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
     }
   }
 }
