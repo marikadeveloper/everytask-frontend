@@ -75,49 +75,6 @@ function MyMostProductiveDayTile() {
   );
 }
 
-/**
- * TODO: Alberto 1
- * implementa un Pie Chart
- * la variabile "data" ha questa struttura -> {
- *    "statusCount": {
- *      "DONE": 2,
- *      "TODO": 1
- *    },
- *    "statusPercentage": {
- *      "DONE": "66.67",
- *      "TODO": "33.33"
- *    }
- * }
- *
- * - crea una costante "formattedData" che mappa i valori di "data" in un array di oggetti con la seguente struttura:
- *  { id: string, label: string, value: string } dove "value" deve essere il valore in percentuale dello status
- *  l'array finale deve avere questa forma ad esempio:
- *  [
- *     {
- *         "id": "Done",
- *         "label": "Done",
- *         "value": "50.00"
- *     },
- *     {
- *         "id": "In progress",
- *         "label": "In progress",
- *         "value": "25.00"
- *     },
- *     {
- *         "id": "To do",
- *         "label": "To do",
- *         "value": "25.00"
- *     }
- * ]
- *
- * - per tradurre i valori di "status" in label usa la costante "taskStatusLabels", le cui chiavi sono i valori di "TASK_STATUS", ed i valori sono le etichette da mostrare
- * - usa "useMemo" per memoizare il risultato della formattazione, come dipendenze usa "data"
- * - usa il componente "ResponsivePie" con queste props: ( import { ResponsivePie } from "@nivo/pie"; )
- *   - data: formattedData
- *   - colors: chartsColorScheme
- *
- * se ti perdi, le soluzioni sono in index-solutions.jsx
- */
 function MyTasksByStatusTile() {
   const { data } = useMyTasksByStatus();
 
@@ -162,14 +119,6 @@ function MyTasksByStatusTile() {
     </div>
   );
 }
-
-/**
- * TODO: Alberto 2
- * fai la stessa cosa che hai fatto per "MyTasksByStatusTile" ma per "MyTasksByImpactTile"
- * la variabile "data" ha la struttura definita in un commento sopra la funzione "useMyTasksByImpact", è molto simile a quella di "useMyTasksByStatus"
- * la costante "formattedData" deve avere la stessa struttura di quella di "MyTasksByStatusTile"
- * per tradurre i valori di "impact" in label usa la costante "taskImpactLabels"
- */
 
 function MyTasksByImpactTile() {
   const { data } = useMyTasksByImpact();
@@ -216,15 +165,6 @@ function MyTasksByImpactTile() {
     </div>
   );
 }
-
-/**
- * TODO: Alberto 3
- * fai la stessa cosa che hai fatto per "MyTasksByStatusTile" ma per "MyTasksByCategory"
- * la variabile "data" ha la struttura definita in un commento sopra la funzione "useMyTasksByCategory"
- * la costante "formattedData" deve avere la stessa struttura di quella di "MyTasksByStatusTile"
- * per tradurre i valori di "category" in label usa direttamente la chiave dell'oggetto "data.categoryPercentage"
- * usa "useMemo" per memoizare il risultato della formattazione, come dipendenze usa "data"
- */
 
 function MyTasksByCategory() {
   const { data } = useMyTasksByCategory();
@@ -273,24 +213,29 @@ function MyTasksByCategory() {
 
 function MyTaskCompletionCalendar() {
   const { data } = useMyTaskCompletionCalendar();
+  console.log(data);
 
-  // If data or calendar is undefined, return null or some fallback UI
   if (!data || !Array.isArray(data.calendar)) {
-    return null; // or <div>Loading...</div> or some other fallback UI
+    return null; // or some fallback UI
   }
 
-  const { calendar, from, to } = data;
+  // Filter out days with values less than 1
+  const filteredCalendar = data.calendar.filter((day) => day.value >= 1);
+  console.log(filteredCalendar);
+
+  const { from, to } = data;
 
   return (
     <div className="simple-tile calendar-tile">
       <h4>Task Completion Calendar</h4>
       <ResponsiveCalendar
-        data={calendar}
+        data={filteredCalendar}
         from={from}
         to={to}
         align="top"
         emptyColor="#eeeeee"
-        colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
+        colors={["#D3EECD", "#97D494", "#2F984F", "#036429"]}
+        minValue="auto"
         margin={{ top: 40, right: 20, bottom: 20, left: 20 }}
         yearSpacing={40}
         monthBorderColor="#ffffff"
