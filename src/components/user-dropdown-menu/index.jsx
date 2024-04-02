@@ -5,10 +5,10 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth-context";
 import { useUser } from "../../utils/user";
 import "./styles.scss";
-import { useNavigate } from "react-router-dom";
 
 function UserDropdownMenu() {
   const { logout } = useAuth();
