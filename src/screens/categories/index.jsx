@@ -120,7 +120,12 @@ function CategoriesScreen() {
           <Button onClick={handleAddClick} size="lg">
             Add category
           </Button>
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
+          <Modal
+            disableAnimation
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            placement="auto"
+          >
             <ModalContent>
               {() => (
                 <>

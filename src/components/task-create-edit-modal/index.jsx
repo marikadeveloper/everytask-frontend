@@ -91,7 +91,12 @@ function TaskCreateEditModal({ task, disabled = false }) {
       >
         {isEditMode ? "Edit Task" : "New Task"}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
+      <Modal
+        disableAnimation
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="auto"
+      >
         <ModalContent>
           <>
             <ModalHeader>{isEditMode ? "Edit Task" : "New Task"}</ModalHeader>
