@@ -58,13 +58,14 @@ function LoadingTile() {
 function MyFastestTaskCompletionTimeTile() {
   const { data, isPending } = useMyFastestTaskCompletionTime();
 
-  const formattedValue = data?.time
-    ? dayjs.duration(data.time, "minutes").humanize()
-    : "No data";
-
   if (isPending) {
     return <LoadingTile />;
   }
+
+  const formattedValue =
+    data?.time !== undefined
+      ? dayjs.duration(data.time, "minutes").humanize()
+      : "No data";
 
   return (
     <MyJourneySimpleTile
@@ -145,6 +146,7 @@ function MyTasksByStatusTile() {
           from: "color",
           modifiers: [["darker", 2]],
         }}
+        valueFormat=">-.0f"
       />
     </div>
   );
@@ -199,6 +201,7 @@ function MyTasksByImpactTile() {
           from: "color",
           modifiers: [["darker", 2]],
         }}
+        valueFormat=">-.0f"
       />
     </div>
   );
@@ -255,6 +258,7 @@ function MyTasksByCategory() {
           from: "color",
           modifiers: [["darker", 2]],
         }}
+        valueFormat=">-.0f"
       />
     </div>
   );
@@ -322,7 +326,7 @@ function MyMostBusyTimes() {
         animate={false}
         data={data}
         margin={{ top: 50, right: 90, bottom: 60, left: 90 }}
-        valueFormat=">-.2s"
+        valueFormat=">-.0d"
         axisTop={{
           tickSize: 5,
           tickPadding: 5,
