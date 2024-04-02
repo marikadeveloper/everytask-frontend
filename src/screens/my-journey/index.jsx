@@ -272,7 +272,7 @@ function MyTaskCompletionCalendar() {
     return <LoadingTile />;
   }
 
-  if (!calendar) {
+  if (!calendar || !calendar.length) {
     return (
       <MyJourneySimpleTile title="Task Completion Calendar" value="No data" />
     );
@@ -317,6 +317,10 @@ function MyMostBusyTimes() {
 
   if (isPending) {
     return <LoadingTile />;
+  }
+
+  if (!data?.length) {
+    return <MyJourneySimpleTile title="Most Busy Times" value="No data" />;
   }
 
   return (

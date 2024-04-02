@@ -151,6 +151,18 @@ function useUpdateTask() {
   });
 }
 
+function useDeleteTask(taskId) {
+  const client = useClient();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => client(`tasks/${taskId}`, { method: "DELETE" }),
+    onSettled: () => {
+      queryClient.invalidateQueries("tasks");
+    },
+  });
+}
+
 function useDashboardTasks() {
   const client = useClient();
   const config = {
@@ -176,4 +188,5 @@ export {
   useTasks,
   useUpdateTask,
   useDashboardTasks,
+  useDeleteTask,
 };

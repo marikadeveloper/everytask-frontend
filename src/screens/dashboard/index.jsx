@@ -20,7 +20,7 @@ function DashboardScreen() {
       <div className="dashboard__content">
         <h2>Due today</h2>
         <div className="dashboard__content__due-today">
-          {data?.dueTodayOrOverdue?.length &&
+          {!!data?.dueTodayOrOverdue?.length &&
             data.dueTodayOrOverdue.map((task) => (
               <DashboardDueTodayTask key={task.id} task={task} />
             ))}
@@ -40,7 +40,7 @@ function DashboardScreen() {
           </Button>
         </div>
         <div className="dashboard__content__upcoming-tasks-grid">
-          {data?.upcomingTasks?.length &&
+          {!!data?.upcomingTasks?.length &&
             data.upcomingTasks.map((task) => (
               <DashboardUpcomingTask key={task.id} task={task} />
             ))}

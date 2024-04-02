@@ -40,7 +40,7 @@ function TaskChecklist({ taskChecklistItems, taskId, readonly = false }) {
   const handleAddItem = () => {
     if (newItemTitle.trim() !== "") {
       const newItem = {
-        id: Date.now(), // Simple ID generation for example purposes
+        id: Date.now().toString(), // Simple ID generation for example purposes
         title: newItemTitle,
       };
       // Save the new item to the database

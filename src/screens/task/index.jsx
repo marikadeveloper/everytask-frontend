@@ -1,5 +1,5 @@
 import { Emoji } from "emoji-picker-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FullPageErrorFallback } from "../../components/errors";
 import { TaskStatusSelect } from "../../components/input";
 import { FullPageSpinner } from "../../components/spinner";
@@ -11,9 +11,11 @@ import TaskChecklist from "../../components/task-checklist";
 import TaskCreateEditModal from "../../components/task-create-edit-modal";
 import TaskHistory from "../../components/task-history";
 import { LinkButton } from "../../components/button";
+import TaskDeleteModal from "../../components/task-delete-modal";
 import "./styles.scss";
 
 const smallScreenThreshold = 768;
+
 function TaskScreen() {
   const isSmallScreen = useBreakpoint(smallScreenThreshold);
   const { taskId } = useParams();
@@ -23,6 +25,12 @@ function TaskScreen() {
     error,
     isError,
   } = useTask(taskId);
+  const navigate = useNavigate();
+
+  const goToTasks = () => {
+    // navigate to tasks
+    navigate("/tasks");
+  };
 
   const renderEmojis = () => {
     return (
@@ -64,6 +72,7 @@ function TaskScreen() {
   if (isError) {
     return <FullPageErrorFallback error={error} />;
   }
+
   if (taskPending) {
     return <FullPageSpinner />;
   }
@@ -110,6 +119,10 @@ function TaskScreen() {
       </section>
       <section className="task__history">
         <TaskHistory taskHistory={task.statusHistory} />
+      </section>
+      <section className="task__delete">
+        <h2>Danger zone</h2>
+        <TaskDeleteModal taskId={task.id} onTaskDeleted={goToTasks} />
       </section>
     </div>
   );

@@ -245,6 +245,7 @@ function TaskStatusSelect({ defaultStatus, taskId }) {
   });
   const status = watch("status");
   const { mutate } = useUpdateTask();
+
   const statusColor = useMemo(() => {
     switch (status) {
       case TASK_STATUS.TODO:
@@ -262,7 +263,7 @@ function TaskStatusSelect({ defaultStatus, taskId }) {
     if (status && status !== defaultStatus) {
       mutate({ id: taskId, status });
     }
-  }, [status, mutate, taskId, defaultStatus]);
+  }, [status, defaultStatus]);
 
   return (
     <Select
