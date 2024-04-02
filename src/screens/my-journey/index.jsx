@@ -127,10 +127,30 @@ function MyTasksByStatusTile() {
     <div className="pie-chart-tile tasks-by-status">
       <h4>Tasks by Status (%)</h4>
       <ResponsivePie
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         animate={false}
         data={formattedData}
         colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
       />
     </div>
   );
@@ -161,10 +181,30 @@ function MyTasksByImpactTile() {
     <div className="pie-chart-tile tasks-by-impact">
       <h4>Tasks by Impact (%)</h4>
       <ResponsivePie
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         animate={false}
         data={formattedData}
         colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
       />
     </div>
   );
@@ -197,10 +237,30 @@ function MyTasksByCategory() {
     <div className="pie-chart-tile tasks-by-category">
       <h4>Tasks by Category (%)</h4>
       <ResponsivePie
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         animate={false}
         data={formattedData}
         colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
       />
     </div>
   );
