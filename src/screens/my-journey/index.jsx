@@ -5,12 +5,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import { ResponsivePie } from "@nivo/pie";
 import { useMemo } from "react";
-import { ResponsiveBar } from "@nivo/bar";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { Progress } from "@nextui-org/react";
 import {
-  useMyAverageCompletionTimesByImpact,
   useMyBadges,
   useMyFastestTaskCompletionTime,
   useMyMostBusyTimes,
@@ -21,13 +19,9 @@ import {
   useMyTasksByImpact,
   useMyTasksByStatus,
 } from "../../utils/my-journey";
-import {
-  TASK_IMPACT,
-  taskImpactLabels,
-  taskStatusLabels,
-} from "../../utils/task";
+import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
 import { useAuth } from "../../context/auth-context";
-import Badge from "../../components/badge/index.jsx";
+import Badge from "../../components/badge/index";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -326,61 +320,61 @@ function MyMostBusyTimes() {
       <h4>Most Busy Times</h4>
       <ResponsiveHeatMap
         animate={false}
-        axisTop={{
-          tickRotation: -90,
-        }}
-        margin={{ top: 50, right: 0, bottom: 0, left: 30 }}
         data={data}
+        margin={{ top: 50, right: 90, bottom: 60, left: 90 }}
+        valueFormat=">-.2s"
+        axisTop={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: -90,
+          legend: "",
+          legendOffset: 46,
+          truncateTickAt: 0,
+        }}
+        axisRight={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "days of the week",
+          legendPosition: "middle",
+          legendOffset: 70,
+          truncateTickAt: 0,
+        }}
+        axisLeft={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "days of the week",
+          legendPosition: "middle",
+          legendOffset: -72,
+          truncateTickAt: 0,
+        }}
         colors={{
           type: "diverging",
           scheme: "greens",
+          divergeAt: 0.5,
+          minValue: 0,
+          maxValue: 10,
         }}
-      />
-    </div>
-  );
-}
-
-function MyAverageCompletionTimesByImpact() {
-  const { data, isPending } = useMyAverageCompletionTimesByImpact();
-
-  const formattedData = useMemo(() => {
-    if (!data) return [];
-
-    return Object.entries(data).map(([impact, avgTime]) => ({
-      impact: taskImpactLabels[impact],
-      [impact]: avgTime,
-    }));
-  }, [data]);
-
-  if (isPending) {
-    return <LoadingTile />;
-  }
-
-  if (!formattedData?.length) {
-    return (
-      <MyJourneySimpleTile
-        title="Average Completion Times by Impact"
-        value="No data"
-      />
-    );
-  }
-
-  return (
-    <div className="bar-chart-tile average-completion-times-by-impact">
-      <h4>Average Completion Times by Impact (minutes)</h4>
-      <ResponsiveBar
-        animate={false}
-        data={formattedData}
-        keys={[
-          TASK_IMPACT.HIGH_IMPACT_HIGH_EFFORT,
-          TASK_IMPACT.HIGH_IMPACT_LOW_EFFORT,
-          TASK_IMPACT.LOW_IMPACT_HIGH_EFFORT,
-          TASK_IMPACT.LOW_IMPACT_LOW_EFFORT,
+        emptyColor="#555555"
+        legends={[
+          {
+            anchor: "bottom",
+            translateX: 0,
+            translateY: 30,
+            length: 400,
+            thickness: 8,
+            direction: "row",
+            tickPosition: "after",
+            tickSize: 3,
+            tickSpacing: 4,
+            tickOverlap: false,
+            tickFormat: ">-.2s",
+            title: "Completed tasks →",
+            titleAlign: "start",
+            titleOffset: 4,
+          },
         ]}
-        indexBy="impact"
-        margin={{ bottom: 30 }}
-        padding={0.3}
-        colors={chartsColorScheme}
       />
     </div>
   );
@@ -497,8 +491,6 @@ function MyJourneyScreen() {
         <div className="my-journey__content__row">
           {/* Most busy times heatmap */}
           <MyMostBusyTimes />
-          {/* Average completion times by impact */}
-          <MyAverageCompletionTimesByImpact />
         </div>
       </section>
     </div>
