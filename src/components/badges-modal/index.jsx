@@ -13,6 +13,7 @@ import "./styles.scss";
 function BadgesModal({ badges, badgesModalOpen, setBadgesModalOpen }) {
   return (
     <Modal
+      disableAnimation
       isOpen={badgesModalOpen}
       onOpenChange={setBadgesModalOpen}
       placement="auto"

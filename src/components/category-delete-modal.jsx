@@ -23,7 +23,12 @@ function DeleteCategoryModal({ category, isOpen, onClose }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onClose} placement="auto">
+    <Modal
+      disableAnimation
+      isOpen={isOpen}
+      onOpenChange={onClose}
+      placement="auto"
+    >
       <ModalContent>
         {() => (
           <>

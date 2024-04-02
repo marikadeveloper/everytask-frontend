@@ -11,6 +11,7 @@ import { Button } from "./button/index";
 function LevelUpModal({ level, levelUpModalOpen, setLevelUpModalOpen }) {
   return (
     <Modal
+      disableAnimation
       isOpen={levelUpModalOpen}
       onOpenChange={setLevelUpModalOpen}
       placement="auto"

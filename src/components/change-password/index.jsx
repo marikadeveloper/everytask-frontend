@@ -41,7 +41,12 @@ function ChangePassword() {
       >
         Change password
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
+      <Modal
+        disableAnimation
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="auto"
+      >
         <ModalContent>
           {() => (
             <>
