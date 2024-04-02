@@ -12,6 +12,8 @@
   &__title {
     font-size: 18px;
     font-weight: 500;
+    display: flex;
+    gap: 4px;
   }
   &__status {
     width: 150px;

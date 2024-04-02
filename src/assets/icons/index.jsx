@@ -3,6 +3,8 @@
 import AddIcon from "./add-outline.svg?react";
 import ArrowBackIcon from "./arrow-back-outline.svg?react";
 import CalendarIcon from "./calendar-clear-outline.svg?react";
+import ChevronBackIcon from "./chevron-back-outline.svg?react";
+import ChevronForwardIcon from "./chevron-forward-outline.svg?react";
 import CloseIcon from "./close-outline.svg?react";
 import CogIcon from "./cog-outline.svg?react";
 import EllipsisIcon from "./ellipsis-vertical-outline.svg?react";
@@ -24,6 +26,14 @@ function ArrowBack() {
 
 function Calendar() {
   return <CalendarIcon />;
+}
+
+function ChevronBack() {
+  return <ChevronBackIcon />;
+}
+
+function ChevronForward() {
+  return <ChevronForwardIcon />;
 }
 
 function Cog() {
@@ -70,6 +80,8 @@ export {
   Add,
   ArrowBack,
   Calendar,
+  ChevronBack,
+  ChevronForward,
   Close,
   Cog,
   Ellipsis,

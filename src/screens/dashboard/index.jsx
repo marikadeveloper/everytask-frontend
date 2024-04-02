@@ -1,20 +1,20 @@
 import { Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import TaskCreateEditModal from "../../components/task-create-edit-modal";
-import { useUser } from "../../utils/user";
 import DashboardUpcomingTask from "../../components/dashboard-upcoming-task";
 import DashboardDueTodayTask from "../../components/dashboard-due-today-task";
 import { useDashboardTasks } from "../../utils/task";
+import { useAuth } from "../../context/auth-context";
 import "./styles.scss";
 
 function DashboardScreen() {
-  const user = useUser();
+  const { user } = useAuth();
   const { data } = useDashboardTasks();
 
   return (
     <div className="layout dashboard">
       <div className="dashboard__header">
-        <h1>Hello, {user.name}</h1>
+        <h1>{user?.name ? `Hello, ${user.name}` : "Hello"}</h1>
         <TaskCreateEditModal />
       </div>
       <div className="dashboard__content">

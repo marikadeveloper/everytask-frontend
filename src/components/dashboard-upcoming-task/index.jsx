@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Emoji } from "emoji-picker-react";
 import { TASK_STATUS } from "../../utils/task";
 import { TaskStatusSelect } from "../input";
 import TaskDeadline from "../task-deadline";
@@ -16,7 +17,10 @@ function DashboardUpcomingTask({ task }) {
           short
         />
       </div>
-      <p className="upcoming-task__title">{task.title}</p>
+      <p className="upcoming-task__title">
+        {task.emoji && <Emoji size={20} unified={task.emoji} />}
+        {task.title}
+      </p>
       <TaskStatusSelect
         className="upcoming-task__status"
         defaultStatus={task.status}

@@ -2,67 +2,180 @@ import dayjs from "dayjs";
 import isTodayPlugin from "dayjs/plugin/isToday";
 import objectPlugin from "dayjs/plugin/toObject";
 import weekdayPlugin from "dayjs/plugin/weekday";
+import PropTypes from "prop-types";
 import { useEffect, useMemo, useState } from "react";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+import { ChevronBack, ChevronForward } from "../../assets/icons";
+import { Button, IconButton } from "../button";
+import { TASK_STATUS } from "../../utils/task";
+import "./styles.scss";
+import TaskStatusDot from "../task-status-dot/index.jsx";
+import { Input } from "../input/index.jsx";
+import { ErrorMessage } from "../errors/index.jsx";
 // Extend Day.js globally
 dayjs.extend(weekdayPlugin);
 dayjs.extend(objectPlugin);
 dayjs.extend(isTodayPlugin);
 
-const Header = ({ currentMonth, onPrevMonth, onNextMonth }) => {
+function Header({ currentMonth, onPrevMonth, onNextMonth }) {
   const dateFormat = "MMMM YYYY";
   return (
-    <div className="header row flex-middle">
-      <div className="col col-start" onClick={onPrevMonth}>
-        <div className="icon">chevron_left</div>
+    <div className="calendar__header">
+      <IconButton icon={<ChevronBack />} onClick={onPrevMonth} />
+      <div className="calendar__header__month">
+        <h4>{currentMonth.format(dateFormat)}</h4>
       </div>
-      <div className="col col-center">
-        <span>{currentMonth.format(dateFormat)}</span>
-      </div>
-      <div className="col col-end" onClick={onNextMonth}>
-        <div className="icon">chevron_right</div>
-      </div>
+      <IconButton icon={<ChevronForward />} onClick={onNextMonth} />
     </div>
   );
+}
+
+Header.propTypes = {
+  currentMonth: PropTypes.object.isRequired,
+  onPrevMonth: PropTypes.func.isRequired,
+  onNextMonth: PropTypes.func.isRequired,
 };
 
-const DaysHeader = () => {
+function DaysHeader() {
   const days = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) =>
-      dayjs().weekday(i).format("dddd"),
+      dayjs()
+        .weekday((i + 1) % 7)
+        .format("dddd"),
     );
   }, []);
   return (
-    <div className="days row">
+    <div className="calendar__days-header">
       {days.map((day, i) => (
-        <div className="col col-center" key={i}>
+        <div className="calendar__days-header__day" key={i}>
           {day}
         </div>
       ))}
     </div>
   );
-};
+}
 
-const Cells = ({ arrayOfDays }) => {
+function CalendarTask({ task, compressed }) {
+  const navigate = useNavigate();
+
+  const goToTask = () => {
+    if (compressed) return;
+    navigate(`/tasks/${task.id}`);
+  };
+
   return (
-    <div className="body">
-      {arrayOfDays.map((week, index) => (
-        <div className="row" key={index}>
-          {week.dates.map((d, i) => (
-            <div
-              className={`col cell ${!d.isCurrentMonth ? "disabled" : d.isCurrentDay ? "selected" : ""}`}
-              key={i}
-            >
-              <span className="number">{d.day}</span>
-              <span className="bg">{d.day}</span>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    <a
+      role="link"
+      onClick={goToTask}
+      className={`calendar-task ${compressed ? "calendar-task--compressed" : ""}`}
+    >
+      <TaskStatusDot status={task.status} />
+      <p className="calendar-task__title">{task.title}</p>
+    </a>
   );
+}
+CalendarTask.propTypes = {
+  task: PropTypes.object.isRequired,
+  compressed: PropTypes.bool.isRequired,
 };
 
-function Calendar() {
+function CalendarDueTodayTasksModal({ isOpen, tasks, onOpenChange }) {
+  const date = tasks[0]?.dueDate;
+
+  return (
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader>
+              Tasks due on {dayjs(date).format("DD MMM YYYY")}
+            </ModalHeader>
+            <ModalBody>
+              {tasks?.map((task) => (
+                <CalendarTask task={task} key={task.id} compressed={false} />
+              ))}
+            </ModalBody>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+}
+CalendarDueTodayTasksModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  tasks: PropTypes.array.isRequired,
+};
+
+function Cells({ arrayOfDays }) {
+  const [dueTodayTasks, setDueTodayTasks] = useState([]);
+  const [dueTodayTasksModalOpen, setDueTodayTasksModalOpen] = useState(false);
+
+  const openDueTodayTasksModal = (tasks) => {
+    setDueTodayTasks(tasks);
+    setDueTodayTasksModalOpen(true);
+  };
+
+  return (
+    <>
+      <div className="calendar__cells">
+        {arrayOfDays.map((week, index) => (
+          <div className="calendar__cells__week" key={index}>
+            {week.dates.map((d, i) => (
+              <div
+                onClick={() => openDueTodayTasksModal(d.tasksDue)}
+                className={`calendar__cells__cell ${!d.isCurrentMonth ? "calendar__cells__cell--disabled" : ""} ${d.isCurrentDay ? "calendar__cells__cell--current-day" : ""}`}
+                key={i}
+              >
+                <p className="number">{d.day}</p>
+                <div className="calendar__cells__cell__tasks">
+                  {/* First task */}
+                  {d.tasksDue[0] ? (
+                    <CalendarTask
+                      task={d.tasksDue[0]}
+                      key={d.tasksDue[0].id}
+                      compressed
+                    />
+                  ) : (
+                    ""
+                  )}
+                  {/* Other tasks shown as dots */}
+                  <div className="calendar__cells__cell__tasks__dots">
+                    {d.tasksDue.length > 1
+                      ? d.tasksDue
+                          .filter((t, taskIndex) => taskIndex > 0)
+                          .map((task) => (
+                            <TaskStatusDot status={task.status} key={task.id} />
+                          ))
+                      : ""}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <CalendarDueTodayTasksModal
+        isOpen={dueTodayTasksModalOpen}
+        tasks={dueTodayTasks}
+        onOpenChange={() => setDueTodayTasksModalOpen(false)}
+      />
+    </>
+  );
+}
+
+Cells.propTypes = {
+  arrayOfDays: PropTypes.array.isRequired,
+};
+
+function Calendar({ tasks }) {
   const now = dayjs();
   const [currentMonth, setCurrentMonth] = useState(now);
   const [arrayOfDays, setArrayOfDays] = useState([]);
@@ -71,7 +184,7 @@ function Calendar() {
   const prevMonth = () => setCurrentMonth(currentMonth.subtract(1, "month"));
 
   const getAllDays = useMemo(() => {
-    let currentDate = currentMonth.startOf("month").weekday(0);
+    let currentDate = currentMonth.startOf("month").weekday(1);
     const nextMonthStart = currentMonth.add(1, "month").startOf("month");
     const allDates = [];
     let weekDates = [];
@@ -84,6 +197,11 @@ function Calendar() {
         year: currentDate.year(),
         isCurrentMonth: currentDate.month() === currentMonth.month(),
         isCurrentDay: currentDate.isToday(),
+        tasksDue: tasks.filter(
+          (task) =>
+            dayjs(task.dueDate).isSame(currentDate, "day") &&
+            task.status !== TASK_STATUS.DONE,
+        ),
       };
 
       weekDates.push(formatted);
@@ -101,7 +219,7 @@ function Calendar() {
     }
 
     return allDates;
-  }, [currentMonth]);
+  }, [currentMonth, tasks]);
 
   useEffect(() => {
     setArrayOfDays(getAllDays);
@@ -120,4 +238,10 @@ function Calendar() {
   );
 }
 
+Calendar.propTypes = {
+  tasks: PropTypes.array.isRequired,
+};
+
 export default Calendar;
+
+// code inspiration from: https://gist.github.com/Kapaak/bb83730d04bc9d6cbf50d400ec9cde61#file-calendar-jsx

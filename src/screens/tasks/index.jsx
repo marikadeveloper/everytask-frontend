@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Kanban from "../../components/kanban";
 import TaskCreateEditModal from "../../components/task-create-edit-modal";
-import TasksFilters from "../../components/tasks-filters/index";
+import TasksFilters from "../../components/tasks-filters";
 import { useTasks, useUpdateTask } from "../../utils/task";
+import { Calendar as CalendarIcon } from "../../assets/icons";
+import Calendar from "../../components/calendar";
+import { Button } from "../../components/button";
 import "./styles.scss";
-import { Calendar as CalendarIcon } from "../../assets/icons/index.jsx";
-import { Button } from "@nextui-org/react";
-import { Link } from "react-router-dom";
-import Calendar from "../../components/calendar/index.jsx";
 
 const TaskView = {
   KANBAN: "kanban",
@@ -48,6 +48,12 @@ function TasksScreen() {
     setFilters(newFilters);
   };
 
+  const toggleView = () => {
+    setView((currentView) =>
+      currentView === TaskView.KANBAN ? TaskView.CALENDAR : TaskView.KANBAN,
+    );
+  };
+
   return (
     <div className="layout tasks">
       <header className="tasks__header">
@@ -64,16 +70,6 @@ function TasksScreen() {
           >
             Manage Categories
           </Button>
-
-          <Button
-            color="primary"
-            variant="bordered"
-            className="link-button"
-            startContent={<CalendarIcon />}
-            onClick={() => setView(TaskView.CALENDAR)}
-          >
-            Calendar view
-          </Button>
         </div>
       </header>
       <section className="tasks__filters">
@@ -82,6 +78,17 @@ function TasksScreen() {
           isFiltering={isPending}
         />
       </section>
+      <div className="tasks__switch-view">
+        <Button
+          color="primary"
+          variant="bordered"
+          className="link-button"
+          startContent={<CalendarIcon />}
+          onClick={toggleView}
+        >
+          {view === TaskView.CALENDAR ? "Kanban" : "Calendar"} view
+        </Button>
+      </div>
       <section>
         {view === TaskView.KANBAN && (
           <Kanban
@@ -90,7 +97,7 @@ function TasksScreen() {
             onTaskUpdate={onTaskStatusUpdate}
           />
         )}
-        {view === TaskView.CALENDAR && <Calendar />}
+        {view === TaskView.CALENDAR && <Calendar tasks={tasks} />}
         {/* Empty state */}
         {tasks.length === 0 && (
           <div className="empty-state">
