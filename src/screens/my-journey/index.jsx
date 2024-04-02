@@ -288,8 +288,27 @@ function MyTaskCompletionCalendar() {
         data={calendar || []}
         from={from}
         to={to}
+        align="top"
         emptyColor="#eeeeee"
-        margin={{ bottom: 30 }}
+        colors={["#D3EECD", "#97D494", "#2F984F", "#036429"]}
+        minValue="auto"
+        margin={{ top: 40, right: 20, bottom: 20, left: 20 }}
+        yearSpacing={40}
+        monthBorderColor="#ffffff"
+        dayBorderWidth={2}
+        dayBorderColor="#ffffff"
+        legends={[
+          {
+            anchor: "bottom-right",
+            direction: "row",
+            translateY: 36,
+            itemCount: 4,
+            itemWidth: 42,
+            itemHeight: 36,
+            itemsSpacing: 14,
+            itemDirection: "right-to-left",
+          },
+        ]}
       />
     </div>
   );
