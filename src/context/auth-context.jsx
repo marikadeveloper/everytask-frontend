@@ -43,7 +43,6 @@ function AuthProvider(props) {
   const login = React.useCallback(
     (form) =>
       auth.login(form).then((loggedUser) => {
-        console.log({ loggedUser });
         setData(loggedUser);
       }),
     [setData],

@@ -3,10 +3,9 @@ import { Controller, useForm } from "react-hook-form";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input, Select } from "../input/index";
 import {
-  taskImpactArray,
-  taskImpactLabels, taskImpactsForSelect,
-  taskStatusArray, taskStatusesForSelect,
-  taskStatusLabels,
+  taskImpactLabels,
+  taskImpactsForSelect,
+  taskStatusesForSelect,
 } from "../../utils/task";
 import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
@@ -27,19 +26,12 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
 
   const { handleSubmit, reset, getValues, control } = useForm({
     defaultValues: {
-      status: "",
+      status: undefined,
       categoryIds: [],
       containsText: "",
-      impact: "",
+      impact: undefined,
     },
   });
-  /**
-   * supported filters:
-   * - status
-   * - categoryIds (array)
-   * - containsText
-   * - impact
-   */
   const { categories } = useCategories();
 
   const onSubmit = (data) => {
@@ -65,7 +57,6 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
         control={control}
         render={({ field }) => (
           <Input
-            autoFocus
             id="title"
             placeholder="Search tasks"
             label="Search in title or description..."
@@ -103,7 +94,6 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
           />
         )}
       />
-      {/* impact=xx */}
       <Controller
         name="impact"
         control={control}

@@ -101,5 +101,4 @@ function useBreakpoint(threshold) {
   return isBelowThreshold;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export { useAsync, useBreakpoint };

@@ -25,7 +25,9 @@ function TaskDeleteModal({ taskId, onTaskDeleted }) {
 
   return (
     <>
-      <Button color="danger" onClick={onOpen}>Delete task</Button>
+      <Button color="danger" onClick={onOpen}>
+        Delete task
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={onClose} placement="auto">
         <ModalContent>
           {() => (

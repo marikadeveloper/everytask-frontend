@@ -15,20 +15,19 @@ export const CelebrationEvent = {
   LevelUp: "level-up",
   Badges: "badges",
   Points: "points",
+  Streak: "streak",
 };
 
-const CelebrationContext = createContext();
+const emptyLevelUp = { id: 0, name: "", points: 0 };
 
+const CelebrationContext = createContext();
 export function CelebrationProvider({ children }) {
   const [levelUpModalOpen, setLevelUpModalOpen] = useState(false);
   const [badgesModalOpen, setBadgesModalOpen] = useState(false);
-  const [eventValue, setEventValue] = useState(null);
+  const [levelUp, setLevelUp] = useState(emptyLevelUp);
+  const [badges, setBadges] = useState([]);
 
   const triggerEvent = useCallback((event) => {
-    // TODO: remove
-    console.log({ event });
-
-    setEventValue(event.value);
     switch (event.type) {
       case CelebrationEvent.LevelUp:
         /* event.value.levelUp = {
@@ -38,6 +37,7 @@ export function CelebrationProvider({ children }) {
          } */
         // show fireworks
         moreSpecialHurray();
+        setLevelUp(event.value.levelUp);
         setLevelUpModalOpen(true);
         break;
       case CelebrationEvent.Badges:
@@ -45,6 +45,7 @@ export function CelebrationProvider({ children }) {
           'night-owl', 'task-master'
         ] */
         hurray();
+        setBadges(event.value.badges);
         setBadgesModalOpen(true);
         break;
       case CelebrationEvent.Points:
@@ -53,6 +54,15 @@ export function CelebrationProvider({ children }) {
         // show a toast with the points earned
         toast(`Points earned: ${event.value.points}`, {
           icon: "🎉",
+          position: "bottom-right",
+        });
+        break;
+      case CelebrationEvent.Streak:
+        // show confetti
+        hurray();
+        // show a toast with the streak
+        toast(`Streak: ${event.value.streak.current} day(s)`, {
+          icon: "🔥",
           position: "bottom-right",
         });
         break;
@@ -66,20 +76,16 @@ export function CelebrationProvider({ children }) {
   return (
     <CelebrationContext.Provider value={value}>
       {children}
-      {!!eventValue?.levelUp && (
-        <LevelUpModal
-          level={eventValue.levelUp}
-          levelUpModalOpen={levelUpModalOpen}
-          setLevelUpModalOpen={setLevelUpModalOpen}
-        />
-      )}
-      {!!eventValue?.badges && (
-        <BadgesModal
-          badges={eventValue.badges}
-          badgesModalOpen={badgesModalOpen}
-          setBadgesModalOpen={setBadgesModalOpen}
-        />
-      )}
+      <LevelUpModal
+        level={levelUp}
+        levelUpModalOpen={levelUpModalOpen}
+        setLevelUpModalOpen={setLevelUpModalOpen}
+      />
+      <BadgesModal
+        badges={badges || []}
+        badgesModalOpen={badgesModalOpen}
+        setBadgesModalOpen={setBadgesModalOpen}
+      />
     </CelebrationContext.Provider>
   );
 }

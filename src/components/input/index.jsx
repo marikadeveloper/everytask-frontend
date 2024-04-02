@@ -13,17 +13,16 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
+import { useForm } from "react-hook-form";
 import { Close } from "../../assets/icons";
 import { useCategories } from "../../utils/category";
 import { IconButton } from "../button";
-
-import "./styles.scss";
 import {
   TASK_STATUS,
   taskStatusesForSelect,
   useUpdateTask,
-} from "../../utils/task.js";
-import { useForm } from "react-hook-form";
+} from "../../utils/task";
+import "./styles.scss";
 
 const Input = React.forwardRef(({ className, ...rest }, ref) => {
   return (
@@ -215,15 +214,14 @@ function DatetimePicker({ onDateChange, date = new Date() }) {
 
   return (
     /* this is horrible */
-    <div
-      className="transition-colors border-default-200 border-medium rounded-medium shadow-sm !duration-150 px-3 hover:border-default-400 focus:border-default-foreground active:border-default-foreground py-1 datetime-picker">
+    <div className="transition-colors border-default-200 border-medium rounded-medium shadow-sm !duration-150 px-3 hover:border-default-400 focus:border-default-foreground active:border-default-foreground py-1 datetime-picker">
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label className="label" htmlFor="datetime-picker">
         Due date
       </label>
       <DateTimePicker
         id="datetime-picker"
-        format="dd-MM-y h:mm a"
+        format="dd-MM-y HH:mm"
         onChange={onChange}
         value={value}
       />

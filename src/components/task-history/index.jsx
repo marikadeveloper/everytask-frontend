@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
-import { useAuth } from "../../context/auth-context.jsx";
-import { taskStatusLabels } from "../../utils/task.js";
+import { useAuth } from "../../context/auth-context";
+import { taskStatusLabels } from "../../utils/task";
 import "./styles.scss";
 
 function TaskHistory({ taskHistory }) {

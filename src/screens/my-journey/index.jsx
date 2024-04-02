@@ -329,7 +329,7 @@ function MyMostBusyTimes() {
       <ResponsiveHeatMap
         animate={false}
         data={data}
-        margin={{ top: 50, right: 90, bottom: 60, left: 90 }}
+        margin={{ top: 50, right: 40, bottom: 60, left: 40 }}
         valueFormat=">-.0d"
         axisTop={{
           tickSize: 5,
@@ -343,18 +343,18 @@ function MyMostBusyTimes() {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "days of the week",
-          legendPosition: "middle",
-          legendOffset: 70,
+          // legend: "days of the week",
+          // legendPosition: "middle",
+          // legendOffset: 70,
           truncateTickAt: 0,
         }}
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "days of the week",
-          legendPosition: "middle",
-          legendOffset: -72,
+          // legend: "days of the week",
+          // legendPosition: "middle",
+          // legendOffset: -72,
           truncateTickAt: 0,
         }}
         colors={{

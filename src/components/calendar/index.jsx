@@ -4,22 +4,13 @@ import objectPlugin from "dayjs/plugin/toObject";
 import weekdayPlugin from "dayjs/plugin/weekday";
 import PropTypes from "prop-types";
 import { useEffect, useMemo, useState } from "react";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 import { ChevronBack, ChevronForward } from "../../assets/icons";
-import { Button, IconButton } from "../button";
+import { IconButton } from "../button";
 import { TASK_STATUS } from "../../utils/task";
+import TaskStatusDot from "../task-status-dot";
 import "./styles.scss";
-import TaskStatusDot from "../task-status-dot/index.jsx";
-import { Input } from "../input/index.jsx";
-import { ErrorMessage } from "../errors/index.jsx";
 // Extend Day.js globally
 dayjs.extend(weekdayPlugin);
 dayjs.extend(objectPlugin);
@@ -55,7 +46,10 @@ function DaysHeader() {
   return (
     <div className="calendar__days-header">
       {days.map((day, i) => (
-        <div className="calendar__days-header__day" key={i}>
+        <div
+          className="calendar__days-header__day"
+          key={`calendar-header-day-${i}`}
+        >
           {day}
         </div>
       ))}
@@ -64,24 +58,20 @@ function DaysHeader() {
 }
 
 function CalendarTask({ task, compressed }) {
-  const navigate = useNavigate();
-
-  const goToTask = () => {
-    if (compressed) return;
-    navigate(`/tasks/${task.id}`);
-  };
-
+  const Tag = compressed ? "div" : Link;
   return (
-    <a
-      role="link"
-      onClick={goToTask}
+    <Tag
+      to={`/tasks/${task.id}`}
       className={`calendar-task ${compressed ? "calendar-task--compressed" : ""}`}
     >
       <TaskStatusDot status={task.status} />
-      <p className="calendar-task__title">{task.title}</p>
-    </a>
+      <p className="calendar-task__title">
+        {task.title} {!compressed && `(${dayjs(task.dueDate).format("HH:mm")})`}
+      </p>
+    </Tag>
   );
 }
+
 CalendarTask.propTypes = {
   task: PropTypes.object.isRequired,
   compressed: PropTypes.bool.isRequired,
@@ -93,7 +83,7 @@ function CalendarDueTodayTasksModal({ isOpen, tasks, onOpenChange }) {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             <ModalHeader>
               Tasks due on {dayjs(date).format("DD MMM YYYY")}
@@ -102,6 +92,7 @@ function CalendarDueTodayTasksModal({ isOpen, tasks, onOpenChange }) {
               {tasks?.map((task) => (
                 <CalendarTask task={task} key={task.id} compressed={false} />
               ))}
+              {tasks.length === 0 && <p>No tasks due on this day</p>}
             </ModalBody>
           </>
         )}
@@ -109,9 +100,11 @@ function CalendarDueTodayTasksModal({ isOpen, tasks, onOpenChange }) {
     </Modal>
   );
 }
+
 CalendarDueTodayTasksModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   tasks: PropTypes.array.isRequired,
+  onOpenChange: PropTypes.func.isRequired,
 };
 
 function Cells({ arrayOfDays }) {
@@ -130,7 +123,14 @@ function Cells({ arrayOfDays }) {
           <div className="calendar__cells__week" key={index}>
             {week.dates.map((d, i) => (
               <div
+                tabIndex={0}
+                role="button"
                 onClick={() => openDueTodayTasksModal(d.tasksDue)}
+                onKeyDown={(event) => {
+                  if (event.keyCode === 13 || event.keyCode === 32) {
+                    openDueTodayTasksModal(d.tasksDue);
+                  }
+                }}
                 className={`calendar__cells__cell ${!d.isCurrentMonth ? "calendar__cells__cell--disabled" : ""} ${d.isCurrentDay ? "calendar__cells__cell--current-day" : ""}`}
                 key={i}
               >
@@ -198,6 +198,7 @@ function Calendar({ tasks }) {
         isCurrentMonth: currentDate.month() === currentMonth.month(),
         isCurrentDay: currentDate.isToday(),
         tasksDue: tasks.filter(
+          // eslint-disable-next-line no-loop-func
           (task) =>
             dayjs(task.dueDate).isSame(currentDate, "day") &&
             task.status !== TASK_STATUS.DONE,
@@ -214,7 +215,7 @@ function Calendar({ tasks }) {
         weekDates = [];
       }
 
-      weekCounter++;
+      weekCounter += 1;
       currentDate = currentDate.add(1, "day");
     }
 

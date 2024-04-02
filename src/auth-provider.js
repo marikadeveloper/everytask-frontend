@@ -37,10 +37,13 @@ function login({ email, password }) {
   return client("login", { email, password }).then(handleUserResponse);
 }
 
-function register({ email, password, passwordConfirmation }) {
-  return client("register", { email, password, passwordConfirmation }).then(
-    handleUserResponse,
-  );
+function register({ email, name, password, passwordConfirmation }) {
+  return client("register", {
+    email,
+    name,
+    password,
+    passwordConfirmation,
+  }).then(handleUserResponse);
 }
 
 function logout() {

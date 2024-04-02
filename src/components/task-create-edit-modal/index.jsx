@@ -46,9 +46,11 @@ function TaskCreateEditModal({ task, disabled = false }) {
       };
     }, [task]),
   });
+  const updateTaskHook = useUpdateTask();
+  const createTaskHook = useCreateTask();
   const { mutate, status, isPending, error, isError } = isEditMode
-    ? useUpdateTask()
-    : useCreateTask();
+    ? updateTaskHook
+    : createTaskHook;
 
   useEffect(() => {
     if (status === "success") {

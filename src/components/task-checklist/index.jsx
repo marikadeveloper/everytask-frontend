@@ -1,6 +1,6 @@
 import { Checkbox } from "@nextui-org/react";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Close, Ellipsis, Pencil } from "../../assets/icons/index";
 import {
@@ -18,7 +18,7 @@ function TaskChecklist({ taskChecklistItems, taskId, readonly = false }) {
   const [newItemTitle, setNewItemTitle] = useState("");
   const [editingItemId, setEditingItemId] = useState(null);
   const [editingText, setEditingText] = useState("");
-  const { mutate: createChecklistItem } = useCreateChecklistItem();
+  const { mutate: createChecklistItem, isPending, data: createdTask } = useCreateChecklistItem();
   const { mutate: updateChecklistItem } = useUpdateChecklistItem();
   const { mutate: deleteChecklistItem } = useDeleteChecklistItem();
 
@@ -37,24 +37,24 @@ function TaskChecklist({ taskChecklistItems, taskId, readonly = false }) {
     });
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     if (newItemTitle.trim() !== "") {
-      const newItem = {
-        id: Date.now().toString(), // Simple ID generation for example purposes
-        title: newItemTitle,
-      };
       // Save the new item to the database
       createChecklistItem({
-        title: newItem.title,
+        title: newItemTitle,
         order: checklistItems.length,
         taskId,
       });
-
-      setChecklistItems([...checklistItems, newItem]);
-      setNewItemTitle(""); // Clear input after adding
-      setShowAddItemInput(false); // Hide input field after adding
     }
   };
+
+  useEffect(() => {
+    if (createdTask) {
+      setChecklistItems([...checklistItems, createdTask.data]);
+      setNewItemTitle("");
+      setShowAddItemInput(false);
+    }
+  }, [createdTask]);
 
   const handleNewItemChange = (e) => {
     setNewItemTitle(e.target.value);
@@ -218,7 +218,7 @@ function TaskChecklist({ taskChecklistItems, taskId, readonly = false }) {
         <Button
           variant="bordered"
           size="sm"
-          isDisabled={readonly}
+          isDisabled={readonly || isPending}
           onClick={() => setShowAddItemInput(true)}
         >
           Add option

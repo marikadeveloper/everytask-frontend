@@ -17,6 +17,8 @@ function Button({
   startContent,
   type,
   variant,
+  to,
+  as,
 }) {
   return (
     <NuiButton
@@ -31,6 +33,8 @@ function Button({
       startContent={startContent}
       type={type}
       variant={variant}
+      to={to}
+      as={as}
     >
       {children}
     </NuiButton>
@@ -49,6 +53,8 @@ Button.defaultProps = {
   startContent: null,
   type: "button",
   variant: "solid",
+  to: "",
+  as: null,
 };
 Button.propTypes = {
   children: PropTypes.node,
@@ -63,6 +69,8 @@ Button.propTypes = {
   startContent: PropTypes.node,
   type: PropTypes.string,
   variant: PropTypes.string,
+  to: PropTypes.string,
+  as: PropTypes.object,
 };
 
 function LinkButton({ size = "sm", to, className, children }) {

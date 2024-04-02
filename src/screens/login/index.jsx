@@ -21,7 +21,11 @@ function LoginScreen() {
   return (
     <div className="login">
       <h1>Login</h1>
-      <form id="login-form" onSubmit={handleSubmit(onSubmit)} className="login__form">
+      <form
+        id="login-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="login__form"
+      >
         <Input
           id="email"
           type="email"

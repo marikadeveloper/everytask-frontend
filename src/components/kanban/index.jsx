@@ -35,7 +35,7 @@ function Kanban({ tasks, onTaskUpdate }) {
       }
     });
     setCountPerStatus(newCountPerStatus);
-  }, []);
+  }, [tasks]);
 
   const updateStatusCountAfterTaskUpdate = ({ oldStatus, newStatus }) => {
     const newCountPerStatus = { ...countPerStatus };

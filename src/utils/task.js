@@ -124,7 +124,15 @@ function useUpdateTask() {
        *         },
        *         "badges": [],
        *         "pointsAwarded": 0,
-       *         "levelUp": null
+       *         "levelUp": null,
+       *         "streak": {
+       *           id: string
+       *           startDate: Date
+       *           updatedAt: Date
+       *           current: number
+       *           longest: number
+       *           userId: string
+       *         }
        *     }
        * }
        */
@@ -145,6 +153,12 @@ function useUpdateTask() {
         triggerEvent({
           type: CelebrationEvent.Badges,
           value: { badges: data.badges },
+        });
+      }
+      if (data.streak) {
+        triggerEvent({
+          type: CelebrationEvent.Streak,
+          value: { streak: data.streak },
         });
       }
     },

@@ -1,3 +1,5 @@
+$mobile-breakpoint: 500px;
+
 .simple-tile {
   display: grid;
   border: 2px solid #E1E1E1;
@@ -38,10 +40,16 @@
 .tasks-by-status,
 .tasks-by-category {
   width: 400px;
+  @media (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
 }
 
 .tasks-by-impact {
   width: 500px;
+  @media (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
 }
 
 .bar-chart-tile {
@@ -69,6 +77,9 @@
 
 .level-tile {
   width: 400px;
+  @media (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
 }
 
 .badges-tile {
@@ -83,6 +94,12 @@
       max-width: 160px;
       align-items: start;
       grid-template-rows: min-content min-content 1fr;
+
+    }
+
+    @media (max-width: $mobile-breakpoint) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
   }
 
