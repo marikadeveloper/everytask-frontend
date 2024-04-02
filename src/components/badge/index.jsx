@@ -8,10 +8,7 @@ function Badge({ badge, earnedAt }) {
 
   return (
     <div className={`badge ${earnedAt ? "badge--earned" : ""}`}>
-      <img
-        src={`/src/assets/badges/${badge.code}.jpg`}
-        alt={`${badge.code} badge`}
-      />
+      <img src={`/badges/${badge.code}.jpg`} alt={`${badge.code} badge`} />
       {earnedAt ? (
         <small>{dayjs(earnedAt).format(user.dateFormat)}</small>
       ) : (
