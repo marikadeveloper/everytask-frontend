@@ -15,7 +15,7 @@ import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import { useForm } from "react-hook-form";
 import { Close } from "../../assets/icons";
-import { useCategories } from "../../utils/category";
+import { useCategories, useCreateCategory } from "../../utils/category";
 import { IconButton } from "../button";
 import {
   TASK_STATUS,
@@ -23,6 +23,7 @@ import {
   useUpdateTask,
 } from "../../utils/task";
 import "./styles.scss";
+import toast from "react-hot-toast";
 
 const Input = React.forwardRef(({ className, ...rest }, ref) => {
   return (
@@ -167,7 +168,10 @@ Select.propTypes = {
 
 function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
   const { categories } = useCategories();
+  const { mutate: createCategory, isPending } = useCreateCategory();
   const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [autocompleteKey, setAutocompleteKey] = useState(0);
 
   useEffect(() => {
     if (preselectedCategory) {
@@ -175,27 +179,84 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
     }
   }, [preselectedCategory]);
 
+  const handleNewCategory = () => {
+    if (inputValue.trim() === "") {
+      console.error("Category name cannot be empty");
+      toast.error("Category name cannot be empty");
+      return;
+    }
+    createCategory(
+      { name: inputValue },
+      {
+        onSuccess: (newCategoryId) => {
+          toast.success(`Category created successfully.`);
+          setValue(newCategoryId.data.id);
+          onCategoryChange(newCategoryId.data.id);
+          setInputValue("");
+          setAutocompleteKey((prevKey) => prevKey + 1);
+        },
+        onError: (error) => {
+          toast.error(`Failed to create category: ${error.message}`);
+        },
+      },
+    );
+  };
+
   const onSelectionChange = (selected) => {
-    setValue(selected);
-    onCategoryChange(selected);
+    if (selected === "new-category-option") {
+      handleNewCategory();
+    } else {
+      setValue(selected);
+      onCategoryChange(selected);
+    }
+  };
+
+  const onInputChange = (value) => {
+    setInputValue(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && inputValue) {
+      const existingCategory = categories.find(
+        (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+      );
+      if (existingCategory) {
+        setValue(existingCategory.id);
+        onCategoryChange(existingCategory.id);
+      } else {
+        handleNewCategory();
+      }
+    }
   };
 
   return (
     <Autocomplete
+      key={autocompleteKey}
+      allowsCustomValue
       label="Category"
       variant="bordered"
-      defaultItems={categories}
-      placeholder="Search a category"
+      placeholder="Search or create a category"
       selectedKey={value}
+      value={inputValue}
+      onInputChange={onInputChange}
       onSelectionChange={onSelectionChange}
-      shouldCloseOnBlur
-      allowsCustomValue
+      onKeyDown={handleKeyDown}
+      fullWidth
     >
-      {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
+      {categories.map((item) => (
+        <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
+      ))}
+      {inputValue &&
+        !categories.some(
+          (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+        ) && (
+          <AutocompleteItem key="new-category-option">
+            {`Add "${inputValue}"`}
+          </AutocompleteItem>
+        )}
     </Autocomplete>
   );
 }
-
 CategoryInput.defaultProps = {
   preselectedCategory: null,
 };

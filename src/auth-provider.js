@@ -23,7 +23,7 @@ async function client(endpoint, data) {
     });
 }
 
-async function getToken() {
+function getToken() {
   return window.localStorage.getItem(localStorageKey);
 }
 

@@ -4,11 +4,11 @@ import TaskCreateEditModal from "../../components/task-create-edit-modal";
 import DashboardUpcomingTask from "../../components/dashboard-upcoming-task";
 import DashboardDueTodayTask from "../../components/dashboard-due-today-task";
 import { useDashboardTasks } from "../../utils/task";
-import { useAuth } from "../../context/auth-context";
+import { useUser } from "../../utils/user";
 import "./styles.scss";
 
 function DashboardScreen() {
-  const { user } = useAuth();
+  const { data: user } = useUser();
   const { data } = useDashboardTasks();
 
   return (

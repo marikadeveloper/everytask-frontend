@@ -326,6 +326,10 @@ function MyMostBusyTimes() {
   return (
     <div className="simple-tile most-busy-times">
       <h4>Most Busy Times</h4>
+      <p>
+        Your most busy hours and days based on the completed tasks count in each
+        weekday
+      </p>
       <ResponsiveHeatMap
         animate={false}
         data={data}
