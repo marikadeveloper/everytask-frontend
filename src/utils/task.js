@@ -21,6 +21,10 @@ const taskStatusLabels = {
   [TASK_STATUS.IN_PROGRESS]: "In progress",
   [TASK_STATUS.TODO]: "To do",
 };
+const taskStatusesForSelect = taskStatusArray.map((status) => ({
+  value: status,
+  label: taskStatusLabels[status],
+}));
 
 const TASK_IMPACT = {
   HIGH_IMPACT_HIGH_EFFORT: "HIGH_IMPACT_HIGH_EFFORT",
@@ -35,6 +39,10 @@ const taskImpactLabels = {
   [TASK_IMPACT.LOW_IMPACT_HIGH_EFFORT]: "Low impact, high effort",
   [TASK_IMPACT.LOW_IMPACT_LOW_EFFORT]: "Low impact, low effort",
 };
+const taskImpactsForSelect = taskImpactArray.map((impact) => ({
+  value: impact,
+  label: taskImpactLabels[impact],
+}));
 
 // Get tasks
 function useTasks(filters) {
@@ -116,7 +124,15 @@ function useUpdateTask() {
        *         },
        *         "badges": [],
        *         "pointsAwarded": 0,
-       *         "levelUp": null
+       *         "levelUp": null,
+       *         "streak": {
+       *           id: string
+       *           startDate: Date
+       *           updatedAt: Date
+       *           current: number
+       *           longest: number
+       *           userId: string
+       *         }
        *     }
        * }
        */
@@ -139,8 +155,37 @@ function useUpdateTask() {
           value: { badges: data.badges },
         });
       }
+      if (data.streak) {
+        triggerEvent({
+          type: CelebrationEvent.Streak,
+          value: { streak: data.streak },
+        });
+      }
     },
   });
+}
+
+function useDeleteTask(taskId) {
+  const client = useClient();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => client(`tasks/${taskId}`, { method: "DELETE" }),
+    onSettled: () => {
+      queryClient.invalidateQueries("tasks");
+    },
+  });
+}
+
+function useDashboardTasks() {
+  const client = useClient();
+  const config = {
+    ...taskQueryConfig,
+    queryKey: ["dashboard-tasks"],
+    queryFn: () => client(`dashboard-tasks`, {}).then((res) => res.data),
+  };
+
+  return useQuery(config);
 }
 
 export {
@@ -150,8 +195,12 @@ export {
   taskImpactLabels,
   taskStatusArray,
   taskStatusLabels,
+  taskStatusesForSelect,
+  taskImpactsForSelect,
   useCreateTask,
   useTask,
   useTasks,
   useUpdateTask,
+  useDashboardTasks,
+  useDeleteTask,
 };

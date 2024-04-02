@@ -12,12 +12,12 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Pencil, Trash } from "../../assets/icons";
 import { Button, IconButton, LinkButton } from "../../components/button";
 import DeleteCategoryModal from "../../components/category-delete-modal";
-import { Input } from "../../components/input/index";
+import { Input } from "../../components/input";
 import {
   useCategories,
   useCreateCategory,
@@ -55,9 +55,6 @@ function CategoriesScreen() {
           onSuccess: () => {
             setIsPending(false);
             onOpenChange(false);
-            console.log(
-              `Category ${selectedCategory.id} updated successfully.`,
-            );
             toast.success(`Category ${categoryName} updated successfully.`);
           },
           onError: (error) => {
@@ -79,7 +76,6 @@ function CategoriesScreen() {
           onSuccess: () => {
             setIsPending(false);
             onOpenChange(false);
-            console.log(`Category created successfully.`);
             toast.success(`Category created successfully.`);
           },
           onError: (error) => {
@@ -163,7 +159,10 @@ function CategoriesScreen() {
             </ModalContent>
           </Modal>
         </div>
-        <Table className="categories__table">
+        <Table
+          className="categories__table"
+          aria-labelledby="Categories list table"
+        >
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn

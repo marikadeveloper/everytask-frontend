@@ -8,16 +8,22 @@ import {
 } from "@nextui-org/react";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
+import { useForm } from "react-hook-form";
 import { Close } from "../../assets/icons";
-import { useCategories } from "../../utils/category";
+import { useCategories, useCreateCategory } from "../../utils/category";
 import { IconButton } from "../button";
-
+import {
+  TASK_STATUS,
+  taskStatusesForSelect,
+  useUpdateTask,
+} from "../../utils/task";
 import "./styles.scss";
+import toast from "react-hot-toast";
 
 const Input = React.forwardRef(({ className, ...rest }, ref) => {
   return (
@@ -94,6 +100,7 @@ function EmojiInput({ onEmojiChange, defaultEmoji = null }) {
     </div>
   );
 }
+
 EmojiInput.defaultProps = {
   defaultEmoji: null,
 };
@@ -161,7 +168,10 @@ Select.propTypes = {
 
 function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
   const { categories } = useCategories();
+  const { mutate: createCategory, isPending } = useCreateCategory();
   const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [autocompleteKey, setAutocompleteKey] = useState(0);
 
   useEffect(() => {
     if (preselectedCategory) {
@@ -169,23 +179,81 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
     }
   }, [preselectedCategory]);
 
+  const handleNewCategory = () => {
+    if (inputValue.trim() === "") {
+      console.error("Category name cannot be empty");
+      toast.error("Category name cannot be empty");
+      return;
+    }
+    createCategory(
+      { name: inputValue },
+      {
+        onSuccess: (newCategoryId) => {
+          toast.success(`Category created successfully.`);
+          setValue(newCategoryId.data.id);
+          onCategoryChange(newCategoryId.data.id);
+          setInputValue("");
+          setAutocompleteKey((prevKey) => prevKey + 1);
+        },
+        onError: (error) => {
+          toast.error(`Failed to create category: ${error.message}`);
+        },
+      },
+    );
+  };
+
   const onSelectionChange = (selected) => {
-    setValue(selected);
-    onCategoryChange(selected);
+    if (selected === "new-category-option") {
+      handleNewCategory();
+    } else {
+      setValue(selected);
+      onCategoryChange(selected);
+    }
+  };
+
+  const onInputChange = (value) => {
+    setInputValue(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && inputValue) {
+      const existingCategory = categories.find(
+        (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+      );
+      if (existingCategory) {
+        setValue(existingCategory.id);
+        onCategoryChange(existingCategory.id);
+      } else {
+        handleNewCategory();
+      }
+    }
   };
 
   return (
     <Autocomplete
+      key={autocompleteKey}
+      allowsCustomValue
       label="Category"
       variant="bordered"
-      defaultItems={categories}
-      placeholder="Search a category"
+      placeholder="Search or create a category"
       selectedKey={value}
+      value={inputValue}
+      onInputChange={onInputChange}
       onSelectionChange={onSelectionChange}
-      shouldCloseOnBlur
-      allowsCustomValue
+      onKeyDown={handleKeyDown}
+      fullWidth
     >
-      {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
+      {categories.map((item) => (
+        <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
+      ))}
+      {inputValue &&
+        !categories.some(
+          (cat) => cat.name.toLowerCase() === inputValue.toLowerCase(),
+        ) && (
+          <AutocompleteItem key="new-category-option">
+            {`Add "${inputValue}"`}
+          </AutocompleteItem>
+        )}
     </Autocomplete>
   );
 }
@@ -214,7 +282,7 @@ function DatetimePicker({ onDateChange, date = new Date() }) {
       </label>
       <DateTimePicker
         id="datetime-picker"
-        format="dd-MM-y h:mm a"
+        format="dd-MM-y HH:mm"
         onChange={onChange}
         value={value}
       />
@@ -230,4 +298,55 @@ DatetimePicker.propTypes = {
   onDateChange: PropTypes.func.isRequired,
 };
 
-export { CategoryInput, DatetimePicker, EmojiInput, Input, Select };
+function TaskStatusSelect({ defaultStatus, taskId }) {
+  const { register, watch } = useForm({
+    defaultValues: { status: defaultStatus },
+  });
+  const status = watch("status");
+  const { mutate } = useUpdateTask();
+
+  const statusColor = useMemo(() => {
+    switch (status) {
+      case TASK_STATUS.TODO:
+        return undefined;
+      case TASK_STATUS.IN_PROGRESS:
+        return "secondary";
+      case TASK_STATUS.DONE:
+        return "success";
+      default:
+        return "default";
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (status && status !== defaultStatus) {
+      mutate({ id: taskId, status });
+    }
+  }, [status, defaultStatus]);
+
+  return (
+    <Select
+      label="Status"
+      items={taskStatusesForSelect}
+      defaultSelectedKeys={[defaultStatus]}
+      color={statusColor}
+      variant="flat"
+      size="sm"
+      {...register("status")}
+    />
+  );
+}
+
+TaskStatusSelect.propTypes = {
+  defaultStatus: PropTypes.string.isRequired,
+  taskId: PropTypes.string.isRequired,
+};
+
+export {
+  CategoryInput,
+  DatetimePicker,
+  EmojiInput,
+  Input,
+  Select,
+  TaskStatusSelect,
+};

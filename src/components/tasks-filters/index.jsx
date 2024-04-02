@@ -1,26 +1,16 @@
 import PropTypes from "prop-types";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input, Select } from "../input/index";
 import {
-  taskImpactArray,
   taskImpactLabels,
-  taskStatusArray,
-  taskStatusLabels,
+  taskImpactsForSelect,
+  taskStatusesForSelect,
 } from "../../utils/task";
 import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
 import { useBreakpoint } from "../../utils/hooks";
 import "./styles.scss";
-
-const taskStatuses = taskStatusArray.map((status) => ({
-  value: status,
-  label: taskStatusLabels[status],
-}));
-const taskImpacts = taskImpactArray.map((impact) => ({
-  value: impact,
-  label: taskImpactLabels[impact],
-}));
 
 const filtersLabels = {
   status: "Status",
@@ -34,21 +24,14 @@ const smallScreenThreshold = 940;
 function TasksFilters({ onFiltersUpdated, isFiltering }) {
   const isSmallScreen = useBreakpoint(smallScreenThreshold);
 
-  const { register, handleSubmit, reset, getValues } = useForm({
+  const { handleSubmit, reset, getValues, control } = useForm({
     defaultValues: {
-      status: "",
+      status: undefined,
       categoryIds: [],
       containsText: "",
-      impact: "",
+      impact: undefined,
     },
   });
-  /**
-   * supported filters:
-   * - status
-   * - categoryIds (array)
-   * - containsText
-   * - impact
-   */
   const { categories } = useCategories();
 
   const onSubmit = (data) => {
@@ -69,39 +52,60 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
 
   const renderForm = () => (
     <form id="filters-form" onSubmit={handleSubmit(onSubmit)}>
-      {/* containsText=xx */}
-      <Input
-        placeholder="Search tasks"
-        label="Search in title or description..."
-        size="sm"
-        {...register("containsText")}
+      <Controller
+        name="containsText"
+        control={control}
+        render={({ field }) => (
+          <Input
+            id="title"
+            placeholder="Search tasks"
+            label="Search in title or description..."
+            size="sm"
+            {...field}
+          />
+        )}
       />
-      {/* status=xx */}
-      <Select
-        placeholder="Filter by status"
-        label="Status"
-        items={taskStatuses}
-        size="sm"
-        {...register("status")}
+      <Controller
+        name="status"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Filter by status"
+            label="Status"
+            items={taskStatusesForSelect}
+            size="sm"
+            {...field}
+          />
+        )}
       />
-      {/* categoryIds[]=xx */}
-      <Select
-        selectionMode="multiple"
-        placeholder="Filter by category"
-        label="Category"
-        itemKey="id"
-        itemLabel="name"
-        items={categories}
-        size="sm"
-        {...register("categoryIds")}
+      <Controller
+        name="categoryIds"
+        control={control}
+        render={({ field }) => (
+          <Select
+            selectionMode="multiple"
+            placeholder="Filter by category"
+            label="Category"
+            itemKey="id"
+            itemLabel="name"
+            items={categories}
+            size="sm"
+            {...field}
+          />
+        )}
       />
-      {/* impact=xx */}
-      <Select
-        placeholder="Filter by impact"
-        label="Impact"
-        items={taskImpacts}
-        size="sm"
-        {...register("impact")}
+      <Controller
+        name="impact"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Filter by impact"
+            label="Impact"
+            items={taskImpactsForSelect}
+            size="sm"
+            {...field}
+          />
+        )}
       />
 
       <Button type="submit" form="filters-form" isLoading={isFiltering}>
@@ -132,6 +136,9 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
       .map((key) => {
         if (key === "categoryIds") {
           return `category "${values[key].map((id) => categories.find((c) => c.id === id).name).join(", ")}"`;
+        }
+        if (key === "impact") {
+          return `${filtersLabels[key]} "${taskImpactLabels[values[key]]}"`;
         }
         return `${filtersLabels[key]} "${values[key]}"`;
       })

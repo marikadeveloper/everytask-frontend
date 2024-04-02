@@ -23,7 +23,7 @@ async function client(endpoint, data) {
     });
 }
 
-async function getToken() {
+function getToken() {
   return window.localStorage.getItem(localStorageKey);
 }
 
@@ -37,10 +37,13 @@ function login({ email, password }) {
   return client("login", { email, password }).then(handleUserResponse);
 }
 
-function register({ email, password, passwordConfirmation }) {
-  return client("register", { email, password, passwordConfirmation }).then(
-    handleUserResponse,
-  );
+function register({ email, name, password, passwordConfirmation }) {
+  return client("register", {
+    email,
+    name,
+    password,
+    passwordConfirmation,
+  }).then(handleUserResponse);
 }
 
 function logout() {

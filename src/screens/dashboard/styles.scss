@@ -1,0 +1,27 @@
+.dashboard {
+  &__header {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  &__content {
+    display: grid;
+    gap: 20px;
+    &__due-today {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    &__upcoming-tasks-header {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    &__upcoming-tasks-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fill, 250px);
+    }
+  }
+}

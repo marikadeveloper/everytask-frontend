@@ -41,7 +41,7 @@ function moreSpecialHurray() {
   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
   // eslint-disable-next-line consistent-return
-  const interval = setInterval(function () {
+  const interval = setInterval(() => {
     const timeLeft = animationEnd - Date.now();
 
     if (timeLeft <= 0) {

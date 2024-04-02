@@ -50,9 +50,11 @@ function DeleteCategoryModal({ category, isOpen, onClose }) {
     </Modal>
   );
 }
-
+DeleteCategoryModal.defaultProps = {
+  category: {},
+};
 DeleteCategoryModal.propTypes = {
-  category: PropTypes.object.isRequired,
+  category: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

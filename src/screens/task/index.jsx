@@ -1,49 +1,23 @@
 import { Emoji } from "emoji-picker-react";
-import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import React, { useEffect } from "react";
-import { FullPageErrorFallback } from "../../components/errors/index";
-import { Select } from "../../components/input/index";
-import { FullPageSpinner } from "../../components/spinner/index";
-import TaskDeadline from "../../components/task-deadline/index";
-import TaskImpactChip from "../../components/task-impact-chip/index";
+import { useNavigate, useParams } from "react-router-dom";
+import { FullPageErrorFallback } from "../../components/errors";
+import { TaskStatusSelect } from "../../components/input";
+import { FullPageSpinner } from "../../components/spinner";
+import TaskDeadline from "../../components/task-deadline";
+import TaskImpactChip from "../../components/task-impact-chip";
 import { useBreakpoint } from "../../utils/hooks";
-import {
-  TASK_STATUS,
-  taskStatusArray,
-  taskStatusLabels,
-  useTask,
-  useUpdateTask,
-} from "../../utils/task";
-import TaskChecklist from "../../components/task-checklist/index";
-import TaskCreateEditModal from "../../components/task-create-edit-modal/index";
+import { TASK_STATUS, useTask } from "../../utils/task";
+import TaskChecklist from "../../components/task-checklist";
+import TaskCreateEditModal from "../../components/task-create-edit-modal";
+import TaskHistory from "../../components/task-history";
+import { LinkButton } from "../../components/button";
+import TaskDeleteModal from "../../components/task-delete-modal";
 import "./styles.scss";
-import TaskHistory from "../../components/task-history/index.jsx";
-import { LinkButton } from "../../components/button/index.jsx";
 
 const smallScreenThreshold = 768;
 
-const taskStatuses = taskStatusArray.map((status) => ({
-  value: status,
-  label: taskStatusLabels[status],
-}));
-const getStatusColor = (status) => {
-  switch (status) {
-    case "TODO":
-      return undefined;
-    case "IN_PROGRESS":
-      return "secondary";
-    case "DONE":
-      return "success";
-    default:
-      return "default";
-  }
-};
-
 function TaskScreen() {
   const isSmallScreen = useBreakpoint(smallScreenThreshold);
-  const { register, watch } = useForm();
-  const status = watch("status");
   const { taskId } = useParams();
   const {
     data: task,
@@ -51,13 +25,12 @@ function TaskScreen() {
     error,
     isError,
   } = useTask(taskId);
-  const { mutate } = useUpdateTask();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (status && task?.status !== status) {
-      mutate({ id: taskId, status });
-    }
-  }, [mutate, status, task?.status, taskId]);
+  const goToTasks = () => {
+    // navigate to tasks
+    navigate("/tasks");
+  };
 
   const renderEmojis = () => {
     return (
@@ -99,6 +72,7 @@ function TaskScreen() {
   if (isError) {
     return <FullPageErrorFallback error={error} />;
   }
+
   if (taskPending) {
     return <FullPageSpinner />;
   }
@@ -116,15 +90,7 @@ function TaskScreen() {
         />
       </div>
       <section className="task__sub-header">
-        <Select
-          label="Status"
-          items={taskStatuses}
-          defaultSelectedKeys={[task.status]}
-          color={getStatusColor(task.status)}
-          variant="flat"
-          size="sm"
-          {...register("status")}
-        />
+        <TaskStatusSelect taskId={task.id} defaultStatus={task.status} />
         <TaskImpactChip impact={task.impact} />
         <TaskDeadline
           deadline={task.dueDate}
@@ -153,6 +119,10 @@ function TaskScreen() {
       </section>
       <section className="task__history">
         <TaskHistory taskHistory={task.statusHistory} />
+      </section>
+      <section className="task__delete">
+        <h2>Danger zone</h2>
+        <TaskDeleteModal taskId={task.id} onTaskDeleted={goToTasks} />
       </section>
     </div>
   );

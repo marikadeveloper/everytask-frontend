@@ -10,7 +10,7 @@ $small-screen-threshold: 768px;
 
   &--has-emoji {
     .link-button {
-      margin-bottom: 46px;
+      margin-bottom: 50px;
     }
   }
 
@@ -93,10 +93,17 @@ $small-screen-threshold: 768px;
   }
 
   &__checklist,
-  &__history {
+  &__history,
+  &__delete {
     margin-top: 40px;
     @media (max-width: $small-screen-threshold) {
       margin-top: 20px;
+    }
+  }
+
+  &__delete {
+    h2 {
+      margin-bottom: 20px;
     }
   }
 }

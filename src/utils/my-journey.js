@@ -180,24 +180,6 @@ function useMyMostBusyTimes() {
 }
 
 /**
- * Get the current user's average completion times by impact
- * @returns {{ [IMPACT]: string }} - data - The current user's average completion times by impact (in minutes)
- */
-function useMyAverageCompletionTimesByImpact() {
-  const client = useClient();
-
-  const config = {
-    ...statQueryConfig,
-    queryKey: ["my-average-completion-times-by-impact"],
-    queryFn: () =>
-      client("my-average-completion-times-by-impact").then((res) => res.data),
-  };
-
-  const result = useQuery(config);
-  return { data: result.data || {} };
-}
-
-/**
  * Gamification section
  */
 
@@ -243,7 +225,6 @@ export {
   useMyTasksByCategory,
   useMyTaskCompletionCalendar,
   useMyMostBusyTimes,
-  useMyAverageCompletionTimesByImpact,
   useMyStreak,
   useMyBadges,
 };

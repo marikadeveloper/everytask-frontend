@@ -1,4 +1,10 @@
-import * as React from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import * as auth from "../auth-provider";
 import { FullPageErrorFallback } from "../components/errors/index";
 import { FullPageSpinner } from "../components/spinner/index";
@@ -8,7 +14,7 @@ import { useAsync } from "../utils/hooks";
 async function bootstrapAppData() {
   let user = null;
 
-  const token = await auth.getToken();
+  const token = auth.getToken();
   if (token) {
     const data = await client("me", { token });
     user = {
@@ -19,7 +25,7 @@ async function bootstrapAppData() {
   return user;
 }
 
-const AuthContext = React.createContext();
+const AuthContext = createContext();
 AuthContext.displayName = "AuthContext";
 
 function AuthProvider(props) {
@@ -35,39 +41,38 @@ function AuthProvider(props) {
     setData,
   } = useAsync();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const appDataPromise = bootstrapAppData();
     run(appDataPromise);
   }, [run]);
 
-  const login = React.useCallback(
+  const login = useCallback(
     (form) =>
       auth.login(form).then((loggedUser) => {
-        console.log({ loggedUser });
         setData(loggedUser);
       }),
     [setData],
   );
 
-  const register = React.useCallback((form) => {
+  const register = useCallback((form) => {
     return auth.register(form);
   }, []);
 
-  const logout = React.useCallback(() => {
+  const logout = useCallback(() => {
     auth.logout();
     queryCache.clear();
     setData(null);
   }, [setData]);
 
-  const resetPasswordRequest = React.useCallback((email) => {
+  const resetPasswordRequest = useCallback((email) => {
     return auth.resetPasswordRequest(email);
   }, []);
 
-  const resetPassword = React.useCallback((form) => {
+  const resetPassword = useCallback((form) => {
     return auth.resetPassword(form);
   }, []);
 
-  const value = React.useMemo(
+  const value = useMemo(
     () => ({
       user,
       login,
@@ -95,7 +100,7 @@ function AuthProvider(props) {
 }
 
 function useAuth() {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error(`useAuth must be used within a AuthProvider`);
   }
@@ -106,7 +111,7 @@ function useClient() {
   const { user } = useAuth();
   const token = user?.token;
 
-  return React.useCallback(
+  return useCallback(
     (endpoint, config) => client(endpoint, { ...config, token }),
     [token],
   );

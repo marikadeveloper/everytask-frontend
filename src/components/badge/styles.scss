@@ -1,5 +1,11 @@
 .badge {
   display: grid;
+  filter: grayscale(100%);
+
+  &--earned {
+    filter: grayscale(0%);
+  }
+
   img {
     margin-bottom: 4px;
     border-radius: 50%;

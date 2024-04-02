@@ -3,25 +3,31 @@ import dayjs from "dayjs";
 import { useAuth } from "../../context/auth-context";
 import "./styles.scss";
 
-function Badge({ userBadge }) {
+function Badge({ badge, earnedAt }) {
   const { user } = useAuth();
-  const { badge } = userBadge;
 
   return (
-    <div className="badge">
+    <div className={`badge ${earnedAt ? "badge--earned" : ""}`}>
       <img
         src={`/src/assets/badges/${badge.code}.jpg`}
         alt={`${badge.code} badge`}
       />
-      <small>{dayjs(userBadge.earnedAt).format(user.dateFormat)}</small>
+      {earnedAt ? (
+        <small>{dayjs(earnedAt).format(user.dateFormat)}</small>
+      ) : (
+        <small />
+      )}
       <p className="font-weight-medium">{badge.name}</p>
       <p>{badge.description}</p>
     </div>
   );
 }
-
+Badge.defaultProps = {
+  earnedAt: undefined,
+};
 Badge.propTypes = {
-  userBadge: PropTypes.object.isRequired,
+  badge: PropTypes.object.isRequired,
+  earnedAt: PropTypes.string,
 };
 
 export default Badge;

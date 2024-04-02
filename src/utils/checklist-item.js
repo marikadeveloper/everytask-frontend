@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useClient } from "../context/auth-context";
 
 function useCreateChecklistItem() {
   const client = useClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (newItem) =>
@@ -10,6 +11,9 @@ function useCreateChecklistItem() {
         method: "POST",
         data: newItem,
       }),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries("task", [data.taskId]);
+    },
   });
 }
 

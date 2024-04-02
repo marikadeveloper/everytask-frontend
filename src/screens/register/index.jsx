@@ -41,7 +41,7 @@ function RegisterScreen() {
           placeholder="The email that will be used for log in"
           {...register("email", { required: true })}
         />
-        
+
         <Input
           label="Name"
           id="name"

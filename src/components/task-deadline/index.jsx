@@ -18,7 +18,7 @@ const getClassFromDeadline = ({ deadline, isDone }) => {
   // in one week or less -> orange
   // in two days or less -> red
   // overdue -> grey
-  if (date.isBefore(dayjs(), "day")) {
+  if (date.isBefore(dayjs())) {
     return "task-deadline--overdue";
   }
 
@@ -41,13 +41,12 @@ const getTextFromDeadline = ({ deadline, short, isDone }) => {
 
   // e.g. -> Due in 2 weeks
   const relative = date.fromNow();
-  if (date.isBefore(dayjs(), "day")) {
-    const relativeOverdue = date.toNow();
+  if (date.isBefore(dayjs())) {
     if (short) {
       return "overdue";
     }
 
-    return `Overdue by ${relativeOverdue}`;
+    return `Due ${relative}`;
   }
 
   if (short) {

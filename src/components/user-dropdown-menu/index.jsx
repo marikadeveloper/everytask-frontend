@@ -6,10 +6,16 @@ import {
   User,
 } from "@nextui-org/react";
 import { useAuth } from "../../context/auth-context";
+import { useUser } from "../../utils/user";
 import "./styles.scss";
 
 function UserDropdownMenu() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const { data: user, isPending } = useUser();
+
+  if (isPending) {
+    return null;
+  }
 
   return (
     <Dropdown placement="bottom-end" className="user-dropdown-menu">

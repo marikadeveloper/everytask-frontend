@@ -6,22 +6,14 @@ const userQueryConfig = {
   cacheTime: 1000 * 60 * 60,
 };
 
-const loadingUser = {
-  email: "loading email...",
-  name: "loading name...",
-  dateFormat: "loading dateFormat...",
-  points: "loading points...",
-  level: "loading level...",
-};
-
 function useUser() {
   const client = useClient();
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["me"],
     queryFn: () => client("me").then((res) => res.user),
     ...userQueryConfig,
   });
-  return data ?? loadingUser;
+  return { data, isPending };
 }
 
 function useUpdateUser() {

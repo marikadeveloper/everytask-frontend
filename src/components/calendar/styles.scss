@@ -1,0 +1,95 @@
+$calendar-border: 2px solid #ebebec;
+.calendar {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    &__month {
+    }
+  }
+
+  &__days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: $calendar-border;
+    border-bottom: $calendar-border;
+    padding: 8px 0;
+
+    &__day {
+      text-align: center;
+      font-weight: 500;
+    }
+  }
+
+  &__cells {
+    &__week {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    &__cell {
+      cursor: pointer;
+      height: 100px;
+      padding: 4px;
+      border-bottom: $calendar-border;
+      border-left: $calendar-border;
+
+      &:first-child {
+        border-left: none;
+      }
+
+      .number {
+        border-radius: 50%;
+        height: 22px;
+        width: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &--disabled {
+        background: lightgrey;
+      }
+
+      &--current-day {
+        .number {
+          background: var(--everytask-primary);
+          color: var(--everytask-contrast);
+          font-weight: 500;
+        }
+      }
+
+      &__tasks {
+
+        &__dots {
+          display: flex;
+          gap: 4px;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+}
+
+.calendar-task {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  border-radius: 4px;
+  gap: 6px;
+  cursor: pointer;
+  color: black;
+
+  .task-status-dot {
+    margin-top: 5px;
+  }
+
+  &--compressed {
+    gap: 3px;
+    .calendar-task__title {
+      font-size: 12px;
+    }
+  }
+}

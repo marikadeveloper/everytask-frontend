@@ -1,13 +1,9 @@
 .tasks {
-  &__header,
-  &__filters {
-    margin-bottom: 40px;
-  }
-
   &__header {
     display: flex;
     align-items: center;
     gap: 40px;
+    margin-bottom: 40px;
 
     &__actions {
       display: flex;
@@ -18,5 +14,15 @@
       flex-direction: column;
       align-items: flex-start;
     }
+  }
+
+  &__filters {
+    margin-bottom: 20px;
+  }
+
+  &__switch-view {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
   }
 }

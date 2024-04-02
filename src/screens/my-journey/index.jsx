@@ -5,12 +5,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import { ResponsivePie } from "@nivo/pie";
 import { useMemo } from "react";
-import { ResponsiveBar } from "@nivo/bar";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { Progress } from "@nextui-org/react";
 import {
-  useMyAverageCompletionTimesByImpact,
   useMyBadges,
   useMyFastestTaskCompletionTime,
   useMyMostBusyTimes,
@@ -21,13 +19,9 @@ import {
   useMyTasksByImpact,
   useMyTasksByStatus,
 } from "../../utils/my-journey";
-import {
-  TASK_IMPACT,
-  taskImpactLabels,
-  taskStatusLabels,
-} from "../../utils/task";
+import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
 import { useAuth } from "../../context/auth-context";
-import Badge from "../../components/badge/index.jsx";
+import Badge from "../../components/badge/index";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -64,13 +58,14 @@ function LoadingTile() {
 function MyFastestTaskCompletionTimeTile() {
   const { data, isPending } = useMyFastestTaskCompletionTime();
 
-  const formattedValue = data?.time
-    ? dayjs.duration(data.time, "minutes").humanize()
-    : "No data";
-
   if (isPending) {
     return <LoadingTile />;
   }
+
+  const formattedValue =
+    data?.time !== undefined
+      ? dayjs.duration(data.time, "minutes").humanize()
+      : "No data";
 
   return (
     <MyJourneySimpleTile
@@ -127,10 +122,31 @@ function MyTasksByStatusTile() {
     <div className="pie-chart-tile tasks-by-status">
       <h4>Tasks by Status (%)</h4>
       <ResponsivePie
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         animate={false}
         data={formattedData}
         colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+        valueFormat=">-.0f"
       />
     </div>
   );
@@ -161,10 +177,31 @@ function MyTasksByImpactTile() {
     <div className="pie-chart-tile tasks-by-impact">
       <h4>Tasks by Impact (%)</h4>
       <ResponsivePie
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         animate={false}
         data={formattedData}
         colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+        valueFormat=">-.0f"
       />
     </div>
   );
@@ -197,10 +234,31 @@ function MyTasksByCategory() {
     <div className="pie-chart-tile tasks-by-category">
       <h4>Tasks by Category (%)</h4>
       <ResponsivePie
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         animate={false}
         data={formattedData}
         colors={chartsColorScheme}
+        margin={{ top: 35, right: 20, bottom: 35, left: 20 }}
+        innerRadius={0.4}
+        padAngle={0.9}
+        cornerRadius={3}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.5]],
+        }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsOffset={0}
+        arcLinkLabelsDiagonalLength={16}
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+        valueFormat=">-.0f"
       />
     </div>
   );
@@ -214,7 +272,7 @@ function MyTaskCompletionCalendar() {
     return <LoadingTile />;
   }
 
-  if (!calendar) {
+  if (!calendar || !calendar.length) {
     return (
       <MyJourneySimpleTile title="Task Completion Calendar" value="No data" />
     );
@@ -228,8 +286,27 @@ function MyTaskCompletionCalendar() {
         data={calendar || []}
         from={from}
         to={to}
+        align="top"
         emptyColor="#eeeeee"
-        margin={{ bottom: 30 }}
+        colors={["#D3EECD", "#97D494", "#2F984F", "#036429"]}
+        minValue="auto"
+        margin={{ top: 40, right: 20, bottom: 20, left: 20 }}
+        yearSpacing={40}
+        monthBorderColor="#ffffff"
+        dayBorderWidth={2}
+        dayBorderColor="#ffffff"
+        legends={[
+          {
+            anchor: "bottom-right",
+            direction: "row",
+            translateY: 36,
+            itemCount: 4,
+            itemWidth: 42,
+            itemHeight: 36,
+            itemsSpacing: 14,
+            itemDirection: "right-to-left",
+          },
+        ]}
       />
     </div>
   );
@@ -242,66 +319,74 @@ function MyMostBusyTimes() {
     return <LoadingTile />;
   }
 
+  if (!data?.length) {
+    return <MyJourneySimpleTile title="Most Busy Times" value="No data" />;
+  }
+
   return (
     <div className="simple-tile most-busy-times">
       <h4>Most Busy Times</h4>
+      <p>
+        Your most busy hours and days based on the completed tasks count in each
+        weekday
+      </p>
       <ResponsiveHeatMap
         animate={false}
-        axisTop={{
-          tickRotation: -90,
-        }}
-        margin={{ top: 50, right: 0, bottom: 0, left: 30 }}
         data={data}
+        margin={{ top: 50, right: 40, bottom: 60, left: 40 }}
+        valueFormat=">-.0d"
+        axisTop={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: -90,
+          legend: "",
+          legendOffset: 46,
+          truncateTickAt: 0,
+        }}
+        axisRight={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          // legend: "days of the week",
+          // legendPosition: "middle",
+          // legendOffset: 70,
+          truncateTickAt: 0,
+        }}
+        axisLeft={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          // legend: "days of the week",
+          // legendPosition: "middle",
+          // legendOffset: -72,
+          truncateTickAt: 0,
+        }}
         colors={{
           type: "diverging",
           scheme: "greens",
+          divergeAt: 0.5,
+          minValue: 0,
+          maxValue: 10,
         }}
-      />
-    </div>
-  );
-}
-
-function MyAverageCompletionTimesByImpact() {
-  const { data, isPending } = useMyAverageCompletionTimesByImpact();
-
-  const formattedData = useMemo(() => {
-    if (!data) return [];
-
-    return Object.entries(data).map(([impact, avgTime]) => ({
-      impact: taskImpactLabels[impact],
-      [impact]: avgTime,
-    }));
-  }, [data]);
-
-  if (isPending) {
-    return <LoadingTile />;
-  }
-
-  if (!formattedData?.length) {
-    return (
-      <MyJourneySimpleTile
-        title="Average Completion Times by Impact"
-        value="No data"
-      />
-    );
-  }
-
-  return (
-    <div className="bar-chart-tile average-completion-times-by-impact">
-      <h4>Average Completion Times by Impact (minutes)</h4>
-      <ResponsiveBar
-        animate={false}
-        data={formattedData}
-        keys={[
-          TASK_IMPACT.HIGH_IMPACT_HIGH_EFFORT,
-          TASK_IMPACT.HIGH_IMPACT_LOW_EFFORT,
-          TASK_IMPACT.LOW_IMPACT_HIGH_EFFORT,
-          TASK_IMPACT.LOW_IMPACT_LOW_EFFORT,
+        emptyColor="#555555"
+        legends={[
+          {
+            anchor: "bottom",
+            translateX: 0,
+            translateY: 30,
+            length: 400,
+            thickness: 8,
+            direction: "row",
+            tickPosition: "after",
+            tickSize: 3,
+            tickSpacing: 4,
+            tickOverlap: false,
+            tickFormat: ">-.2s",
+            title: "Completed tasks →",
+            titleAlign: "start",
+            titleOffset: 4,
+          },
         ]}
-        indexBy="impact"
-        margin={{ bottom: 30 }}
-        padding={0.3}
-        colors={chartsColorScheme}
       />
     </div>
   );
@@ -359,17 +444,20 @@ function MyBadges() {
     return <LoadingTile />;
   }
 
-  if (!data?.length) {
-    return <MyJourneySimpleTile title="My Badges" value="No data" />;
-  }
-
+  const { myBadges, allBadges } = data;
   return (
     <div className="simple-tile badges-tile">
       <h4>My Badges</h4>
       <div className="badges-tile__badges">
-        {data.map((badge) => (
-          <div className="badges-tile__badges__badge" key={badge.id}>
-            <Badge userBadge={badge} />
+        {allBadges?.map((badge) => (
+          <div className="badges-tile__badges__badge" key={badge.code}>
+            <Badge
+              badge={badge}
+              earnedAt={
+                myBadges?.find((myBadge) => myBadge.badge.code === badge.code)
+                  ?.earnedAt
+              }
+            />
           </div>
         ))}
       </div>
@@ -415,8 +503,6 @@ function MyJourneyScreen() {
         <div className="my-journey__content__row">
           {/* Most busy times heatmap */}
           <MyMostBusyTimes />
-          {/* Average completion times by impact */}
-          <MyAverageCompletionTimesByImpact />
         </div>
       </section>
     </div>
