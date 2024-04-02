@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import EmojiPicker, { Emoji } from "emoji-picker-react";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import DateTimePicker from "react-datetime-picker";
@@ -18,6 +18,12 @@ import { useCategories } from "../../utils/category";
 import { IconButton } from "../button";
 
 import "./styles.scss";
+import {
+  TASK_STATUS,
+  taskStatusesForSelect,
+  useUpdateTask,
+} from "../../utils/task.js";
+import { useForm } from "react-hook-form";
 
 const Input = React.forwardRef(({ className, ...rest }, ref) => {
   return (
@@ -94,6 +100,7 @@ function EmojiInput({ onEmojiChange, defaultEmoji = null }) {
     </div>
   );
 }
+
 EmojiInput.defaultProps = {
   defaultEmoji: null,
 };
@@ -189,6 +196,7 @@ function CategoryInput({ onCategoryChange, preselectedCategory = null }) {
     </Autocomplete>
   );
 }
+
 CategoryInput.defaultProps = {
   preselectedCategory: null,
 };
@@ -207,7 +215,8 @@ function DatetimePicker({ onDateChange, date = new Date() }) {
 
   return (
     /* this is horrible */
-    <div className="transition-colors border-default-200 border-medium rounded-medium shadow-sm !duration-150 px-3 hover:border-default-400 focus:border-default-foreground active:border-default-foreground py-1 datetime-picker">
+    <div
+      className="transition-colors border-default-200 border-medium rounded-medium shadow-sm !duration-150 px-3 hover:border-default-400 focus:border-default-foreground active:border-default-foreground py-1 datetime-picker">
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label className="label" htmlFor="datetime-picker">
         Due date
@@ -230,4 +239,54 @@ DatetimePicker.propTypes = {
   onDateChange: PropTypes.func.isRequired,
 };
 
-export { CategoryInput, DatetimePicker, EmojiInput, Input, Select };
+function TaskStatusSelect({ defaultStatus, taskId }) {
+  const { register, watch } = useForm({
+    defaultValues: { status: defaultStatus },
+  });
+  const status = watch("status");
+  const { mutate } = useUpdateTask();
+  const statusColor = useMemo(() => {
+    switch (status) {
+      case TASK_STATUS.TODO:
+        return undefined;
+      case TASK_STATUS.IN_PROGRESS:
+        return "secondary";
+      case TASK_STATUS.DONE:
+        return "success";
+      default:
+        return "default";
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (status && status !== defaultStatus) {
+      mutate({ id: taskId, status });
+    }
+  }, [status, mutate, taskId, defaultStatus]);
+
+  return (
+    <Select
+      label="Status"
+      items={taskStatusesForSelect}
+      defaultSelectedKeys={[defaultStatus]}
+      color={statusColor}
+      variant="flat"
+      size="sm"
+      {...register("status")}
+    />
+  );
+}
+
+TaskStatusSelect.propTypes = {
+  defaultStatus: PropTypes.string.isRequired,
+  taskId: PropTypes.string.isRequired,
+};
+
+export {
+  CategoryInput,
+  DatetimePicker,
+  EmojiInput,
+  Input,
+  Select,
+  TaskStatusSelect,
+};

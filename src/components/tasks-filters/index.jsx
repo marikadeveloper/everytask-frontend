@@ -4,23 +4,14 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input, Select } from "../input/index";
 import {
   taskImpactArray,
-  taskImpactLabels,
-  taskStatusArray,
+  taskImpactLabels, taskImpactsForSelect,
+  taskStatusArray, taskStatusesForSelect,
   taskStatusLabels,
 } from "../../utils/task";
 import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
 import { useBreakpoint } from "../../utils/hooks";
 import "./styles.scss";
-
-const taskStatuses = taskStatusArray.map((status) => ({
-  value: status,
-  label: taskStatusLabels[status],
-}));
-const taskImpacts = taskImpactArray.map((impact) => ({
-  value: impact,
-  label: taskImpactLabels[impact],
-}));
 
 const filtersLabels = {
   status: "Status",
@@ -90,7 +81,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
           <Select
             placeholder="Filter by status"
             label="Status"
-            items={taskStatuses}
+            items={taskStatusesForSelect}
             size="sm"
             {...field}
           />
@@ -120,7 +111,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
           <Select
             placeholder="Filter by impact"
             label="Impact"
-            items={taskImpacts}
+            items={taskImpactsForSelect}
             size="sm"
             {...field}
           />

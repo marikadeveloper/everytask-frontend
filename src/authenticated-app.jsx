@@ -2,7 +2,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Route, Routes } from "react-router-dom";
 import { ErrorMessage, FullPageErrorFallback } from "./components/errors";
 import CategoriesScreen from "./screens/categories";
-import DashboardScreen from "./screens/dashboard";
+import DashboardScreen from "./screens/dashboard/index.jsx";
 import { NotFoundScreen } from "./screens/not-found";
 import ProfileScreen from "./screens/profile";
 import TasksScreen from "./screens/tasks";

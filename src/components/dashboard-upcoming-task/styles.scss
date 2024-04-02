@@ -1,0 +1,19 @@
+.upcoming-task {
+  display: grid;
+  border: 2px solid #e1e1e1;
+  border-radius: 25px;
+  padding: 10px;
+  gap: 10px;
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  &__status {
+    width: 150px;
+  }
+}

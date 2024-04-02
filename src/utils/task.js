@@ -21,6 +21,10 @@ const taskStatusLabels = {
   [TASK_STATUS.IN_PROGRESS]: "In progress",
   [TASK_STATUS.TODO]: "To do",
 };
+const taskStatusesForSelect = taskStatusArray.map((status) => ({
+  value: status,
+  label: taskStatusLabels[status],
+}));
 
 const TASK_IMPACT = {
   HIGH_IMPACT_HIGH_EFFORT: "HIGH_IMPACT_HIGH_EFFORT",
@@ -35,6 +39,10 @@ const taskImpactLabels = {
   [TASK_IMPACT.LOW_IMPACT_HIGH_EFFORT]: "Low impact, high effort",
   [TASK_IMPACT.LOW_IMPACT_LOW_EFFORT]: "Low impact, low effort",
 };
+const taskImpactsForSelect = taskImpactArray.map((impact) => ({
+  value: impact,
+  label: taskImpactLabels[impact],
+}));
 
 // Get tasks
 function useTasks(filters) {
@@ -161,6 +169,8 @@ export {
   taskImpactLabels,
   taskStatusArray,
   taskStatusLabels,
+  taskStatusesForSelect,
+  taskImpactsForSelect,
   useCreateTask,
   useTask,
   useTasks,
