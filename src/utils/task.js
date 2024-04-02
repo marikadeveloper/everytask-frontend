@@ -143,6 +143,17 @@ function useUpdateTask() {
   });
 }
 
+function useDashboardTasks() {
+  const client = useClient();
+  const config = {
+    ...taskQueryConfig,
+    queryKey: ["dashboard-tasks"],
+    queryFn: () => client(`dashboard-tasks`, {}).then((res) => res.data),
+  };
+
+  return useQuery(config);
+}
+
 export {
   TASK_IMPACT,
   TASK_STATUS,
@@ -154,4 +165,5 @@ export {
   useTask,
   useTasks,
   useUpdateTask,
+  useDashboardTasks,
 };

@@ -4,15 +4,20 @@ import TaskCreateEditModal from "../../components/task-create-edit-modal";
 import TasksFilters from "../../components/tasks-filters/index";
 import { useTasks, useUpdateTask } from "../../utils/task";
 import "./styles.scss";
-import { LinkButton } from "../../components/button/index.jsx";
-import { ArrowBack } from "../../assets/icons/index.jsx";
-import { Button as NuiButton } from "@nextui-org/button";
+import { Calendar as CalendarIcon } from "../../assets/icons/index.jsx";
 import { Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import Calendar from "../../components/calendar/index.jsx";
+
+const TaskView = {
+  KANBAN: "kanban",
+  CALENDAR: "calendar",
+};
 
 function TasksScreen() {
   const { mutate } = useUpdateTask();
   const [filters, setFilters] = useState();
+  const [view, setView] = useState(TaskView.KANBAN);
   const { tasks, refetch, isPending, dataUpdatedAt } = useTasks(filters);
 
   useEffect(() => {
@@ -59,23 +64,33 @@ function TasksScreen() {
           >
             Manage Categories
           </Button>
-        </div>
 
+          <Button
+            color="primary"
+            variant="bordered"
+            className="link-button"
+            startContent={<CalendarIcon />}
+            onClick={() => setView(TaskView.CALENDAR)}
+          >
+            Calendar view
+          </Button>
+        </div>
       </header>
       <section className="tasks__filters">
         <TasksFilters
           onFiltersUpdated={onFiltersUpdated}
           isFiltering={isPending}
         />
-        {/* TODO: view choice */}
       </section>
       <section>
-        {/* Kanban */}
-        <Kanban
-          key={dataUpdatedAt}
-          tasks={tasks}
-          onTaskUpdate={onTaskStatusUpdate}
-        />
+        {view === TaskView.KANBAN && (
+          <Kanban
+            key={dataUpdatedAt}
+            tasks={tasks}
+            onTaskUpdate={onTaskStatusUpdate}
+          />
+        )}
+        {view === TaskView.CALENDAR && <Calendar />}
         {/* Empty state */}
         {tasks.length === 0 && (
           <div className="empty-state">

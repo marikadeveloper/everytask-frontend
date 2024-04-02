@@ -26,7 +26,7 @@ function BadgesModal({ badges, badgesModalOpen, setBadgesModalOpen }) {
               {/* show badges icons (inside assets/badges/badge-name.png */}
               <div className="badges">
                 {badges.map((badge) => (
-                  <Badge key={badge} userBadge={badge} />
+                  <Badge key={badge.badge.code} badge={badge?.badge} earnedAt={badge.earnedAt} />
                 ))}
               </div>
             </ModalBody>

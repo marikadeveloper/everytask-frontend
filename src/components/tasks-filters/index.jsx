@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input, Select } from "../input/index";
 import {
@@ -34,7 +34,7 @@ const smallScreenThreshold = 940;
 function TasksFilters({ onFiltersUpdated, isFiltering }) {
   const isSmallScreen = useBreakpoint(smallScreenThreshold);
 
-  const { register, handleSubmit, reset, getValues } = useForm({
+  const { handleSubmit, reset, getValues, control } = useForm({
     defaultValues: {
       status: "",
       categoryIds: [],
@@ -69,39 +69,62 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
 
   const renderForm = () => (
     <form id="filters-form" onSubmit={handleSubmit(onSubmit)}>
-      {/* containsText=xx */}
-      <Input
-        placeholder="Search tasks"
-        label="Search in title or description..."
-        size="sm"
-        {...register("containsText")}
+      <Controller
+        name="containsText"
+        control={control}
+        render={({ field }) => (
+          <Input
+            autoFocus
+            id="title"
+            placeholder="Search tasks"
+            label="Search in title or description..."
+            size="sm"
+            {...field}
+          />
+        )}
       />
-      {/* status=xx */}
-      <Select
-        placeholder="Filter by status"
-        label="Status"
-        items={taskStatuses}
-        size="sm"
-        {...register("status")}
+      <Controller
+        name="status"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Filter by status"
+            label="Status"
+            items={taskStatuses}
+            size="sm"
+            {...field}
+          />
+        )}
       />
-      {/* categoryIds[]=xx */}
-      <Select
-        selectionMode="multiple"
-        placeholder="Filter by category"
-        label="Category"
-        itemKey="id"
-        itemLabel="name"
-        items={categories}
-        size="sm"
-        {...register("categoryIds")}
+      <Controller
+        name="categoryIds"
+        control={control}
+        render={({ field }) => (
+          <Select
+            selectionMode="multiple"
+            placeholder="Filter by category"
+            label="Category"
+            itemKey="id"
+            itemLabel="name"
+            items={categories}
+            size="sm"
+            {...field}
+          />
+        )}
       />
       {/* impact=xx */}
-      <Select
-        placeholder="Filter by impact"
-        label="Impact"
-        items={taskImpacts}
-        size="sm"
-        {...register("impact")}
+      <Controller
+        name="impact"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Filter by impact"
+            label="Impact"
+            items={taskImpacts}
+            size="sm"
+            {...field}
+          />
+        )}
       />
 
       <Button type="submit" form="filters-form" isLoading={isFiltering}>
@@ -132,6 +155,9 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
       .map((key) => {
         if (key === "categoryIds") {
           return `category "${values[key].map((id) => categories.find((c) => c.id === id).name).join(", ")}"`;
+        }
+        if (key === "impact") {
+          return `${filtersLabels[key]} "${taskImpactLabels[values[key]]}"`;
         }
         return `${filtersLabels[key]} "${values[key]}"`;
       })

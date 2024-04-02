@@ -359,17 +359,20 @@ function MyBadges() {
     return <LoadingTile />;
   }
 
-  if (!data?.length) {
-    return <MyJourneySimpleTile title="My Badges" value="No data" />;
-  }
-
+  const { myBadges, allBadges } = data;
   return (
     <div className="simple-tile badges-tile">
       <h4>My Badges</h4>
       <div className="badges-tile__badges">
-        {data.map((badge) => (
-          <div className="badges-tile__badges__badge" key={badge.id}>
-            <Badge userBadge={badge} />
+        {allBadges?.map((badge) => (
+          <div className="badges-tile__badges__badge" key={badge.code}>
+            <Badge
+              badge={badge}
+              earnedAt={
+                myBadges?.find((myBadge) => myBadge.badge.code === badge.code)
+                  ?.earnedAt
+              }
+            />
           </div>
         ))}
       </div>
