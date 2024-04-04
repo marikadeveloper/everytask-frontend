@@ -9,6 +9,7 @@ import { useUpdateUser } from "../../utils/user";
 import { Input, Select } from "../../components/input/index";
 import { ErrorMessage } from "../../components/errors/index";
 import "./styles.scss";
+import UserDeleteModal from "../../components/user-delete-modal.jsx";
 
 function ProfileScreen() {
   const { user } = useAuth();
@@ -84,14 +85,7 @@ function ProfileScreen() {
         {isError && <ErrorMessage error={error} />}
         <section className="profile__form__danger-zone">
           <h2>Danger zone</h2>
-          <Button
-            className="profile__form__danger-zone__submit-delete"
-            type="button"
-            color="danger"
-            variant="bordered"
-          >
-            Delete account
-          </Button>
+          <UserDeleteModal />
         </section>
       </form>
     </div>

@@ -43,4 +43,11 @@ function useUpdatePassword() {
   });
 }
 
-export { useUser, useUpdateUser, useUpdatePassword };
+function useDeleteUser() {
+  const client = useClient();
+  return useMutation({
+    mutationFn: () => client(`me`, { method: "DELETE" }),
+  });
+}
+
+export { useUser, useUpdateUser, useUpdatePassword, useDeleteUser };
