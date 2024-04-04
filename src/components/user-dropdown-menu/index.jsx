@@ -5,13 +5,20 @@ import {
   DropdownTrigger,
   User,
 } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth-context";
 import { useUser } from "../../utils/user";
 import "./styles.scss";
 
 function UserDropdownMenu() {
   const { logout } = useAuth();
+  const navigate = useNavigate();
   const { data: user, isPending } = useUser();
+
+  const onLogout = () => {
+    navigate("/");
+    logout();
+  };
 
   if (isPending) {
     return null;
@@ -50,7 +57,7 @@ function UserDropdownMenu() {
         <DropdownItem key="profile" href="/profile">
           Profile
         </DropdownItem>
-        <DropdownItem key="logout" onClick={logout}>
+        <DropdownItem key="logout" onClick={onLogout}>
           Log Out
         </DropdownItem>
       </DropdownMenu>

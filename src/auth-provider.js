@@ -49,6 +49,7 @@ function register({ email, name, password, passwordConfirmation }) {
 function logout() {
   window.localStorage.removeItem(localStorageKey);
   window.localStorage.removeItem("user");
+  window.location.reload();
 }
 
 function resetPasswordRequest({ email }) {
