@@ -1,13 +1,14 @@
-import "./styles.scss";
+import { Progress } from "@nextui-org/react";
+import { ResponsiveCalendar } from "@nivo/calendar";
+import { ResponsiveHeatMap } from "@nivo/heatmap";
+import { ResponsivePie } from "@nivo/pie";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import { ResponsivePie } from "@nivo/pie";
 import { useMemo } from "react";
-import { ResponsiveCalendar } from "@nivo/calendar";
-import { ResponsiveHeatMap } from "@nivo/heatmap";
-import { Progress } from "@nextui-org/react";
+import Badge from "../../components/badge/index";
+import { useAuth } from "../../context/auth-context";
 import {
   useMyBadges,
   useMyFastestTaskCompletionTime,
@@ -20,8 +21,7 @@ import {
   useMyTasksByStatus,
 } from "../../utils/my-journey";
 import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
-import { useAuth } from "../../context/auth-context";
-import Badge from "../../components/badge/index";
+import "./styles.scss";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -365,8 +365,8 @@ function MyMostBusyTimes() {
           type: "diverging",
           scheme: "greens",
           divergeAt: 0.5,
-          minValue: 0,
-          maxValue: 10,
+          // minValue: 0,
+          // maxValue: 10,
         }}
         emptyColor="#555555"
         legends={[
@@ -381,7 +381,7 @@ function MyMostBusyTimes() {
             tickSize: 3,
             tickSpacing: 4,
             tickOverlap: false,
-            tickFormat: ">-.2s",
+            tickFormat: ">-.1f",
             title: "Completed tasks →",
             titleAlign: "start",
             titleOffset: 4,
