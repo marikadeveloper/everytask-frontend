@@ -85,6 +85,7 @@ function TaskScreen() {
       <div className="task__title">
         {renderTitleAndEmoji()}
         <TaskCreateEditModal
+          key={`${task.title} - ${task.description}`}
           disabled={task.status === TASK_STATUS.DONE}
           task={task}
         />
