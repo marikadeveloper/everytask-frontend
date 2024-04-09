@@ -1,4 +1,4 @@
-import { Progress } from "@nextui-org/react";
+import { Progress, Switch } from "@nextui-org/react";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { ResponsivePie } from "@nivo/pie";
@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Badge from "../../components/badge/index";
 import { useAuth } from "../../context/auth-context";
 import {
@@ -21,6 +21,7 @@ import {
   useMyTasksByStatus,
 } from "../../utils/my-journey";
 import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
+
 import "./styles.scss";
 
 dayjs.extend(duration);
@@ -99,28 +100,49 @@ function MyMostProductiveDayTile() {
 
 function MyTasksByStatusTile() {
   const { data, isPending } = useMyTasksByStatus();
+  const [isPercentage, setIsPercentage] = useState(true);
 
   const formattedData = useMemo(() => {
-    if (!data?.statusPercentage) return [];
+    if (!data) return [];
 
-    return Object.entries(data.statusPercentage).map(([status, count]) => ({
+    const sourceData = isPercentage ? data.statusPercentage : data.statusCount;
+
+    if (!sourceData) return [];
+
+    return Object.entries(sourceData).map(([status, value]) => ({
       id: taskStatusLabels[status],
       label: taskStatusLabels[status],
-      value: count,
+      value,
     }));
-  }, [data]);
+  }, [data, isPercentage]);
 
   if (isPending) {
     return <LoadingTile />;
   }
 
   if (!formattedData?.length) {
-    return <MyJourneySimpleTile title="Tasks by Status (%)" value="No data" />;
+    return (
+      <MyJourneySimpleTile
+        title={`Tasks by Status (${isPercentage ? "%" : "Count"})`}
+        value="No data"
+      />
+    );
   }
 
   return (
     <div className="pie-chart-tile tasks-by-status">
-      <h4>Tasks by Status (%)</h4>
+      <div className="header">
+        <h4>Tasks by Status </h4>
+        <div className="switch-container">
+          <span className="switch-text">%</span>
+          <Switch
+            isSelected={isPercentage}
+            onValueChange={setIsPercentage}
+            className="smaller-switch"
+            size="sm"
+          ></Switch>
+        </div>
+      </div>
       <ResponsivePie
         animate={false}
         data={formattedData}
