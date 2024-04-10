@@ -121,24 +121,20 @@ function MyTasksByStatusTile() {
   }
 
   if (!formattedData?.length) {
-    return (
-      <MyJourneySimpleTile
-        title={`Tasks by Status (${isPercentage ? "%" : "Count"})`}
-        value="No data"
-      />
-    );
+    return <MyJourneySimpleTile title={`Tasks by Status`} value="No data" />;
   }
 
   return (
     <div className="pie-chart-tile tasks-by-status">
-      <div className="header">
+      <div className="pie-chart-tile__header">
         <h4>Tasks by Status </h4>
-        <div className="switch-container">
-          <span className="switch-text">%</span>
+        <div className="pie-chart-tile__header__switch-container">
+          <span className="pie-chart-tile__header__switch-container__switch-text">
+            %
+          </span>
           <Switch
             isSelected={isPercentage}
             onValueChange={setIsPercentage}
-            className="smaller-switch"
             size="sm"
           ></Switch>
         </div>
@@ -176,28 +172,45 @@ function MyTasksByStatusTile() {
 
 function MyTasksByImpactTile() {
   const { data, isPending } = useMyTasksByImpact();
+  const [isPercentage, setIsPercentage] = useState(true);
 
   const formattedData = useMemo(() => {
-    if (!data?.impactPercentage) return [];
+    if (!data) return [];
 
-    return Object.entries(data.impactPercentage).map(([impact, count]) => ({
+    const sourceData = isPercentage ? data.impactPercentage : data.impactCount;
+
+    if (!sourceData) return [];
+
+    return Object.entries(sourceData).map(([impact, value]) => ({
       id: taskImpactLabels[impact],
       label: taskImpactLabels[impact],
-      value: count,
+      value,
     }));
-  }, [data]);
+  }, [data, isPercentage]);
 
   if (isPending) {
     return <LoadingTile />;
   }
 
   if (!formattedData?.length) {
-    return <MyJourneySimpleTile title="Tasks by Impact (%)" value="No data" />;
+    return <MyJourneySimpleTile title={`Tasks by Impact`} value="No data" />;
   }
 
   return (
     <div className="pie-chart-tile tasks-by-impact">
-      <h4>Tasks by Impact (%)</h4>
+      <div className="pie-chart-tile__header">
+        <h4>Tasks by Impact</h4>
+        <div className="pie-chart-tile__header__switch-container">
+          <span className="pie-chart-tile__header__switch-container__switch-text">
+            %
+          </span>
+          <Switch
+            isSelected={isPercentage}
+            onValueChange={setIsPercentage}
+            size="sm"
+          />
+        </div>
+      </div>
       <ResponsivePie
         animate={false}
         data={formattedData}
@@ -231,30 +244,47 @@ function MyTasksByImpactTile() {
 
 function MyTasksByCategory() {
   const { data, isPending } = useMyTasksByCategory();
+  const [isPercentage, setIsPercentage] = useState(true);
 
   const formattedData = useMemo(() => {
-    if (!data?.categoryPercentage) return [];
+    if (!data) return [];
 
-    return Object.entries(data.categoryPercentage).map(([category, count]) => ({
+    const sourceData = isPercentage
+      ? data.categoryPercentage
+      : data.categoryCount;
+
+    if (!sourceData) return [];
+
+    return Object.entries(sourceData).map(([category, value]) => ({
       id: category,
       label: category,
-      value: count,
+      value,
     }));
-  }, [data]);
+  }, [data, isPercentage]);
 
   if (isPending) {
     return <LoadingTile />;
   }
 
   if (!formattedData?.length) {
-    return (
-      <MyJourneySimpleTile title="Tasks by Category (%)" value="No data" />
-    );
+    return <MyJourneySimpleTile title={`Tasks by Category`} value="No data" />;
   }
 
   return (
     <div className="pie-chart-tile tasks-by-category">
-      <h4>Tasks by Category (%)</h4>
+      <div className="pie-chart-tile__header">
+        <h4>Tasks by Category</h4>
+        <div className="pie-chart-tile__header__switch-container">
+          <span className="pie-chart-tile__header__switch-container__switch-text">
+            %
+          </span>
+          <Switch
+            isSelected={isPercentage}
+            onValueChange={setIsPercentage}
+            size="sm"
+          />
+        </div>
+      </div>
       <ResponsivePie
         animate={false}
         data={formattedData}
