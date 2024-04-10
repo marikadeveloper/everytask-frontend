@@ -36,18 +36,18 @@ $mobile-breakpoint: 500px;
   @extend .simple-tile;
   height: 250px;
 
-  .header {
+  &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
 
-  .switch-container {
-    display: flex;
-    align-items: center;
+    &__switch-container {
+      display: flex;
+      align-items: center;
 
-    .switch-text {
-      margin-right: 10px; // Add some space between the text and the switch
+      &__switch-text {
+        margin-right: 10px;
+      }
     }
   }
 }
