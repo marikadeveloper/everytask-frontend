@@ -367,6 +367,13 @@ function MyTaskCompletionCalendar() {
 function MyMostBusyTimes() {
   const { data, isPending } = useMyMostBusyTimes();
 
+  const maxValue = useMemo(() => {
+    if (!data?.length) return 10;
+    return data.some((day) => day.data.some((hour) => hour.y >= 10))
+      ? undefined
+      : 10;
+  }, [data]);
+
   if (isPending) {
     return <LoadingTile />;
   }
@@ -399,26 +406,20 @@ function MyMostBusyTimes() {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          // legend: "days of the week",
-          // legendPosition: "middle",
-          // legendOffset: 70,
           truncateTickAt: 0,
         }}
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          // legend: "days of the week",
-          // legendPosition: "middle",
-          // legendOffset: -72,
           truncateTickAt: 0,
         }}
         colors={{
           type: "diverging",
           scheme: "greens",
           divergeAt: 0.5,
-          // minValue: 0,
-          // maxValue: 10,
+          minValue: 0,
+          maxValue: maxValue,
         }}
         emptyColor="#555555"
         legends={[
