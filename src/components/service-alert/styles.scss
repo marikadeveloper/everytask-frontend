@@ -1,0 +1,12 @@
+.service-alert {
+  border: 2px solid var(--everytask-primary);
+  border-radius: 15px;
+  padding: 8px 12px;
+  &--info {
+    border-color: var(--everytask-info-500);
+    background: #deedff;
+  }
+  &--success {}
+  &--warning {}
+  &--error {}
+}

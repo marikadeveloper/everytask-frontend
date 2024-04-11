@@ -91,7 +91,11 @@ function TaskScreen() {
         />
       </div>
       <section className="task__sub-header">
-        <TaskStatusSelect taskId={task.id} defaultStatus={task.status} />
+        <TaskStatusSelect
+          taskId={task.id}
+          defaultStatus={task.status}
+          disabled={task.status === TASK_STATUS.DONE}
+        />
         <TaskImpactChip impact={task.impact} />
         <TaskDeadline
           deadline={task.dueDate}

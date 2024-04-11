@@ -4,6 +4,7 @@ import {
   CelebrationEvent,
   useCelebrationContext,
 } from "../context/celebration-context";
+import dayjs from "dayjs";
 
 const taskQueryConfig = {
   staleTime: 1000,
@@ -75,8 +76,18 @@ function useTask(taskId) {
 function useCreateTask() {
   const client = useClient();
   const queryClient = useQueryClient();
+
+  const now = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+
   return useMutation({
-    mutationFn: (newTask) => client(`task`, { data: newTask, method: "POST" }),
+    mutationFn: (newTask) =>
+      client(`task`, {
+        data: {
+          ...newTask,
+          updatedAt: now,
+        },
+        method: "POST",
+      }),
     onSettled: () => {
       queryClient.invalidateQueries("tasks");
     },
@@ -89,11 +100,17 @@ function useUpdateTask() {
   const queryClient = useQueryClient();
   const { triggerEvent } = useCelebrationContext();
 
+  // now should be a string like this: "2024-04-30T11:48:37.XXXZ"
+  const now = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+
   return useMutation({
     mutationFn: ({ id, ...updates }) =>
       client(`tasks/${id}`, {
         method: "PUT",
-        data: updates,
+        data: {
+          ...updates,
+          updatedAt: now,
+        },
       }),
     onSettled: () => {
       queryClient.invalidateQueries(["tasks", "task"]);
@@ -179,10 +196,13 @@ function useDeleteTask(taskId) {
 
 function useDashboardTasks() {
   const client = useClient();
+
+  const now = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+
   const config = {
     ...taskQueryConfig,
     queryKey: ["dashboard-tasks"],
-    queryFn: () => client(`dashboard-tasks`, {}).then((res) => res.data),
+    queryFn: () => client(`dashboard-tasks/${now}`, {}).then((res) => res.data),
   };
 
   return useQuery(config);

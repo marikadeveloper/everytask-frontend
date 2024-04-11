@@ -22,6 +22,7 @@ import {
 import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
 import { useAuth } from "../../context/auth-context";
 import Badge from "../../components/badge/index";
+import ServiceAlert from "../../components/service-alert/index.jsx";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -500,6 +501,10 @@ function MyJourneyScreen() {
           {/* Task completion calendar like G.Hub */}
           <MyTaskCompletionCalendar />
         </div>
+        <ServiceAlert
+          severity="info"
+          text="This section has undergone a series of updates regarding timezones. Please bear with us as we work to improve your experience. 😊"
+        />
         <div className="my-journey__content__row">
           {/* Most busy times heatmap */}
           <MyMostBusyTimes />
