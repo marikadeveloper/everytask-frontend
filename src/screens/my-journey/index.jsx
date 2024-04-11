@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Badge from "../../components/badge/index";
 import { useAuth } from "../../context/auth-context";
 import {
@@ -21,6 +21,7 @@ import {
   useMyTasksByStatus,
 } from "../../utils/my-journey";
 import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
+import ServiceAlert from "../../components/service-alert/index";
 
 import "./styles.scss";
 
@@ -553,6 +554,10 @@ function MyJourneyScreen() {
           {/* Task completion calendar like G.Hub */}
           <MyTaskCompletionCalendar />
         </div>
+        <ServiceAlert
+          severity="info"
+          text="This section has undergone a series of updates regarding timezones. Please bear with us as we work to improve your experience. 😊"
+        />
         <div className="my-journey__content__row">
           {/* Most busy times heatmap */}
           <MyMostBusyTimes />

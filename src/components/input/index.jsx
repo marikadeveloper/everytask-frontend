@@ -298,7 +298,7 @@ DatetimePicker.propTypes = {
   onDateChange: PropTypes.func.isRequired,
 };
 
-function TaskStatusSelect({ defaultStatus, taskId }) {
+function TaskStatusSelect({ defaultStatus, taskId, disabled }) {
   const { register, watch } = useForm({
     defaultValues: { status: defaultStatus },
   });
@@ -332,14 +332,18 @@ function TaskStatusSelect({ defaultStatus, taskId }) {
       color={statusColor}
       variant="flat"
       size="sm"
+      isDisabled={disabled}
       {...register("status")}
     />
   );
 }
-
+TaskStatusSelect.defaultProps = {
+  disabled: false,
+};
 TaskStatusSelect.propTypes = {
   defaultStatus: PropTypes.string.isRequired,
   taskId: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export {

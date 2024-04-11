@@ -48,24 +48,10 @@ function useMyMostProductiveDay() {
 function useMyTasksByStatus() {
   const client = useClient();
 
-  // setting for now this hardcoded computation period to last month
-  const computationPeriodStart = dayjs()
-    .subtract(1, "month")
-    .startOf("day")
-    .toISOString();
-
-  const computationPeriodEnd = dayjs().endOf("day").toISOString();
-
   const config = {
     ...statQueryConfig,
     queryKey: ["my-tasks-by-status"],
-    queryFn: () =>
-      client("my-tasks-by-status", {
-        data: {
-          computationPeriodStart,
-          computationPeriodEnd,
-        },
-      }).then((res) => res.data),
+    queryFn: () => client("my-tasks-by-status").then((res) => res.data),
   };
 
   const result = useQuery(config);
@@ -79,24 +65,11 @@ function useMyTasksByStatus() {
 function useMyTasksByImpact() {
   const client = useClient();
 
-  // setting for now this hardcoded computation period to last month
-  const computationPeriodStart = dayjs()
-    .subtract(1, "month")
-    .startOf("day")
-    .toISOString();
-
-  const computationPeriodEnd = dayjs().endOf("day").toISOString();
-
   const config = {
     ...statQueryConfig,
     queryKey: ["my-tasks-by-impact"],
     queryFn: () =>
-      client("my-tasks-by-impact", {
-        data: {
-          computationPeriodStart,
-          computationPeriodEnd,
-        },
-      }).then((res) => res.data),
+      client("my-tasks-by-impact").then((res) => res.data),
   };
 
   const result = useQuery(config);
@@ -110,24 +83,11 @@ function useMyTasksByImpact() {
 function useMyTasksByCategory() {
   const client = useClient();
 
-  // setting for now this hardcoded computation period to last month
-  const computationPeriodStart = dayjs()
-    .subtract(1, "month")
-    .startOf("day")
-    .toISOString();
-
-  const computationPeriodEnd = dayjs().endOf("day").toISOString();
-
   const config = {
     ...statQueryConfig,
     queryKey: ["my-tasks-by-category"],
     queryFn: () =>
-      client("my-tasks-by-category", {
-        data: {
-          computationPeriodStart,
-          computationPeriodEnd,
-        },
-      }).then((res) => res.data),
+      client("my-tasks-by-category").then((res) => res.data),
   };
 
   const result = useQuery(config);
