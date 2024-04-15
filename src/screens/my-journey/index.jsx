@@ -1,13 +1,14 @@
-import "./styles.scss";
+import { Progress, Switch } from "@nextui-org/react";
+import { ResponsiveCalendar } from "@nivo/calendar";
+import { ResponsiveHeatMap } from "@nivo/heatmap";
+import { ResponsivePie } from "@nivo/pie";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
-import { ResponsivePie } from "@nivo/pie";
-import { useMemo } from "react";
-import { ResponsiveCalendar } from "@nivo/calendar";
-import { ResponsiveHeatMap } from "@nivo/heatmap";
-import { Progress } from "@nextui-org/react";
+import React, { useMemo, useState } from "react";
+import Badge from "../../components/badge/index";
+import { useAuth } from "../../context/auth-context";
 import {
   useMyBadges,
   useMyFastestTaskCompletionTime,
@@ -20,9 +21,8 @@ import {
   useMyTasksByStatus,
 } from "../../utils/my-journey";
 import { taskImpactLabels, taskStatusLabels } from "../../utils/task";
-import { useAuth } from "../../context/auth-context";
-import Badge from "../../components/badge/index";
-import ServiceAlert from "../../components/service-alert/index.jsx";
+
+import "./styles.scss";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -100,28 +100,49 @@ function MyMostProductiveDayTile() {
 
 function MyTasksByStatusTile() {
   const { data, isPending } = useMyTasksByStatus();
-
+  const [isPercentage, setIsPercentage] = useState(
+    localStorage.getItem("isPercentageStatus") === "true",
+  );
   const formattedData = useMemo(() => {
-    if (!data?.statusPercentage) return [];
+    if (!data) return [];
 
-    return Object.entries(data.statusPercentage).map(([status, count]) => ({
+    const sourceData = isPercentage ? data.statusPercentage : data.statusCount;
+
+    if (!sourceData) return [];
+
+    return Object.entries(sourceData).map(([status, value]) => ({
       id: taskStatusLabels[status],
       label: taskStatusLabels[status],
-      value: count,
+      value,
     }));
-  }, [data]);
+  }, [data, isPercentage]);
 
   if (isPending) {
     return <LoadingTile />;
   }
 
   if (!formattedData?.length) {
-    return <MyJourneySimpleTile title="Tasks by Status (%)" value="No data" />;
+    return <MyJourneySimpleTile title={`Tasks by Status`} value="No data" />;
   }
 
   return (
     <div className="pie-chart-tile tasks-by-status">
-      <h4>Tasks by Status (%)</h4>
+      <div className="pie-chart-tile__header">
+        <h4>Tasks by Status </h4>
+        <div className="pie-chart-tile__header__switch-container">
+          <span className="pie-chart-tile__header__switch-container__switch-text">
+            %
+          </span>
+          <Switch
+            isSelected={isPercentage}
+            onValueChange={(newValue) => {
+              setIsPercentage(newValue);
+              localStorage.setItem("isPercentageStatus", newValue.toString());
+            }}
+            size="sm"
+          ></Switch>
+        </div>
+      </div>
       <ResponsivePie
         animate={false}
         data={formattedData}
@@ -155,28 +176,50 @@ function MyTasksByStatusTile() {
 
 function MyTasksByImpactTile() {
   const { data, isPending } = useMyTasksByImpact();
+  const [isPercentage, setIsPercentage] = useState(
+    localStorage.getItem("isPercentageImpact") === "true",
+  );
 
   const formattedData = useMemo(() => {
-    if (!data?.impactPercentage) return [];
+    if (!data) return [];
 
-    return Object.entries(data.impactPercentage).map(([impact, count]) => ({
+    const sourceData = isPercentage ? data.impactPercentage : data.impactCount;
+
+    if (!sourceData) return [];
+
+    return Object.entries(sourceData).map(([impact, value]) => ({
       id: taskImpactLabels[impact],
       label: taskImpactLabels[impact],
-      value: count,
+      value,
     }));
-  }, [data]);
+  }, [data, isPercentage]);
 
   if (isPending) {
     return <LoadingTile />;
   }
 
   if (!formattedData?.length) {
-    return <MyJourneySimpleTile title="Tasks by Impact (%)" value="No data" />;
+    return <MyJourneySimpleTile title={`Tasks by Impact`} value="No data" />;
   }
 
   return (
     <div className="pie-chart-tile tasks-by-impact">
-      <h4>Tasks by Impact (%)</h4>
+      <div className="pie-chart-tile__header">
+        <h4>Tasks by Impact</h4>
+        <div className="pie-chart-tile__header__switch-container">
+          <span className="pie-chart-tile__header__switch-container__switch-text">
+            %
+          </span>
+          <Switch
+            isSelected={isPercentage}
+            onValueChange={(newValue) => {
+              setIsPercentage(newValue);
+              localStorage.setItem("isPercentageImpact", newValue.toString());
+            }}
+            size="sm"
+          />
+        </div>
+      </div>
       <ResponsivePie
         animate={false}
         data={formattedData}
@@ -210,30 +253,52 @@ function MyTasksByImpactTile() {
 
 function MyTasksByCategory() {
   const { data, isPending } = useMyTasksByCategory();
+  const [isPercentage, setIsPercentage] = useState(
+    localStorage.getItem("isPercentageCategory") === "true",
+  );
 
   const formattedData = useMemo(() => {
-    if (!data?.categoryPercentage) return [];
+    if (!data) return [];
 
-    return Object.entries(data.categoryPercentage).map(([category, count]) => ({
+    const sourceData = isPercentage
+      ? data.categoryPercentage
+      : data.categoryCount;
+
+    if (!sourceData) return [];
+
+    return Object.entries(sourceData).map(([category, value]) => ({
       id: category,
       label: category,
-      value: count,
+      value,
     }));
-  }, [data]);
+  }, [data, isPercentage]);
 
   if (isPending) {
     return <LoadingTile />;
   }
 
   if (!formattedData?.length) {
-    return (
-      <MyJourneySimpleTile title="Tasks by Category (%)" value="No data" />
-    );
+    return <MyJourneySimpleTile title={`Tasks by Category`} value="No data" />;
   }
 
   return (
     <div className="pie-chart-tile tasks-by-category">
-      <h4>Tasks by Category (%)</h4>
+      <div className="pie-chart-tile__header">
+        <h4>Tasks by Category</h4>
+        <div className="pie-chart-tile__header__switch-container">
+          <span className="pie-chart-tile__header__switch-container__switch-text">
+            %
+          </span>
+          <Switch
+            isSelected={isPercentage}
+            onValueChange={(newValue) => {
+              setIsPercentage(newValue);
+              localStorage.setItem("isPercentageCategory", newValue.toString());
+            }}
+            size="sm"
+          />
+        </div>
+      </div>
       <ResponsivePie
         animate={false}
         data={formattedData}
@@ -316,6 +381,13 @@ function MyTaskCompletionCalendar() {
 function MyMostBusyTimes() {
   const { data, isPending } = useMyMostBusyTimes();
 
+  const maxValue = useMemo(() => {
+    if (!data?.length) return 10;
+    return data.some((day) => day.data.some((hour) => hour.y >= 10))
+      ? undefined
+      : 10;
+  }, [data]);
+
   if (isPending) {
     return <LoadingTile />;
   }
@@ -348,18 +420,12 @@ function MyMostBusyTimes() {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          // legend: "days of the week",
-          // legendPosition: "middle",
-          // legendOffset: 70,
           truncateTickAt: 0,
         }}
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          // legend: "days of the week",
-          // legendPosition: "middle",
-          // legendOffset: -72,
           truncateTickAt: 0,
         }}
         colors={{
@@ -367,7 +433,7 @@ function MyMostBusyTimes() {
           scheme: "greens",
           divergeAt: 0.5,
           minValue: 0,
-          maxValue: 10,
+          maxValue: maxValue,
         }}
         emptyColor="#555555"
         legends={[
@@ -382,7 +448,7 @@ function MyMostBusyTimes() {
             tickSize: 3,
             tickSpacing: 4,
             tickOverlap: false,
-            tickFormat: ">-.2s",
+            tickFormat: ">-.1f",
             title: "Completed tasks →",
             titleAlign: "start",
             titleOffset: 4,
@@ -501,10 +567,6 @@ function MyJourneyScreen() {
           {/* Task completion calendar like G.Hub */}
           <MyTaskCompletionCalendar />
         </div>
-        <ServiceAlert
-          severity="info"
-          text="This section has undergone a series of updates regarding timezones. Please bear with us as we work to improve your experience. 😊"
-        />
         <div className="my-journey__content__row">
           {/* Most busy times heatmap */}
           <MyMostBusyTimes />

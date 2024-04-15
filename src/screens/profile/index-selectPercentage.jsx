@@ -1,20 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Button } from "../../components/button/index.jsx";
 import ChangePassword from "../../components/change-password/index.jsx";
+import { ErrorMessage } from "../../components/errors/index";
+import { Input, Select } from "../../components/input/index";
+import UserDeleteModal from "../../components/user-delete-modal.jsx";
 import { useAuth } from "../../context/auth-context.jsx";
 import { dateFormats } from "../../utils/misc.js";
 import { useUpdateUser } from "../../utils/user.js";
-import { Input, Select } from "../../components/input/index";
-import { ErrorMessage } from "../../components/errors/index";
 import "./styles.scss";
-import UserDeleteModal from "../../components/user-delete-modal.jsx";
 
 function ProfileScreen() {
   const { user } = useAuth();
   const { handleSubmit, register } = useForm();
   const { mutate, status, isPending, isError, error } = useUpdateUser();
+  const [selectedKey, setSelectedKey] = useState("false");
 
   // TODO: make this generic?
   useEffect(() => {
@@ -31,6 +32,13 @@ function ProfileScreen() {
   const onSubmit = (data) => {
     mutate(data);
   };
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem("isPercentage");
+    if (storedValue) {
+      setSelectedKey(storedValue);
+    }
+  }, []);
 
   return (
     <div className="layout profile">
@@ -80,6 +88,24 @@ function ProfileScreen() {
             placeholder="Select a date format"
             defaultSelectedKeys={["DD/MM/YYYY"]}
             {...register("dateFormat")}
+          />
+          <Select
+            items={[
+              { label: "Count", value: "false" },
+              { label: "Percentage", value: "true" },
+            ]}
+            label="Task Display Mode"
+            placeholder="Select a display mode"
+            selectedKeys={[
+              localStorage.getItem("isPercentage") === "true"
+                ? "true"
+                : "false",
+            ]}
+            onChange={(event) => {
+              const value = event.target.value;
+              localStorage.setItem("isPercentage", value);
+              setSelectedKey(value);
+            }}
           />
         </section>
         {isError && <ErrorMessage error={error} />}

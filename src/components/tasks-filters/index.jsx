@@ -1,15 +1,16 @@
-import PropTypes from "prop-types";
-import { Controller, useForm } from "react-hook-form";
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import { Input, Select } from "../input/index";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useCategories } from "../../utils/category";
+import { useBreakpoint } from "../../utils/hooks";
 import {
   taskImpactLabels,
   taskImpactsForSelect,
   taskStatusesForSelect,
 } from "../../utils/task";
-import { useCategories } from "../../utils/category";
 import { Button } from "../button/index";
-import { useBreakpoint } from "../../utils/hooks";
+import { Input, Select } from "../input/index";
 import "./styles.scss";
 
 const filtersLabels = {
@@ -24,7 +25,7 @@ const smallScreenThreshold = 940;
 function TasksFilters({ onFiltersUpdated, isFiltering }) {
   const isSmallScreen = useBreakpoint(smallScreenThreshold);
 
-  const { handleSubmit, reset, getValues, control } = useForm({
+  const { handleSubmit, reset, getValues, control, setValue } = useForm({
     defaultValues: {
       status: undefined,
       categoryIds: [],
@@ -32,6 +33,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
       impact: undefined,
     },
   });
+
   const { categories } = useCategories();
 
   const onSubmit = (data) => {
@@ -45,8 +47,16 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
     onFiltersUpdated({ ...data, categoryIds });
   };
 
+  const [selectKey, setSelectKey] = useState(0);
+
   const clearFilters = () => {
-    reset();
+    reset({
+      status: undefined,
+      categoryIds: [],
+      containsText: "",
+      impact: undefined,
+    });
+    setSelectKey((prevKey) => prevKey + 1);
     onFiltersUpdated({});
   };
 
@@ -70,6 +80,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
         control={control}
         render={({ field }) => (
           <Select
+            key={`status-${selectKey}`}
             placeholder="Filter by status"
             label="Status"
             items={taskStatusesForSelect}
@@ -83,6 +94,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
         control={control}
         render={({ field }) => (
           <Select
+            key={`categoryIds-${selectKey}`}
             selectionMode="multiple"
             placeholder="Filter by category"
             label="Category"
@@ -99,6 +111,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
         control={control}
         render={({ field }) => (
           <Select
+            key={`impact-${selectKey}`}
             placeholder="Filter by impact"
             label="Impact"
             items={taskImpactsForSelect}

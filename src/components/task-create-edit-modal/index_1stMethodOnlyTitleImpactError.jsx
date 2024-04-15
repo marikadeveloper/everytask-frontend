@@ -82,6 +82,29 @@ function TaskCreateEditModal({ task, disabled = false }) {
   };
 
   const onSubmit = (data) => {
+    console.log(data);
+    let hasError = false;
+
+    if (!data.impact) {
+      setError("impact", {
+        type: "manual",
+        message: "Please select a valid impact for the task.",
+      });
+      hasError = true;
+    }
+
+    if (!data.title) {
+      setError("title", {
+        type: "manual",
+        message: "Please provide a title for the task.",
+      });
+      hasError = true;
+    }
+
+    if (hasError) {
+      return;
+    }
+
     if (isEditMode) {
       mutate({ ...data, id: task.id }); // Ensure you pass the task ID for updates
     } else {
@@ -117,9 +140,6 @@ function TaskCreateEditModal({ task, disabled = false }) {
                 <Controller
                   name="title"
                   control={control}
-                  rules={{
-                    required: "Please provide a title for the task.",
-                  }}
                   render={({ field }) => (
                     <Input
                       autoFocus
@@ -133,28 +153,15 @@ function TaskCreateEditModal({ task, disabled = false }) {
                 {errors.title && (
                   <p className="error-message">{errors.title.message}</p>
                 )}
-                <Controller
-                  name="dueDate"
-                  control={control}
-                  rules={{ required: "Due date is required" }}
-                  render={({ field }) => (
-                    <DatetimePicker
-                      date={task ? new Date(task?.dueDate) : new Date()}
-                      onDateChange={(value) =>
-                        onManualFieldChange({ field: "dueDate", value })
-                      }
-                    />
-                  )}
+                <DatetimePicker
+                  date={task ? new Date(task?.dueDate) : new Date()}
+                  onDateChange={(value) =>
+                    onManualFieldChange({ field: "dueDate", value })
+                  }
                 />
-                {errors.dueDate && (
-                  <p className="error-message">{errors.dueDate.message}</p>
-                )}
                 <Controller
                   name="impact"
                   control={control}
-                  rules={{
-                    required: "Please select a valid impact for the task.",
-                  }}
                   render={({ field }) => (
                     <Select
                       label="Impact"

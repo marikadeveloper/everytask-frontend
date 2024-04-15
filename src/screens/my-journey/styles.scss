@@ -2,7 +2,7 @@ $mobile-breakpoint: 500px;
 
 .simple-tile {
   display: grid;
-  border: 2px solid #E1E1E1;
+  border: 2px solid #e1e1e1;
   border-radius: 25px;
   padding: 10px 18px;
   gap: 10px;
@@ -35,6 +35,21 @@ $mobile-breakpoint: 500px;
 .pie-chart-tile {
   @extend .simple-tile;
   height: 250px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__switch-container {
+      display: flex;
+      align-items: center;
+
+      &__switch-text {
+        margin-right: 10px;
+      }
+    }
+  }
 }
 
 .tasks-by-status,
@@ -94,7 +109,6 @@ $mobile-breakpoint: 500px;
       max-width: 160px;
       align-items: start;
       grid-template-rows: min-content min-content 1fr;
-
     }
 
     @media (max-width: $mobile-breakpoint) {
@@ -102,5 +116,4 @@ $mobile-breakpoint: 500px;
       grid-template-columns: 1fr 1fr;
     }
   }
-
 }
