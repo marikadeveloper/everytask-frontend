@@ -35,7 +35,15 @@ const taskImpacts = taskImpactArray.map((impact) => ({
 function TaskCreateEditModal({ task, disabled = false }) {
   const isEditMode = !!task;
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { control, register, handleSubmit, setValue, reset } = useForm({
+  const {
+    control,
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm({
     defaultValues: useMemo(() => {
       return {
         title: task ? task.title : "",
@@ -109,6 +117,9 @@ function TaskCreateEditModal({ task, disabled = false }) {
                 <Controller
                   name="title"
                   control={control}
+                  rules={{
+                    required: "Please provide a title for the task.",
+                  }}
                   render={({ field }) => (
                     <Input
                       autoFocus
@@ -119,15 +130,31 @@ function TaskCreateEditModal({ task, disabled = false }) {
                     />
                   )}
                 />
-                <DatetimePicker
-                  date={task ? new Date(task?.dueDate) : new Date()}
-                  onDateChange={(value) =>
-                    onManualFieldChange({ field: "dueDate", value })
-                  }
+                {errors.title && (
+                  <p className="error-message">{errors.title.message}</p>
+                )}
+                <Controller
+                  name="dueDate"
+                  control={control}
+                  rules={{ required: "Due date is required" }}
+                  render={({ field }) => (
+                    <DatetimePicker
+                      date={task ? new Date(task?.dueDate) : new Date()}
+                      onDateChange={(value) =>
+                        onManualFieldChange({ field: "dueDate", value })
+                      }
+                    />
+                  )}
                 />
+                {errors.dueDate && (
+                  <p className="error-message">{errors.dueDate.message}</p>
+                )}
                 <Controller
                   name="impact"
                   control={control}
+                  rules={{
+                    required: "Please select a valid impact for the task.",
+                  }}
                   render={({ field }) => (
                     <Select
                       label="Impact"
@@ -138,6 +165,9 @@ function TaskCreateEditModal({ task, disabled = false }) {
                     />
                   )}
                 />
+                {errors.impact && (
+                  <p className="error-message">{errors.impact.message}</p>
+                )}
                 <Controller
                   name="description"
                   control={control}
