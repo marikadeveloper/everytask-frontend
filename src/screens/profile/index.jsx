@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Button } from "../../components/button";
-import ChangePassword from "../../components/change-password";
-import { useAuth } from "../../context/auth-context";
-import { dateFormats } from "../../utils/misc";
-import { useUpdateUser } from "../../utils/user";
+import { Button } from "../../components/button/index.jsx";
+import ChangePassword from "../../components/change-password/index.jsx";
+import { useAuth } from "../../context/auth-context.jsx";
+import { dateFormats } from "../../utils/misc.js";
+import { useUpdateUser } from "../../utils/user.js";
 import { Input, Select } from "../../components/input/index";
 import { ErrorMessage } from "../../components/errors/index";
 import "./styles.scss";
