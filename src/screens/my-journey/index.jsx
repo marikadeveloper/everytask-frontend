@@ -101,9 +101,8 @@ function MyMostProductiveDayTile() {
 function MyTasksByStatusTile() {
   const { data, isPending } = useMyTasksByStatus();
   const [isPercentage, setIsPercentage] = useState(
-    localStorage.getItem("isPercentage") === "true",
+    localStorage.getItem("isPercentageStatus") === "true",
   );
-
   const formattedData = useMemo(() => {
     if (!data) return [];
 
@@ -136,7 +135,10 @@ function MyTasksByStatusTile() {
           </span>
           <Switch
             isSelected={isPercentage}
-            onValueChange={setIsPercentage}
+            onValueChange={(newValue) => {
+              setIsPercentage(newValue);
+              localStorage.setItem("isPercentageStatus", newValue.toString());
+            }}
             size="sm"
           ></Switch>
         </div>
@@ -175,7 +177,7 @@ function MyTasksByStatusTile() {
 function MyTasksByImpactTile() {
   const { data, isPending } = useMyTasksByImpact();
   const [isPercentage, setIsPercentage] = useState(
-    localStorage.getItem("isPercentage") === "true",
+    localStorage.getItem("isPercentageImpact") === "true",
   );
 
   const formattedData = useMemo(() => {
@@ -210,7 +212,10 @@ function MyTasksByImpactTile() {
           </span>
           <Switch
             isSelected={isPercentage}
-            onValueChange={setIsPercentage}
+            onValueChange={(newValue) => {
+              setIsPercentage(newValue);
+              localStorage.setItem("isPercentageImpact", newValue.toString());
+            }}
             size="sm"
           />
         </div>
@@ -249,7 +254,7 @@ function MyTasksByImpactTile() {
 function MyTasksByCategory() {
   const { data, isPending } = useMyTasksByCategory();
   const [isPercentage, setIsPercentage] = useState(
-    localStorage.getItem("isPercentage") === "true",
+    localStorage.getItem("isPercentageCategory") === "true",
   );
 
   const formattedData = useMemo(() => {
@@ -286,7 +291,10 @@ function MyTasksByCategory() {
           </span>
           <Switch
             isSelected={isPercentage}
-            onValueChange={setIsPercentage}
+            onValueChange={(newValue) => {
+              setIsPercentage(newValue);
+              localStorage.setItem("isPercentageCategory", newValue.toString());
+            }}
             size="sm"
           />
         </div>
