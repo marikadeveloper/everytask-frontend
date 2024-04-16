@@ -43,6 +43,8 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
       typeof data.categoryIds === "string"
     ) {
       categoryIds = categoryIds.split(",");
+    } else if (!Array.isArray(data.categoryIds)) {
+      categoryIds = [];
     }
     onFiltersUpdated({ ...data, categoryIds });
   };
@@ -148,7 +150,7 @@ function TasksFilters({ onFiltersUpdated, isFiltering }) {
     return `Filtering by: ${activeFilters
       .map((key) => {
         if (key === "categoryIds") {
-          return `category "${values[key].map((id) => categories.find((c) => c.id === id).name).join(", ")}"`;
+          return `category "${Array.isArray(values[key]) ? values[key].map((id) => categories.find((c) => c.id === id).name).join(", ") : ""}"`;
         }
         if (key === "impact") {
           return `${filtersLabels[key]} "${taskImpactLabels[values[key]]}"`;
